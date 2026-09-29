@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .state import atomic_json, digest
 from .validation import ValidationError, read_json, validate, validate_manual
+from .i18n import t
 
 
 def file_hash(path):
@@ -68,21 +69,23 @@ def inventory_to_manual(inventory, config):
             'role': candidate['role'], 'goal': candidate['goal'],
             'preconditions': candidate['preconditions'],
             'successCriteria': candidate['successCriteria'], 'location': candidate['location'],
-            'status': 'unverified', 'reason': '尚未在目标环境中实际执行并核验', 'stepIds': [],
+            'status': 'unverified', 'reason': t(config.get('language'), 'workflow_unverified_reason'), 'stepIds': [],
         })
     chapters = []
     for module in inventory['modules']:
         ids = [w['id'] for w in workflows if features[w['featureId']]['moduleId'] == module['id']]
         if ids:
             chapters.append({'id': 'chapter-' + module['id'], 'moduleId': module['id'],
-                             'title': module['name'], 'purpose': '待根据实际界面观察补充', 'workflowIds': ids})
+                             'title': module['name'], 'purpose': t(config.get('language'), 'chapter_purpose_pending'), 'workflowIds': ids})
     return {
         'schemaVersion': '0.1',
-        'project': {**config['project'], 'version': inventory['projectVersion']},
-        'title': config['project']['name'] + ' 操作手册', 'roles': config['roles'],
+        'project': {**config['project'], 'version': inventory['projectVersion'],
+                    'language': config.get('language', 'zh-CN')},
+        'title': config['project']['name'] + ' ' + t(config.get('language'), 'manual_suffix'), 'roles': config['roles'],
         'modules': inventory['modules'], 'features': inventory['features'],
         'workflows': workflows, 'steps': [], 'evidence': [], 'chapters': chapters,
-        'limitations': ['当前内容来自项目清单；所有流程均未验证。'] if workflows else ['清单内未发现候选流程。'],
+        'limitations': [t(config.get('language'), 'source_only_limitation')] if workflows
+                       else [t(config.get('language'), 'empty_inventory_limitation')],
     }
 
 

@@ -2,6 +2,7 @@
 import tempfile
 from pathlib import Path
 
+from .i18n import locale_for, t
 from .validation import ValidationError, asset_path, read_json, validate_manual
 
 
@@ -34,6 +35,8 @@ def build_docx(manual, asset_root, output_path):
     from docx.shared import Inches, Pt, RGBColor
 
     doc = Document()
+    language = manual.get('project', {}).get('language') or manual.get('language')
+    east_asia_font = {'zh-CN': 'Microsoft YaHei', 'ja-JP': 'Yu Gothic', 'ko-KR': 'Malgun Gothic', 'en-US': 'Aptos'}[locale_for(language)]
     section = doc.sections[0]
     section.top_margin = Inches(.7)
     section.bottom_margin = Inches(.7)
@@ -42,7 +45,7 @@ def build_docx(manual, asset_root, output_path):
     styles = doc.styles
     styles['Normal'].font.name = 'Aptos'
     styles['Normal'].font.size = Pt(10.5)
-    styles['Normal']._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', 'Microsoft YaHei')
+    styles['Normal']._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', east_asia_font)
     styles['Normal'].paragraph_format.space_after = Pt(6)
     for style_name, size in (('Title', 25), ('Heading 1', 18), ('Heading 2', 14), ('Heading 3', 12)):
         style = styles[style_name]
@@ -50,25 +53,25 @@ def build_docx(manual, asset_root, output_path):
         style.font.size = Pt(size)
         style.font.bold = style_name != 'Title'
         style.font.color.rgb = RGBColor(0x18, 0x26, 0x3A)
-        style._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', 'Microsoft YaHei')
+        style._element.rPr.rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}eastAsia', east_asia_font)
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
     footer.add_run('AutoScribeAI · ')
     _page_number(footer)
     doc.core_properties.title = manual['title']
-    doc.core_properties.subject = f"{manual['project']['name']} 操作手册"
+    doc.core_properties.subject = f"{manual['project']['name']} {t(language, 'manual_suffix')}"
 
     title = doc.add_paragraph(style='Title')
     title.add_run(manual['title'])
     intro = doc.add_paragraph()
     intro.paragraph_format.space_after = Pt(12)
     intro.add_run(f"{manual['project']['name']} · {manual['project'].get('environment', '')}").bold = True
-    _add_metadata(doc, '项目版本：', manual['project'].get('version', '未注明'))
-    _add_metadata(doc, '适用角色：', '、'.join(manual['roles']))
+    _add_metadata(doc, t(language, 'project_version') + ': ', manual['project'].get('version', 'N/A'))
+    _add_metadata(doc, t(language, 'roles') + ': ', ', '.join(manual['roles']))
     counts = {key: sum(item['status'] == key for item in manual['workflows'])
               for key in ('verified', 'blocked', 'unverified', 'pending')}
-    _add_metadata(doc, '流程状态：', f"已验证 {counts['verified']} · 受阻 {counts['blocked']} · 未验证 {counts['unverified']} · 待处理 {counts['pending']}")
-    doc.add_paragraph('本手册保留未验证和受阻流程的状态与原因；候选流程不会被当作真实操作结果。')
+    _add_metadata(doc, t(language, 'workflow_status') + ': ', t(language, 'status_summary', **counts))
+    doc.add_paragraph(t(language, 'unverified_note'))
     doc.add_page_break()
 
     modules = {item['id']: item for item in manual['modules']}
@@ -83,7 +86,7 @@ def build_docx(manual, asset_root, output_path):
         steps_by_workflow[step['workflowId']].append(step)
     evidence = {item['id']: item for item in manual['evidence']}
     chapters = {item['moduleId']: item for item in manual['chapters']}
-    labels = {'verified': '已验证', 'blocked': '受阻', 'unverified': '未验证', 'pending': '待处理'}
+    labels = {key: t(language, key) for key in ('verified', 'blocked', 'unverified', 'pending')}
     first_module = True
     with tempfile.TemporaryDirectory(prefix='autoscribe-docx-assets-') as working:
         working = Path(working)
@@ -95,38 +98,39 @@ def build_docx(manual, asset_root, output_path):
             doc.add_heading(chapter.get('title', module['name']), level=1)
             if chapter.get('purpose'):
                 doc.add_paragraph(chapter['purpose'])
-            _add_metadata(doc, '入口：', module['location'])
-            _add_metadata(doc, '来源：', module['source'])
+            _add_metadata(doc, t(language, 'module_entry') + ': ', module['location'])
+            source_labels = {'observed': t(language, 'source_observed'), 'source': t(language, 'source_code'), 'human': t(language, 'source_human')}
+            _add_metadata(doc, t(language, 'source') + ': ', source_labels[module['source']])
             for feature in features_by_module[module['id']]:
                 doc.add_heading(feature['name'], level=2)
-                _add_metadata(doc, '功能入口：', feature['location'])
+                _add_metadata(doc, t(language, 'feature_entry') + ': ', feature['location'])
                 for workflow in workflows_by_feature[feature['id']]:
                     doc.add_heading(workflow['goal'], level=3)
-                    _add_metadata(doc, '状态：', labels[workflow['status']])
-                    _add_metadata(doc, '适用角色：', workflow['role'])
+                    _add_metadata(doc, t(language, 'workflow_status') + ': ', labels[workflow['status']])
+                    _add_metadata(doc, t(language, 'roles') + ': ', workflow['role'])
                     if workflow['location']:
-                        _add_metadata(doc, '流程位置：', workflow['location'])
-                    _add_metadata(doc, '成功标准：', workflow['successCriteria'])
+                        _add_metadata(doc, t(language, 'workflow_location') + ': ', workflow['location'])
+                    _add_metadata(doc, t(language, 'success_criteria') + ': ', workflow['successCriteria'])
                     if workflow['preconditions']:
-                        doc.add_paragraph('前置条件', style='Heading 4')
+                        doc.add_paragraph(t(language, 'preconditions'), style='Heading 4')
                         for condition in workflow['preconditions']:
                             doc.add_paragraph(condition, style='List Bullet')
                     if workflow['status'] in ('blocked', 'unverified'):
                         paragraph = doc.add_paragraph()
-                        paragraph.add_run('说明：').bold = True
-                        paragraph.add_run(workflow.get('reason', '尚未验证'))
+                        paragraph.add_run(t(language, 'explanation') + ': ').bold = True
+                        paragraph.add_run(workflow.get('reason', t(language, 'not_validated')))
                     steps = sorted(steps_by_workflow[workflow['id']], key=lambda item: item['order'])
                     if not steps:
-                        doc.add_paragraph('尚无实际操作步骤。源码或说明中的候选流程不能替代真实界面验证。')
+                        doc.add_paragraph(t(language, 'no_steps_doc'))
                     for step in steps:
                         paragraph = doc.add_paragraph()
                         paragraph.paragraph_format.keep_with_next = True
                         paragraph.add_run(f"{step['order']}. ")
                         paragraph.add_run(step['action']).bold = True
-                        _add_metadata(doc, '操作位置：', step['location'])
-                        _add_metadata(doc, '预期结果：', step['expectedResult'])
+                        _add_metadata(doc, t(language, 'action_location') + ': ', step['location'])
+                        _add_metadata(doc, t(language, 'expected') + ': ', step['expectedResult'])
                         if step.get('actualResult'):
-                            _add_metadata(doc, '实际结果：', step['actualResult'])
+                            _add_metadata(doc, t(language, 'actual') + ': ', step['actualResult'])
                         for ident in step['evidenceIds']:
                             item = evidence[ident]
                             source = asset_path(asset_root, item['path'])
@@ -144,30 +148,30 @@ def build_docx(manual, asset_root, output_path):
                             else:
                                 picture = run.add_picture(str(image_path), width=Inches(6.25))
                             picture._inline.docPr.set('descr', f"{item['page']} | {ident}")
-                            caption = doc.add_paragraph(f"图 {step['order']}  {item['page']}")
+                            caption = doc.add_paragraph(t(language, 'figure', order=step['order'], page=item['page']))
                             caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
                             caption.paragraph_format.keep_together = True
                             caption.paragraph_format.space_after = Pt(10)
             if chapter.get('faqs'):
-                doc.add_heading('常见问题', level=2)
-                source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
+                doc.add_heading(t(language, 'faqs'), level=2)
+                source_labels = {'observed': t(language, 'source_observed'), 'source': t(language, 'source_code'), 'human': t(language, 'source_human')}
                 workflow_labels = {item['id']: item['goal'] for item in manual['workflows']}
                 for faq in chapter['faqs']:
                     paragraph = doc.add_paragraph()
                     paragraph.paragraph_format.keep_with_next = True
-                    paragraph.add_run(f"问：{faq['question']}").bold = True
-                    doc.add_paragraph(f"答：{faq['answer']}")
+                    paragraph.add_run(f"{t(language, 'faq_question')}: {faq['question']}").bold = True
+                    doc.add_paragraph(f"{t(language, 'faq_answer')}: {faq['answer']}")
                     references = [workflow_labels[ident] for ident in faq.get('workflowIds', [])]
-                    note = f"依据：{source_labels[faq['source']]}"
+                    note = f"{t(language, 'basis')}: {source_labels[faq['source']]}"
                     if references:
-                        note += f"；相关流程：{'、'.join(references)}"
-                    _add_metadata(doc, '来源：', note)
-        doc.add_heading('覆盖范围与限制', level=1)
+                        note += f"; {t(language, 'related_workflows')}: {', '.join(references)}"
+                    _add_metadata(doc, t(language, 'source') + ': ', note)
+        doc.add_heading(t(language, 'coverage_limitations'), level=1)
         if manual['limitations']:
             for limitation in manual['limitations']:
                 doc.add_paragraph(limitation, style='List Bullet')
         else:
-            doc.add_paragraph('没有额外限制说明。')
+            doc.add_paragraph(t(language, 'no_extra_limitations'))
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         doc.save(output_path)

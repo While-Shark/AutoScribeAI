@@ -3,11 +3,16 @@ import tempfile
 import zipfile
 from pathlib import Path
 
+from .i18n import locale_for, t
 from .validation import ValidationError, asset_path, read_json, validate_manual
 
 
 def render_markdown(manual, asset_prefix="assets"):
     """Return Markdown whose image links resolve beneath ``asset_prefix``."""
+    language = manual.get('project', {}).get('language') or manual.get('language')
+    colon = ':' if locale_for(language) == 'en-US' else '：'
+    text_space = ' ' if locale_for(language) == 'en-US' else ''
+    note_separator = '; ' if locale_for(language) == 'en-US' else '；'
     modules = {item['id']: item for item in manual['modules']}
     features = {item['id']: item for item in manual['features']}
     chapters = {item['moduleId']: item for item in manual['chapters']}
@@ -19,67 +24,69 @@ def render_markdown(manual, asset_prefix="assets"):
         steps_by_workflow[step['workflowId']].append(step)
     evidence = {item['id']: item for item in manual['evidence']}
 
-    lines = [f"# {manual['title']}", "", f"**项目：** {manual['project']['name']}",
-             f"**版本：** {manual['project'].get('version', '未注明')}",
-             f"**环境：** {manual['project'].get('environment', '未注明')}",
-             f"**适用角色：** {', '.join(manual['roles'])}", ""]
-    status_labels = {'verified': '已验证', 'blocked': '受阻', 'unverified': '未验证', 'pending': '待处理'}
+    lines = [f"# {manual['title']}", "", f"**{t(language, 'project')}{colon}** {manual['project']['name']}",
+             f"**{t(language, 'project_version')}{colon}** {manual['project'].get('version', 'N/A')}",
+             f"**{t(language, 'environment')}{colon}** {manual['project'].get('environment', 'N/A')}",
+             f"**{t(language, 'roles')}{colon}** {', '.join(manual['roles'])}", ""]
+    status_labels = {key: t(language, key) for key in ('verified', 'blocked', 'unverified', 'pending')}
     for module in manual['modules']:
         chapter = chapters.get(module['id'], {})
         lines.extend([f"## {chapter.get('title', module['name'])}", ""])
         if chapter.get('purpose'):
             lines.extend([chapter['purpose'], ""])
-        lines.extend([f"**入口：** {module['location']}  ", f"**来源：** {module['source']}", ""])
+        source_labels = {'observed': t(language, 'source_observed'), 'source': t(language, 'source_code'), 'human': t(language, 'source_human')}
+        lines.extend([f"**{t(language, 'module_entry')}{colon}** {module['location']}  ", f"**{t(language, 'source')}{colon}** {source_labels[module['source']]}", ""])
         if chapter.get('faqs'):
-            lines.extend(["### 常见问题", ""])
-            source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
+            lines.extend([f"### {t(language, 'faqs')}", ""])
             workflow_labels = {item['id']: item['goal'] for item in manual['workflows']}
             for faq in chapter['faqs']:
-                lines.extend([f"**问：{faq['question']}**", "", f"答：{faq['answer']}"])
+                lines.extend([f"**{t(language, 'faq_question')}{colon}{text_space}{faq['question']}**", "", f"{t(language, 'faq_answer')}{colon}{text_space}{faq['answer']}"])
                 references = [workflow_labels[ident] for ident in faq.get('workflowIds', [])]
-                note = f"依据：{source_labels[faq['source']]}"
+                note = f"{t(language, 'basis')}{colon}{text_space}{source_labels[faq['source']]}"
                 if references:
-                    note += f"；相关流程：{'、'.join(references)}"
+                    note += f"{note_separator}{t(language, 'related_workflows')}{colon}{text_space}{', '.join(references)}"
                 lines.extend(["", f"_{note}_", ""])
         for feature in (item for item in manual['features'] if item['moduleId'] == module['id']):
-            lines.extend([f"### {feature['name']}", "", f"入口：{feature['location']}", ""])
+            lines.extend([f"### {feature['name']}", "", f"{t(language, 'feature_entry')}{colon} {feature['location']}", ""])
             workflows = workflows_by_feature[feature['id']]
             if not workflows:
-                lines.extend(["此功能暂无候选操作流程。", ""])
+                lines.extend([t(language, 'no_feature_workflows'), ""])
             for workflow in workflows:
                 lines.extend([f"#### {workflow['goal']}", "",
-                              f"**状态：** {status_labels[workflow['status']]}",
-                              f"**角色：** {workflow['role']}",
-                              f"**成功标准：** {workflow['successCriteria']}"])
+                              f"**{t(language, 'workflow_status')}{colon}** {status_labels[workflow['status']]}",
+                              f"**{t(language, 'role')}{colon}** {workflow['role']}",
+                              f"**{t(language, 'success_criteria')}{colon}** {workflow['successCriteria']}"])
                 if workflow.get('location'):
-                    lines.append(f"**流程位置：** {workflow['location']}")
+                    lines.append(f"**{t(language, 'workflow_location')}{colon}** {workflow['location']}")
                 if workflow['preconditions']:
-                    lines.extend(["", "前置条件：", *[f"- {item}" for item in workflow['preconditions']]])
+                    lines.extend(["", f"{t(language, 'preconditions')}{colon}", *[f"- {item}" for item in workflow['preconditions']]])
                 if workflow['status'] in ('blocked', 'unverified'):
-                    lines.extend(["", f"**说明：** {workflow.get('reason', '尚未验证')}"])
+                    lines.extend(["", f"**{t(language, 'explanation')}{colon}** {workflow.get('reason', t(language, 'not_validated'))}"])
                 lines.append("")
                 steps = sorted(steps_by_workflow[workflow['id']], key=lambda item: item['order'])
                 if not steps:
-                    lines.extend(["尚无实际操作步骤。源码或说明中的候选流程不能替代真实界面验证。", ""])
+                    lines.extend([t(language, 'no_steps_doc'), ""])
                 for step in steps:
                     lines.extend([f"{step['order']}. **{step['action']}**",
-                                  f"   - 操作位置：{step['location']}",
-                                  f"   - 预期结果：{step['expectedResult']}"])
+                                  f"   - {t(language, 'action_location')}{colon} {step['location']}",
+                                  f"   - {t(language, 'expected')}{colon} {step['expectedResult']}"])
                     if step.get('actualResult'):
-                        lines.append(f"   - 实际结果：{step['actualResult']}")
+                        lines.append(f"   - {t(language, 'actual')}{colon} {step['actualResult']}")
                     for ident in step['evidenceIds']:
                         item = evidence[ident]
                         suffix = Path(item['path']).suffix.lower()
-                        lines.extend(["", f"   ![步骤 {step['order']} · {item['page']}]({asset_prefix}/{ident}{suffix})",
-                                      f"   *图：步骤 {step['order']} · {item['page']} · {ident}*", ""])
+                        caption = t(language, 'markdown_step_caption', order=step['order'], page=item['page'])
+                        figure = t(language, 'figure', order=step['order'], page=item['page'])
+                        lines.extend(["", f"   ![{caption}]({asset_prefix}/{ident}{suffix})",
+                                      f"   *{figure} · {ident}*", ""])
                     lines.append("")
 
-    lines.extend(["## 覆盖范围与限制", ""])
+    lines.extend([f"## {t(language, 'coverage_limitations')}", ""])
     if manual['limitations']:
         lines.extend([*[f"- {item}" for item in manual['limitations']], ""])
     else:
-        lines.extend(["没有额外限制说明。", ""])
-    lines.extend(["本文中的已验证状态仅表示步骤关联了实际观察记录与证据；未验证或受阻内容不会被表述为已完成。", ""])
+        lines.extend([t(language, 'no_extra_limitations'), ""])
+    lines.extend([t(language, 'verified_meaning'), ""])
     return "\n".join(lines)
 
 

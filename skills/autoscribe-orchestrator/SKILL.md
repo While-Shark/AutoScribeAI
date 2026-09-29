@@ -7,7 +7,7 @@ description: 为软件项目规划、启动和恢复带真实截图的操作手�
 
 读取 [运行约定](../../references/RUN_PROTOCOL.md)。保留完整技能包目录；命令中的 `<repo>` 指 AutoScribeAI 根目录。M0–M3 的本地流程、HTML、DOCX 和 Markdown 导出已实现；真实浏览器操作由宿主工具完成，尚无通用自动采集适配器。不得把源码推断写成已验证结果。
 
-1. 收集项目来源、版本、环境、角色、范围、输出语言、格式和允许动作。参考 `examples/project.json`。使用宿主安全登录；不要索取写入配置的密码。
+1. 收集项目来源、版本、环境、角色、范围、输出语言、格式和允许动作。参考 `examples/project.json`。正文语言必须遵循配置的 `language`；从其他语言来源整理时用目标语言表达，并保留产品界面原有名称。使用宿主安全登录；不要索取写入配置的密码。
 2. 检查终端和文件能力；通过宿主实际可用工具验证浏览器及截图能力。创建 `host.json`，未知时保留 unknown。不要启动或探测未获授权的网站。
 3. 执行 `python <repo>/scripts/autoscribe_cli.py init <config> --run-dir <new-directory> --host <host.json>`。读取降级原因；源码模式不算已验证界面。
 4. 按 analyze → explore → write → export → verify 顺序调用同级专项技能；交接产物路径与缺口，不重复运行完成的阶段。每次只有一个任务写入状态。按照运行约定更新阶段；标记完成只说明此阶段产物已人工检查，不等同于质量验收。

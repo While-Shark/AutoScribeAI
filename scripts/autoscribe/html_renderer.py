@@ -7,6 +7,7 @@ from collections import Counter
 from pathlib import Path
 
 from .inventory import file_hash
+from .i18n import locale_for, t
 from .state import atomic_json
 from .validation import ValidationError, asset_path, read_json, validate, validate_manual
 
@@ -47,6 +48,8 @@ def render_html(manual_path, coverage_path, out_dir):
     manual_path, coverage_path, out_dir = map(Path, (manual_path, coverage_path, out_dir))
     manual = validate_manual(read_json(manual_path), manual_path.parent)
     coverage = verify_coverage(manual, manual_path, coverage_path)
+    language = manual.get('project', {}).get('language') or manual.get('language')
+    locale = locale_for(language)
     if out_dir.exists() or out_dir.is_symlink():
         raise ValidationError('HTML 输出目录已存在；请使用新的空目录，避免覆盖用户文件')
     out_dir.parent.mkdir(parents=True, exist_ok=True)
@@ -63,14 +66,16 @@ def render_html(manual_path, coverage_path, out_dir):
     steps_by_workflow = {workflow['id']: [] for workflow in manual['workflows']}
     for step in manual['steps']:
         steps_by_workflow[step['workflowId']].append(step)
-    status_labels = {'verified':'已验证', 'blocked':'受阻', 'unverified':'未验证', 'pending':'待处理'}
+    status_labels = {key: t(language, key) for key in ('verified', 'blocked', 'unverified', 'pending')}
+    source_labels = {'observed': t(language, 'source_observed'), 'source': t(language, 'source_code'), 'human': t(language, 'source_human')}
     status_counts = {key: coverage[key] for key in status_labels}
     warnings = [
-        f"{count} 条流程{status_labels[key]}" for key, count in status_counts.items() if count
+        t(language, 'workflow_issue', count=count, status=status_labels[key])
+        for key, count in status_counts.items() if count
     ]
     warnings.extend(manual['limitations'])
     verified_all = coverage['planned'] > 0 and coverage['verified'] == coverage['planned'] and not coverage['blocked'] and not coverage['unverified'] and not coverage['pending'] and not manual['limitations']
-    readiness = '范围内流程已验证' if verified_all else '草稿：仍有待核验项'
+    readiness = t(language, 'readiness_verified' if verified_all else 'readiness_draft')
     try:
         (temporary / 'evidence').mkdir()
         (temporary / 'index.html').write_text('', encoding='utf-8')
@@ -98,9 +103,9 @@ def render_html(manual_path, coverage_path, out_dir):
                     wid = workflow['id']
                     badge = status_labels[workflow['status']]
                     preconditions = ''.join(f'<li>{esc(item)}</li>' for item in workflow['preconditions'])
-                    details = f'<details><summary>适用角色与前置条件</summary><p>角色：{esc(workflow["role"])}</p><ul>{preconditions}</ul></details>'
+                    details = f'<details><summary>{esc(t(language, "applicability"))}</summary><p>{esc(t(language, "role"))}: {esc(workflow["role"])}</p><ul>{preconditions}</ul></details>'
                     if workflow['status'] in ('blocked', 'unverified'):
-                        details += f'<div class="notice">{esc(workflow.get("reason", "尚未验证"))}</div>'
+                        details += f'<div class="notice">{esc(workflow.get("reason", t(language, "not_validated")))}</div>'
                     steps = []
                     for step in sorted(steps_by_workflow[wid], key=lambda item: item['order']):
                         media = []
@@ -108,14 +113,14 @@ def render_html(manual_path, coverage_path, out_dir):
                             item = images[ident]
                             suffix = Path(item['path']).suffix.lower()
                             rel = f"evidence/{ident}{suffix}"
-                            caption = f"步骤 {step['order']} · {item['page']} · {ident}"
+                            caption = t(language, 'step_caption', order=step['order'], page=item['page'], id=ident)
                             media.append(f'<figure class="evidence"><button type="button" data-zoom data-caption="{esc(caption)}"><img src="{esc(rel)}" alt="{esc(caption)}" loading="lazy"></button><figcaption>{esc(caption)}</figcaption></figure>')
-                        steps.append(f'<li><div class="step-title">{esc(step["action"])}</div><div class="muted">操作位置：{esc(step["location"])}</div><div class="result"><b>预期：</b>{esc(step["expectedResult"])}' + (f'<br><b>实际：</b>{esc(step["actualResult"])}' if step.get('actualResult') else '') + '</div>' + ''.join(media) + '</li>')
-                    step_markup = '<ol class="steps">' + ''.join(steps) + '</ol>' if steps else '<div class="empty">尚无实际操作步骤。源码或说明中的候选流程不能替代真实界面验证。</div>'
+                        steps.append(f'<li><div class="step-title">{esc(step["action"])}</div><div class="muted">{esc(t(language, "action_location"))}: {esc(step["location"])}</div><div class="result"><b>{esc(t(language, "expected"))}:</b> {esc(step["expectedResult"])}' + (f'<br><b>{esc(t(language, "actual"))}:</b> {esc(step["actualResult"])}' if step.get('actualResult') else '') + '</div>' + ''.join(media) + '</li>')
+                    step_markup = '<ol class="steps">' + ''.join(steps) + '</ol>' if steps else f'<div class="empty">{esc(t(language, "no_steps"))}</div>'
                     searchable = ' '.join([workflow['goal'], workflow['role'], workflow['successCriteria'], *workflow['preconditions']])
-                    location = f'<div class="muted">流程位置：{esc(workflow["location"])}</div>' if workflow.get('location') else ''
-                    flows_html.append(f'<article class="workflow" id="workflow-{esc(wid)}" data-search="{esc(searchable)}"><h4>{esc(workflow["goal"])} <span class="badge {esc(workflow["status"])}">{esc(badge)}</span></h4><p class="goal">成功标准：{esc(workflow["successCriteria"])}</p>{location}{details}{step_markup}</article>')
-                feature_html.append(f'<section class="feature" data-search="{esc(feature["name"])}"><h3>{esc(feature["name"])}</h3><p class="muted">入口：{esc(feature["location"])} · 来源：{esc(feature["source"])}</p>' + (''.join(flows_html) or '<p class="empty">此功能暂无候选操作流程。</p>') + '</section>')
+                    location = f'<div class="muted">{esc(t(language, "workflow_location"))}: {esc(workflow["location"])}</div>' if workflow.get('location') else ''
+                    flows_html.append(f'<article class="workflow" id="workflow-{esc(wid)}" data-search="{esc(searchable)}"><h4>{esc(workflow["goal"])} <span class="badge {esc(workflow["status"])}">{esc(badge)}</span></h4><p class="goal">{esc(t(language, "success_criteria"))}: {esc(workflow["successCriteria"])}</p>{location}{details}{step_markup}</article>')
+                feature_html.append(f'<section class="feature" data-search="{esc(feature["name"])}"><h3>{esc(feature["name"])}</h3><p class="muted">{esc(t(language, "feature_entry"))}: {esc(feature["location"])} · {esc(t(language, "source"))}: {esc(source_labels[feature["source"]])}</p>' + (''.join(flows_html) or f'<p class="empty">{esc(t(language, "no_feature_workflows"))}</p>') + '</section>')
             module_workflows = [workflow for feature in features for workflow in workflows_by_feature[feature['id']]]
             module_verified = sum(w['status'] == 'verified' for w in module_workflows)
             chapter = chapters.get(module['id'], {})
@@ -124,23 +129,30 @@ def render_html(manual_path, coverage_path, out_dir):
             faq_items = []
             for faq in chapter.get('faqs', []):
                 searchable = f"{faq['question']} {faq['answer']}"
-                source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
                 refs = [workflows[ident]['goal'] for ident in faq.get('workflowIds', [])]
-                source_note = f'<p class="muted">依据：{esc(source_labels[faq["source"]])}'
+                source_note = f'<p class="muted">{esc(t(language, "basis"))}: {esc(source_labels[faq["source"]])}'
                 if refs:
-                    source_note += f' · 相关流程：{esc("、".join(refs))}'
+                    source_note += f' · {esc(t(language, "related_workflows"))}: {esc(" / ".join(refs))}'
                 source_note += '</p>'
                 faq_items.append(f'<details class="faq" data-search="{esc(searchable)}"><summary>{esc(faq["question"])}</summary><p>{esc(faq["answer"])}</p>{source_note}</details>')
-            faq_html = f'<section class="faqs"><h3>常见问题</h3>{"".join(faq_items)}</section>' if faq_items else ''
-            contents.append(f'<section class="module" id="{esc(module_anchor)}" data-search="{esc(module["name"])}"><header><div class="eyebrow">模块 · {module_verified}/{len(module_workflows)} 已验证</div><h2>{esc(chapter_title)}</h2>{chapter_purpose}<p class="muted">入口：{esc(module["location"])} · 来源：{esc(module["source"])}</p></header>' + (''.join(feature_html) or '<p class="empty">此模块暂无已发现功能。</p>') + faq_html + '</section>')
+            faq_html = f'<section class="faqs"><h3>{esc(t(language, "faqs"))}</h3>{"".join(faq_items)}</section>' if faq_items else ''
+            module_progress = t(language, 'module_progress', verified=module_verified, total=len(module_workflows))
+            contents.append(f'<section class="module" id="{esc(module_anchor)}" data-search="{esc(module["name"])}"><header><div class="eyebrow">{esc(module_progress)}</div><h2>{esc(chapter_title)}</h2>{chapter_purpose}<p class="muted">{esc(t(language, "module_entry"))}: {esc(module["location"])} · {esc(t(language, "source"))}: {esc(source_labels[module["source"]])}</p></header>' + (''.join(feature_html) or f'<p class="empty">{esc(t(language, "no_module_features"))}</p>') + faq_html + '</section>')
         notices = ''.join(f'<div class="notice">{esc(item)}</div>' for item in warnings)
         scope_rows = ''.join(f'<tr><td>{esc(item["scope"])}</td><td>{item["planned"]}</td><td>{item["verified"]}</td><td>{item["blocked"]}</td><td>{item["unverified"] + item["pending"]}</td><td>{esc(item["coverageDisplay"])}</td></tr>' for item in coverage['scopeItems'])
         module_rows = ''.join(f'<tr><td>{esc(item["name"])}</td><td>{item["planned"]}</td><td>{item["verified"]}</td><td>{item["blocked"]}</td><td>{item["unverified"] + item["pending"]}</td><td>{esc(item["coverageDisplay"])}</td></tr>' for item in coverage['modules'])
-        scope_table = f'<div class="table-wrap"><table><thead><tr><th>范围</th><th>计划</th><th>已验证</th><th>受阻</th><th>待核验</th><th>覆盖率</th></tr></thead><tbody>{scope_rows}</tbody></table></div>'
-        module_table = f'<div class="table-wrap"><table><thead><tr><th>模块</th><th>计划</th><th>已验证</th><th>受阻</th><th>待核验</th><th>覆盖率</th></tr></thead><tbody>{module_rows}</tbody></table></div>'
+        count_headers = f'<th>{esc(t(language, "planned"))}</th><th>{esc(t(language, "verified"))}</th><th>{esc(t(language, "blocked"))}</th><th>{esc(t(language, "to_verify"))}</th><th>{esc(t(language, "coverage"))}</th>'
+        scope_table = f'<div class="table-wrap"><table><thead><tr><th>{esc(t(language, "scope"))}</th>{count_headers}</tr></thead><tbody>{scope_rows}</tbody></table></div>'
+        module_table = f'<div class="table-wrap"><table><thead><tr><th>{esc(t(language, "module"))}</th>{count_headers}</tr></thead><tbody>{module_rows}</tbody></table></div>'
         title = manual['title']
-        downloads = '<section class="panel downloads"><h2>下载其他格式</h2><p><a href="manual.docx" download>Word 文档（DOCX）</a> · <a href="manual-markdown.zip" download>Markdown 文件包（ZIP）</a></p></section>'
-        html_doc = f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{esc(title)}"><title>{esc(title)}</title><style>{CSS}</style></head><body><div class="shell"><aside><div class="brand">AutoScribeAI · 操作手册</div><h2>目录</h2><label class="muted" for="manual-search">搜索模块与流程</label><input class="search" id="manual-search" type="search" placeholder="输入关键词…" autocomplete="off"><nav>{''.join(nav)}<a href="#coverage">覆盖与限制</a></nav><p class="side-note">离线手册 · 版本 {esc(manual['project'].get('version', '未注明'))}<br>完整资源见本目录下的 evidence/ 文件夹。</p></aside><main><header class="hero"><div class="eyebrow">{esc(manual['project']['name'])} · {esc(manual['project'].get('environment', ''))}</div><h1>{esc(title)}</h1><div class="meta">适用角色：{esc('、'.join(manual['roles']))} · 项目版本：{esc(manual['project'].get('version', '未注明'))}</div><p><span class="badge {'verified' if verified_all else 'unverified'}">{readiness}</span></p></header>{downloads}<section class="stats"><div class="stat"><b>{coverage['planned']}</b><span class="muted">计划流程</span></div><div class="stat"><b>{coverage['verified']}</b><span class="muted">已验证</span></div><div class="stat"><b>{coverage['blocked']}</b><span class="muted">受阻</span></div><div class="stat"><b>{esc(coverage['coverageDisplay'])}</b><span class="muted">覆盖率</span></div></section><section id="coverage" class="panel"><h2>覆盖范围与使用限制</h2><p>覆盖率只统计附有真实操作步骤、实际结果和截图证据的已验证流程。源码推断保留为候选项。</p>{notices or '<p>未报告已知阻塞。</p>'}<h3>按原始范围</h3>{scope_table}<h3>按模块</h3>{module_table}<p><a href="coverage.json">查看机器可读覆盖报告</a> · <a href="manual.json">查看统一内容模型</a></p></section>{''.join(contents)}<footer>由 AutoScribeAI 生成 · 此页面及证据图片可在本地离线阅读。</footer></main></div><dialog class="zoom" id="image-dialog"><img alt=""><p></p></dialog><script>{SCRIPT}</script></body></html>'''
+        downloads = f'<section class="panel downloads"><h2>{esc(t(language, "download_title"))}</h2><p><a href="manual.docx" download>{esc(t(language, "download_docx"))}</a> · <a href="manual-markdown.zip" download>{esc(t(language, "download_markdown"))}</a></p></section>'
+        html_doc = f'''<!doctype html>
+<html lang="{esc(locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{esc(title)}"><title>{esc(title)}</title><style>{CSS}</style></head>
+<body><div class="shell"><aside><div class="brand">AutoScribeAI · {esc(t(language, "brand"))}</div><h2>{esc(t(language, "toc"))}</h2><label class="muted" for="manual-search">{esc(t(language, "search_label"))}</label><input class="search" id="manual-search" type="search" placeholder="{esc(t(language, "search_placeholder"))}" autocomplete="off"><nav>{''.join(nav)}<a href="#coverage">{esc(t(language, "coverage_title"))}</a></nav><p class="side-note">{esc(t(language, "offline_version", version=manual['project'].get('version', 'N/A')))}<br>{esc(t(language, "resource_hint"))}</p></aside>
+<main><header class="hero"><div class="eyebrow">{esc(manual['project']['name'])} · {esc(manual['project'].get('environment', ''))}</div><h1>{esc(title)}</h1><div class="meta">{esc(t(language, "roles"))}: {esc(', '.join(manual['roles']))} · {esc(t(language, "project_version"))}: {esc(manual['project'].get('version', 'N/A'))}</div><p><span class="badge {'verified' if verified_all else 'unverified'}">{readiness}</span></p></header>{downloads}
+<section class="stats"><div class="stat"><b>{coverage['planned']}</b><span class="muted">{esc(t(language, "planned"))}</span></div><div class="stat"><b>{coverage['verified']}</b><span class="muted">{esc(t(language, "verified"))}</span></div><div class="stat"><b>{coverage['blocked']}</b><span class="muted">{esc(t(language, "blocked"))}</span></div><div class="stat"><b>{esc(coverage['coverageDisplay'])}</b><span class="muted">{esc(t(language, "coverage"))}</span></div></section>
+<section id="coverage" class="panel"><h2>{esc(t(language, "coverage_title"))}</h2><p>{esc(t(language, "coverage_description"))}</p>{notices or '<p>' + esc(t(language, 'no_blockers')) + '</p>'}<h3>{esc(t(language, "raw_scope"))}</h3>{scope_table}<h3>{esc(t(language, "by_module"))}</h3>{module_table}<p><a href="coverage.json">{esc(t(language, "machine_report"))}</a> · <a href="manual.json">{esc(t(language, "content_model"))}</a></p></section>
+{''.join(contents)}<footer>{esc(t(language, "generated_footer"))}</footer></main></div><dialog class="zoom" id="image-dialog"><img alt=""><p></p></dialog><script>{SCRIPT}</script></body></html>'''
         (temporary / 'index.html').write_text(html_doc, encoding='utf-8')
         quality = {
             'schemaVersion': '0.1', 'projectId': manual['project']['id'],

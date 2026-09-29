@@ -24,6 +24,11 @@
         "environment": {
           "type": "string",
           "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Requested output language (BCP-47)."
         }
       },
       "required": [

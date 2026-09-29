@@ -60,6 +60,7 @@ python scripts/autoscribe_cli.py export-markdown --manual runs/demo/manual.json 
 | DOCX 导出（含内嵌截图、图注与页码） | 已实现；需视觉复核输出 |
 | Markdown ZIP 导出（相对图片资源） | 已实现 |
 | HTML 下载 DOCX 与 Markdown 包 | 已实现 |
+| 多语言手册（简体中文、英语、日语、韩语） | 已实现；其他语言正文可由 AI 撰写，模板标签回退英语 |
 | 浏览器自动探索、真实截图采集、目标应用端到端验证 | 待实现 |
 | 跨格式版式与章节一致性验收 | 进行中 |
 

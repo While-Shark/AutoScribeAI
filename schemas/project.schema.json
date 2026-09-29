@@ -82,7 +82,8 @@
     },
     "language": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "BCP-47 output language, for example zh-CN, en-US, ja-JP, or ko-KR."
     },
     "formats": {
       "type": "array",

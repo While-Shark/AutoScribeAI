@@ -48,7 +48,7 @@ class HtmlRendererTests(unittest.TestCase):
                 'answer':'从左侧菜单选择“列表”。',
                 'source':'observed', 'workflowIds':[flow['id']],
             }]
-            (self.root/'evidence').mkdir()
+            (self.root/'evidence').mkdir(exist_ok=True)
             image_path=self.root/'evidence'/'screen.png'
             Image.new('RGB',(96,64),(235,240,250)).save(image_path)
             image_bytes=image_path.read_bytes()
@@ -143,6 +143,43 @@ class HtmlRendererTests(unittest.TestCase):
             if not image.get('src'):
                 continue
             self.assertTrue((self.out/image['src']).is_file())
+
+    def test_exporters_localize_ui_for_supported_languages(self):
+        cases = {
+            'zh-CN': ('zh-CN', '目录', '常见问题', '已验证'),
+            'en-US': ('en-US', 'Contents', 'Frequently asked questions', 'Verified'),
+            'ja-JP': ('ja-JP', '目次', 'よくある質問', '検証済み'),
+            'ko-KR': ('ko-KR', '목차', '자주 묻는 질문', '검증됨'),
+        }
+        for language, (html_lang, toc, faqs, verified) in cases.items():
+            with self.subTest(language=language):
+                self.config['language'] = language
+                self.config_path.write_text(json.dumps(self.config), encoding='utf-8')
+                self.out = self.root / f'html-{language}'
+                self.prepare(verified=True)
+                manual = read_json(self.manual_path)
+                self.assertEqual(manual['project']['language'], language)
+                if language == 'ja-JP':
+                    self.assertIn('まだ実行・検証されていません', manual['workflows'][1]['reason'])
+                if language == 'ko-KR':
+                    self.assertIn('아직 실행 및 검증되지 않았습니다', manual['workflows'][1]['reason'])
+                render_html(self.manual_path, self.coverage_path, self.out)
+
+                page = (self.out / 'index.html').read_text(encoding='utf-8')
+                self.assertIn(f'<html lang="{html_lang}">', page)
+                self.assertIn(toc, page)
+                self.assertIn(faqs, page)
+                self.assertIn(verified, page)
+
+                from docx import Document
+                docx_text = '\n'.join(p.text for p in Document(self.out / 'manual.docx').paragraphs)
+                self.assertIn(faqs, docx_text)
+                self.assertIn(verified, docx_text)
+
+                with zipfile.ZipFile(self.out / 'manual-markdown.zip') as archive:
+                    markdown = archive.read('README.md').decode('utf-8')
+                self.assertIn(faqs, markdown)
+                self.assertIn(verified, markdown)
 
 
 if __name__=='__main__': unittest.main()
