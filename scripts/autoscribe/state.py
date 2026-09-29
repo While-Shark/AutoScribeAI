@@ -143,6 +143,8 @@ def resume(run, config_path=None, host=None):
                 config['source']['path'] = str((path.parent / config['source']['path']).resolve())
             if digest(config) != state['configHash']:
                 raise ValidationError('输入、范围或项目版本发生变化；请创建新任务并复核旧证据')
+        from .actions import recover_actions
+        action_ledger = recover_actions(run)
         # Never assume browser sessions survive an interrupted host conversation.
         state['capabilities'] = probe(state['config'], '.', run, host)
         for name, item in state['stages'].items():
@@ -154,4 +156,5 @@ def resume(run, config_path=None, host=None):
         state['updatedAt'] = now()
         save(run, state)
         return {'checkpoint': checkpoint(state), 'capabilities': state['capabilities'],
-                'reviewRequired': ['核对目标版本', '核对登录及角色', '核对截图有效性', '核对已有副作用结果']}
+                'reviewRequired': ['核对目标版本', '核对登录及角色', '核对截图有效性', '核对已有副作用结果'],
+                'actions': action_ledger}
