@@ -10,6 +10,8 @@ from autoscribe.inventory import create_coverage_plan, coverage_report, inventor
 from autoscribe.evidence_images import prepare_screenshot
 from autoscribe.actions import begin_action, load_actions, resolve_action
 from autoscribe.html_renderer import render_html
+from autoscribe.docx_renderer import render_docx
+from autoscribe.markdown_renderer import render_markdown_zip
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
 
 
@@ -57,6 +59,12 @@ def main():
     render.add_argument('--manual', required=True, type=Path)
     render.add_argument('--coverage', required=True, type=Path)
     render.add_argument('--out-dir', required=True, type=Path)
+    docx = commands.add_parser('export-docx')
+    docx.add_argument('--manual', required=True, type=Path)
+    docx.add_argument('--out', required=True, type=Path)
+    markdown = commands.add_parser('export-markdown')
+    markdown.add_argument('--manual', required=True, type=Path)
+    markdown.add_argument('--out-zip', required=True, type=Path)
     action = commands.add_parser('action-begin')
     action.add_argument('run_dir', type=Path)
     action.add_argument('--workflow', required=True)
@@ -83,6 +91,10 @@ def main():
             result = initialize(args.config, args.run_dir, read_json(args.host) if args.host else None)
         elif args.command == 'render-html':
             result = render_html(args.manual, args.coverage, args.out_dir)
+        elif args.command == 'export-docx':
+            result = render_docx(args.manual, args.out)
+        elif args.command == 'export-markdown':
+            result = render_markdown_zip(args.manual, args.out_zip)
         elif args.command == 'action-begin':
             result = begin_action(args.run_dir, args.workflow, args.step, args.operation, args.target)
         elif args.command == 'action-status':

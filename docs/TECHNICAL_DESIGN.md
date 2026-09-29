@@ -1,6 +1,6 @@
 # AutoScribeAI 技术方案
 
-状态：M0 和 M1 首批、M2 离线 HTML 已实现；DOCX/Markdown、真实浏览器采集仍在计划中。日期：2026-09-29。
+状态：M0–M3 的本地结构、HTML、DOCX 与 Markdown 导出已实现；真实浏览器采集和跨格式视觉验收仍在进行。日期：2026-09-29。
 
 ## 1. 目标与范围
 
@@ -59,7 +59,7 @@
 
 核心关联：Project → Module → Feature → Workflow → Step → Evidence → Manual。
 
-`manual.json` 作为内容的唯一事实来源，HTML 已作为首要展示形式从 manual.json、coverage.json 渲染为离线目录包。Word 和 Markdown 仍计划从同一份结构化内容生成，避免反向解析复杂 HTML 导致内容或图片丢失。
+`manual.json` 作为内容的唯一事实来源；HTML 从 manual.json、coverage.json 渲染为离线目录包，DOCX 和 Markdown ZIP 从同一份结构化内容生成，避免反向解析复杂 HTML 导致内容或图片丢失。
 
 | 对象 | 建议字段与约束 |
 | --- | --- |
@@ -100,7 +100,7 @@
 | Markdown | 通用正文与相对路径图片 | 随附 assets，移动整个目录后图片仍正常 |
 | PDF（后续可选） | 便于打印和固定版式分享 | 分页与中文字体检查 |
 
-首期建议默认交付静态 HTML 目录包，同时预生成 `manual.docx` 和 `manual-markdown.zip`，在 HTML 中提供下载链接。这样导出不需要服务，也不要求打开手册的机器安装转换程序。交付时应保留完整目录。
+默认交付静态 HTML 目录包，同时预生成 `manual.docx` 和 `manual-markdown.zip`，在 HTML 中提供下载链接。DOCX 图片内嵌；Markdown ZIP 包含 README.md 与 assets/ 下的相对路径图片。这样导出不需要服务，也不要求打开手册的机器安装转换程序。交付时应保留完整目录。
 
 单文件 HTML 可作为后续便携选项。浏览器内实时生成 Word 会增加依赖体积和排版难度，首期不作为必要条件。对 HTML 内容的直接手工修改不会自动同步到其他格式；内容修订应回到统一模型再重新生成。
 

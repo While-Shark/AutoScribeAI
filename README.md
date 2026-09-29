@@ -2,7 +2,7 @@
 
 让 AI 理解并操作软件，自动整理各模块的使用流程，生成有真实截图、可核验、可导出的操作手册。
 
-> 当前阶段：M0 运行基础、M1 清单/覆盖与截图处理、M2 离线 HTML 已实现。浏览器自动操作、真实截图采集、DOCX 和 Markdown 导出仍待完成。
+> 当前阶段：M0 运行基础、M1 清单/覆盖与截图处理、M2 离线 HTML 与 M3 DOCX/Markdown 导出已实现。浏览器自动操作和真实截图采集仍待完成。
 
 ## 已确定的方向
 
@@ -37,6 +37,9 @@ python scripts/autoscribe_cli.py coverage --plan runs/demo/coverage-plan.json --
 python scripts/autoscribe_cli.py prepare-image /tmp/capture.png runs/demo/evidence/step-01.png --root runs/demo --redact 0.12,0.08,0.24,0.07 --callout 0.72,0.43
 # 输出离线 HTML 目录包
 python scripts/autoscribe_cli.py render-html --manual runs/demo/manual.json --coverage runs/demo/coverage.json --out-dir runs/demo/html
+# 也可单独导出 Word 或 Markdown ZIP
+python scripts/autoscribe_cli.py export-docx --manual runs/demo/manual.json --out runs/demo/manual.docx
+python scripts/autoscribe_cli.py export-markdown --manual runs/demo/manual.json --out-zip runs/demo/manual-markdown.zip
 ```
 
 示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
@@ -52,11 +55,13 @@ python scripts/autoscribe_cli.py render-html --manual runs/demo/manual.json --co
 | HTML 离线手册、目录搜索、图片放大、覆盖与质量报告 | 已实现 |
 | 有副作用动作的登记、恢复阻断与明确核查后重试 | 已实现（仍需遵守技能流程） |
 | 五个技能的职责和交接规范 | 已编写，完成源码模式试用 |
+| DOCX 导出（含内嵌截图、图注与页码） | 已实现；需视觉复核输出 |
+| Markdown ZIP 导出（相对图片资源） | 已实现 |
+| HTML 下载 DOCX 与 Markdown 包 | 已实现 |
 | 浏览器自动探索、真实截图采集、目标应用端到端验证 | 待实现 |
-| HTML 离线输出 | 已实现；未做目标设备视觉验收 |
-| DOCX 与 Markdown 导出 | 待实现 |
+| 跨格式版式与章节一致性验收 | 进行中 |
 
-HTML 离线阅读包包含 index.html、evidence/、manual.json、coverage.json 和 quality-report.json。Word 和 Markdown 导出仍在计划中。结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
+HTML 离线阅读包包含 index.html、evidence/、manual.json、coverage.json、quality-report.json、manual.docx 和 manual-markdown.zip。Markdown ZIP 中的图片使用相对路径；DOCX 图片内嵌。结构校验不证明截图真实或内容正确；交付前仍需检查截图、DOCX 页面和内容一致性。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
 
 ## 文档入口
 

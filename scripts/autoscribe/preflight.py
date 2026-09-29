@@ -34,6 +34,6 @@ def probe(config, base, workspace, host=None):
         'browser': browser, 'canExplore': interactive,
         'mode': 'interactive' if interactive else ('source-only' if source_ok else 'blocked'),
         'docxDependency': importlib.util.find_spec('docx') is not None,
-        'exportersImplemented': False,
+        'exportersImplemented': True,
         'limitations': reasons,
     }

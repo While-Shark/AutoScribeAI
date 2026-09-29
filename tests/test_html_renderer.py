@@ -3,6 +3,7 @@ import json
 import sys
 import tempfile
 import unittest
+import zipfile
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -87,6 +88,29 @@ class HtmlRendererTests(unittest.TestCase):
         self.assertEqual(read_json(self.out/'coverage.json')['coverageDisplay'],'1/3')
         self.assertTrue((self.out/'manual.json').is_file())
         self.assertTrue((self.out/'quality-report.json').is_file())
+        self.assertTrue((self.out/'manual.docx').is_file())
+        self.assertTrue((self.out/'manual-markdown.zip').is_file())
+        page=(self.out/'index.html').read_text()
+        self.assertIn('href="manual.docx" download',page)
+        self.assertIn('href="manual-markdown.zip" download',page)
+        from docx import Document
+        doc=Document(self.out/'manual.docx')
+        self.assertTrue(any('打开列表' in paragraph.text for paragraph in doc.paragraphs))
+        doc_text='\n'.join(paragraph.text for paragraph in doc.paragraphs)
+        markdown=''
+        with zipfile.ZipFile(self.out/'manual-markdown.zip') as archive:
+            self.assertEqual(set(archive.namelist()),{'README.md','assets/ev-1.png'})
+            markdown=archive.read('README.md').decode('utf-8')
+            self.assertIn('![步骤 1 · 条目列表](assets/ev-1.png)',markdown)
+            self.assertIn('已验证',markdown)
+            self.assertEqual(archive.read('assets/ev-1.png'),(self.root/'evidence/screen.png').read_bytes())
+        for module in read_json(self.manual_path)['modules']:
+            self.assertIn(module['name'],doc_text)
+            self.assertIn(module['name'],markdown)
+        workflow=read_json(self.manual_path)['workflows'][0]
+        self.assertIn(workflow['goal'],doc_text)
+        self.assertIn(workflow['goal'],markdown)
+        self.assertEqual(len(doc.inline_shapes),1)
 
     def test_stale_coverage_rejected(self):
         self.prepare()

@@ -21,7 +21,7 @@
 
 试用过程使用临时目录，不改业务项目、不操作外部网站。中断采用阶段状态模拟；文件替换失败另有单元测试，不代表已测试真实断电。
 
-## 尚未验证
+## M0 阶段尚未验证
 
 真实浏览器/宿主组合、截图采集和处理、页面与登录恢复、业务动作幂等、完整图片解码、HTML/DOCX/Markdown 导出与视觉质量。敏感信息检测为启发式文本检查；需要后续人工图文检查。
 
@@ -45,3 +45,10 @@ M1 自动测试扩展为 45 项，包含原始范围完整映射、无候选项�
 使用 examples/project.json + examples/inventory.json 执行 analyze → coverage → render-html。输出 index.html、manual.json、coverage.json、quality-report.json；报告列出 3 条未验证流程，ready=false，不宣称有真实截图。
 
 HTML 单测检查真实 PNG 资源复制、相对图片链接、中文替代文本、搜索/放大 UI、脱敏转义、覆盖报告与 manual hash 绑定，以及拒绝覆盖已有输出目录。未进行 Chrome/Firefox 截图比对；HTML 是否在目标用户设备上的视觉效果仍需验收。
+
+
+## M3 多格式导出补充
+
+- DOCX 导出包含结构化章节、流程状态、操作步骤、内嵌截图、图注和页码字段；Markdown ZIP 包含 README.md 和可移动的相对路径 assets/ 图片。
+- 测试检查 HTML 下载链接、DOCX 内容及内嵌图片、Markdown 图片资源字节与相对链接，并比对跨格式的模块和流程标题。
+- 本次样例渲染为 4 页 PDF；当前运行环境没有中文字体，LibreOffice 预览中的中文字符缺失，因此这不能作为中文排版通过结论。DOCX 样式明确指定 Microsoft YaHei 东亚字体，仍需在具备该字体的 Word/LibreOffice 环境做逐页视觉验收。

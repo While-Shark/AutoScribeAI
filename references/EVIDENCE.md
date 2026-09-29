@@ -32,3 +32,8 @@ python scripts/autoscribe_cli.py prepare-image \
 `render-html` 要求手册与覆盖报告匹配。覆盖报告按 manual.json 字节摘要绑定；手册变化后须重新生成覆盖报告。输出目录需为新路径，避免覆盖已有内容。交付包括 `index.html`、`evidence/`、`manual.json`、`coverage.json` 和 `quality-report.json`。
 
 页面包含模块目录、浏览器本地关键词搜索、响应式版式、截图对话框放大及范围/模块覆盖表。不加载 CDN、外部脚本、字体或图片。图片保存在相对路径，移动整个 HTML 输出文件夹后保持离线可用。质量报告中的 ready 只表示所有计划流程都在结构上标为 verified、没有限制说明；仍需人工审阅真实性和 HTML 视觉效果。
+
+
+## Word 与 Markdown 导出（M3）
+
+`render-html` 同时生成 `manual.docx` 与 `manual-markdown.zip` 并在页面顶部提供下载链接。也可分别调用 `export-docx` 和 `export-markdown`。DOCX 把截图作为文档内图片嵌入，Markdown ZIP 包含 `README.md` 和 `assets/<evidence-id>.<ext>`，图片链接为相对路径。导出基于同一份已校验的 `manual.json`；输出文件已存在时拒绝覆盖。DOCX 需在交付前渲染并检查分页，不能只以文件可打开视为版式合格。
