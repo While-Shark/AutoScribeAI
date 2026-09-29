@@ -131,4 +131,10 @@ def validate_manual(data, root):
             workflow = get('workflows', ident)
             if get('features', workflow['featureId'])['moduleId'] != chapter['moduleId']:
                 raise ValidationError('章节与流程所属模块不一致')
+        for faq in chapter.get('faqs', []):
+            references = [get('workflows', ident) for ident in faq.get('workflowIds', [])]
+            if any(get('features', item['featureId'])['moduleId'] != chapter['moduleId'] for item in references):
+                raise ValidationError('常见问题引用的流程必须属于当前模块')
+            if faq['source'] == 'observed' and (not references or any(item['status'] != 'verified' for item in references)):
+                raise ValidationError('基于实际观察的常见问题必须引用已验证流程')
     return data

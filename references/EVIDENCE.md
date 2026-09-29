@@ -33,6 +33,8 @@ python scripts/autoscribe_cli.py prepare-image \
 
 页面包含模块目录、浏览器本地关键词搜索、响应式版式、截图对话框放大及范围/模块覆盖表。不加载 CDN、外部脚本、字体或图片。图片保存在相对路径，移动整个 HTML 输出文件夹后保持离线可用。质量报告中的 ready 只表示所有计划流程都在结构上标为 verified、没有限制说明；仍需人工审阅真实性和 HTML 视觉效果。
 
+模块章节可带可选 `faqs`。每条常见问题记录 question、answer、source，可列出相关 workflowIds。只有能从已验证流程得到支持的答案才标记 source=observed；源码推断或人工补充须显式标记。HTML、DOCX 和 Markdown 均从同一字段渲染。
+
 
 ## Word 与 Markdown 导出（M3）
 

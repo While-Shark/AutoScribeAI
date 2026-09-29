@@ -30,6 +30,17 @@ def render_markdown(manual, asset_prefix="assets"):
         if chapter.get('purpose'):
             lines.extend([chapter['purpose'], ""])
         lines.extend([f"**入口：** {module['location']}  ", f"**来源：** {module['source']}", ""])
+        if chapter.get('faqs'):
+            lines.extend(["### 常见问题", ""])
+            source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
+            workflow_labels = {item['id']: item['goal'] for item in manual['workflows']}
+            for faq in chapter['faqs']:
+                lines.extend([f"**问：{faq['question']}**", "", f"答：{faq['answer']}"])
+                references = [workflow_labels[ident] for ident in faq.get('workflowIds', [])]
+                note = f"依据：{source_labels[faq['source']]}"
+                if references:
+                    note += f"；相关流程：{'、'.join(references)}"
+                lines.extend(["", f"_{note}_", ""])
         for feature in (item for item in manual['features'] if item['moduleId'] == module['id']):
             lines.extend([f"### {feature['name']}", "", f"入口：{feature['location']}", ""])
             workflows = workflows_by_feature[feature['id']]

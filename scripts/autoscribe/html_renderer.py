@@ -59,6 +59,7 @@ def render_html(manual_path, coverage_path, out_dir):
     workflows_by_feature = {feature['id']: [] for feature in manual['features']}
     for workflow in manual['workflows']:
         workflows_by_feature[workflow['featureId']].append(workflow)
+    workflows = {workflow['id']: workflow for workflow in manual['workflows']}
     steps_by_workflow = {workflow['id']: [] for workflow in manual['workflows']}
     for step in manual['steps']:
         steps_by_workflow[step['workflowId']].append(step)
@@ -120,7 +121,18 @@ def render_html(manual_path, coverage_path, out_dir):
             chapter = chapters.get(module['id'], {})
             chapter_title = chapter.get('title', module['name'])
             chapter_purpose = f'<p>{esc(chapter["purpose"])}</p>' if chapter else ''
-            contents.append(f'<section class="module" id="{esc(module_anchor)}" data-search="{esc(module["name"])}"><header><div class="eyebrow">模块 · {module_verified}/{len(module_workflows)} 已验证</div><h2>{esc(chapter_title)}</h2>{chapter_purpose}<p class="muted">入口：{esc(module["location"])} · 来源：{esc(module["source"])}</p></header>' + (''.join(feature_html) or '<p class="empty">此模块暂无已发现功能。</p>') + '</section>')
+            faq_items = []
+            for faq in chapter.get('faqs', []):
+                searchable = f"{faq['question']} {faq['answer']}"
+                source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
+                refs = [workflows[ident]['goal'] for ident in faq.get('workflowIds', [])]
+                source_note = f'<p class="muted">依据：{esc(source_labels[faq["source"]])}'
+                if refs:
+                    source_note += f' · 相关流程：{esc("、".join(refs))}'
+                source_note += '</p>'
+                faq_items.append(f'<details class="faq" data-search="{esc(searchable)}"><summary>{esc(faq["question"])}</summary><p>{esc(faq["answer"])}</p>{source_note}</details>')
+            faq_html = f'<section class="faqs"><h3>常见问题</h3>{"".join(faq_items)}</section>' if faq_items else ''
+            contents.append(f'<section class="module" id="{esc(module_anchor)}" data-search="{esc(module["name"])}"><header><div class="eyebrow">模块 · {module_verified}/{len(module_workflows)} 已验证</div><h2>{esc(chapter_title)}</h2>{chapter_purpose}<p class="muted">入口：{esc(module["location"])} · 来源：{esc(module["source"])}</p></header>' + (''.join(feature_html) or '<p class="empty">此模块暂无已发现功能。</p>') + faq_html + '</section>')
         notices = ''.join(f'<div class="notice">{esc(item)}</div>' for item in warnings)
         scope_rows = ''.join(f'<tr><td>{esc(item["scope"])}</td><td>{item["planned"]}</td><td>{item["verified"]}</td><td>{item["blocked"]}</td><td>{item["unverified"] + item["pending"]}</td><td>{esc(item["coverageDisplay"])}</td></tr>' for item in coverage['scopeItems'])
         module_rows = ''.join(f'<tr><td>{esc(item["name"])}</td><td>{item["planned"]}</td><td>{item["verified"]}</td><td>{item["blocked"]}</td><td>{item["unverified"] + item["pending"]}</td><td>{esc(item["coverageDisplay"])}</td></tr>' for item in coverage['modules'])

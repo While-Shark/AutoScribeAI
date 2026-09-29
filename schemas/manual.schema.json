@@ -432,6 +432,14 @@
           "type": "string",
           "minLength": 1
         },
+        "faqs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/faq"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
         "workflowIds": {
           "type": "array",
           "items": {
@@ -449,6 +457,42 @@
         "title",
         "purpose",
         "workflowIds"
+      ],
+      "additionalProperties": false
+    },
+    "faq": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "source",
+            "human"
+          ]
+        },
+        "workflowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "question",
+        "answer",
+        "source"
       ],
       "additionalProperties": false
     }

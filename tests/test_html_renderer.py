@@ -43,6 +43,11 @@ class HtmlRendererTests(unittest.TestCase):
         manual=inventory_to_manual(self.inventory,self.config)
         if verified:
             flow=manual['workflows'][0]; flow['status']='verified'; flow['stepIds']=['step-1']
+            manual['chapters'][0]['faqs']=[{
+                'question':'怎样打开列表？ <script>bad()</script>',
+                'answer':'从左侧菜单选择“列表”。',
+                'source':'observed', 'workflowIds':[flow['id']],
+            }]
             (self.root/'evidence').mkdir()
             image_path=self.root/'evidence'/'screen.png'
             Image.new('RGB',(96,64),(235,240,250)).save(image_path)
@@ -93,9 +98,13 @@ class HtmlRendererTests(unittest.TestCase):
         page=(self.out/'index.html').read_text()
         self.assertIn('href="manual.docx" download',page)
         self.assertIn('href="manual-markdown.zip" download',page)
+        self.assertIn('常见问题',page)
+        self.assertIn('怎样打开列表？ &lt;script&gt;bad()&lt;/script&gt;',page)
+        self.assertNotIn('怎样打开列表？ <script>bad()',page)
         from docx import Document
         doc=Document(self.out/'manual.docx')
         self.assertTrue(any('打开列表' in paragraph.text for paragraph in doc.paragraphs))
+        self.assertTrue(any('怎样打开列表？' in paragraph.text for paragraph in doc.paragraphs))
         doc_text='\n'.join(paragraph.text for paragraph in doc.paragraphs)
         markdown=''
         with zipfile.ZipFile(self.out/'manual-markdown.zip') as archive:
@@ -103,6 +112,8 @@ class HtmlRendererTests(unittest.TestCase):
             markdown=archive.read('README.md').decode('utf-8')
             self.assertIn('![步骤 1 · 条目列表](assets/ev-1.png)',markdown)
             self.assertIn('已验证',markdown)
+            self.assertIn('怎样打开列表？ <script>bad()</script>',markdown)
+            self.assertIn('答：从左侧菜单选择“列表”。',markdown)
             self.assertEqual(archive.read('assets/ev-1.png'),(self.root/'evidence/screen.png').read_bytes())
         for module in read_json(self.manual_path)['modules']:
             self.assertIn(module['name'],doc_text)

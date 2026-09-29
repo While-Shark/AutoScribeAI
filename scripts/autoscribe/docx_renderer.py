@@ -148,6 +148,20 @@ def build_docx(manual, asset_root, output_path):
                             caption.alignment = WD_ALIGN_PARAGRAPH.CENTER
                             caption.paragraph_format.keep_together = True
                             caption.paragraph_format.space_after = Pt(10)
+            if chapter.get('faqs'):
+                doc.add_heading('常见问题', level=2)
+                source_labels = {'observed': '实际观察', 'source': '源码说明', 'human': '人工补充'}
+                workflow_labels = {item['id']: item['goal'] for item in manual['workflows']}
+                for faq in chapter['faqs']:
+                    paragraph = doc.add_paragraph()
+                    paragraph.paragraph_format.keep_with_next = True
+                    paragraph.add_run(f"问：{faq['question']}").bold = True
+                    doc.add_paragraph(f"答：{faq['answer']}")
+                    references = [workflow_labels[ident] for ident in faq.get('workflowIds', [])]
+                    note = f"依据：{source_labels[faq['source']]}"
+                    if references:
+                        note += f"；相关流程：{'、'.join(references)}"
+                    _add_metadata(doc, '来源：', note)
         doc.add_heading('覆盖范围与限制', level=1)
         if manual['limitations']:
             for limitation in manual['limitations']:

@@ -197,6 +197,28 @@ class ManualTests(unittest.TestCase):
     def test_valid_contract(self):
         self.check()
 
+    def test_observed_faq_requires_verified_workflow_reference(self):
+        self.data['chapters'][0]['faqs'] = [{
+            'question': 'Where is the list?', 'answer': 'Open the list menu.',
+            'source': 'observed', 'workflowIds': ['w1'],
+        }]
+        self.check()
+        self.data['workflows'][0]['status'] = 'unverified'
+        self.data['workflows'][0]['reason'] = 'Not exercised in the interface'
+        with self.assertRaisesRegex(ValidationError, '已验证流程'):
+            self.check()
+
+    def test_faq_cannot_reference_another_modules_workflow(self):
+        self.data['modules'].append({'id':'m2','name':'Other','source':'source','location':'src/other'})
+        self.data['features'].append({'id':'f2','moduleId':'m2','name':'Other feature','roles':['viewer'],'source':'source','location':'/other'})
+        self.data['workflows'].append({'id':'w2','featureId':'f2','role':'viewer','goal':'Other goal','preconditions':[],'successCriteria':'Other result','status':'unverified','reason':'Source only','stepIds':[]})
+        self.data['chapters'][0]['faqs'] = [{
+            'question': 'Where is the other feature?', 'answer': 'See its module.',
+            'source': 'source', 'workflowIds': ['w2'],
+        }]
+        with self.assertRaisesRegex(ValidationError, '当前模块'):
+            self.check()
+
     def test_duplicate_id(self):
         self.data['steps'][0]['id'] = 'm1'
         with self.assertRaises(ValidationError): self.check()
