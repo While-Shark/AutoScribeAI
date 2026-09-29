@@ -4,6 +4,8 @@
 
 > 当前阶段：M0 运行基础、M1 清单/覆盖与截图处理、M2 离线 HTML 与 M3 DOCX/Markdown 导出已实现。浏览器自动操作和真实截图采集仍待完成。
 
+安装与宿主要求见[安装指南](docs/INSTALLATION.md)。可用 `python scripts/package_skills.py` 生成保留完整运行目录的 Skills ZIP。
+
 ## 已确定的方向
 
 - 面向企业级项目及开源项目，围绕软件各模块的实际使用编写操作手册。
@@ -44,7 +46,7 @@ python scripts/autoscribe_cli.py export-markdown --manual runs/demo/manual.json 
 
 示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
 
-让 AI 从 [入口技能](skills/autoscribe-orchestrator/SKILL.md) 开始；当前必须保留完整仓库，技能共同引用根目录脚本、schemas 和 references。尚未提供一键安装包，也不会自动安装到当前 AI 的技能目录。
+让 AI 从 [入口技能](skills/autoscribe-orchestrator/SKILL.md) 开始；五个技能共同引用根目录脚本、schemas 和 references，因此安装时须保留完整目录。可用打包脚本生成便携 ZIP；它不会自动安装到特定 AI 产品的全局技能目录。
 
 | 能力 | 状态 |
 | --- | --- |
