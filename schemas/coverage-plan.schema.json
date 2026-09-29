@@ -106,6 +106,10 @@
               "source",
               "human"
             ]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
@@ -113,7 +117,8 @@
           "featureId",
           "role",
           "goal",
-          "source"
+          "source",
+          "location"
         ],
         "additionalProperties": false
       }

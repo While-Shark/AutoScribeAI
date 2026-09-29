@@ -62,7 +62,8 @@
         "可阅读仓库文档"
       ],
       "successCriteria": "能够区分已实现和待实现能力",
-      "source": "source"
+      "source": "source",
+      "location": "README.md#文档入口"
     },
     {
       "id": "w-validate",
@@ -73,7 +74,8 @@
         "已安装依赖"
       ],
       "successCriteria": "CLI 返回配置有效，或给出可操作的错误",
-      "source": "source"
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py#validate"
     },
     {
       "id": "w-resume",
@@ -84,7 +86,8 @@
         "已有任务目录"
       ],
       "successCriteria": "任务恢复至正确阶段，并要求复核中断动作",
-      "source": "source"
+      "source": "source",
+      "location": "scripts/autoscribe/state.py#resume"
     }
   ],
   "scopeItems": [

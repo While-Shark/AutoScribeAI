@@ -67,7 +67,7 @@ def inventory_to_manual(inventory, config):
             'id': candidate['id'], 'featureId': candidate['featureId'],
             'role': candidate['role'], 'goal': candidate['goal'],
             'preconditions': candidate['preconditions'],
-            'successCriteria': candidate['successCriteria'],
+            'successCriteria': candidate['successCriteria'], 'location': candidate['location'],
             'status': 'unverified', 'reason': '尚未在目标环境中实际执行并核验', 'stepIds': [],
         })
     chapters = []
@@ -100,7 +100,7 @@ def create_coverage_plan(inventory_path, config_path, plan_path):
         'modules': [{'id': item['id'], 'name': item['name']} for item in inventory['modules']],
         'features': [{'id': item['id'], 'moduleId': item['moduleId']} for item in inventory['features']],
         'workflows': [{'id': item['id'], 'featureId': item['featureId'], 'role': item['role'],
-                       'goal': item['goal'], 'source': item['source']} for item in inventory['workflows']],
+                       'goal': item['goal'], 'source': item['source'], 'location': item['location']} for item in inventory['workflows']],
     }
     validate(plan, 'coverage-plan')
     atomic_json(plan_path, plan)

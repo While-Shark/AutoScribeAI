@@ -155,6 +155,10 @@
               "source",
               "human"
             ]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
@@ -164,7 +168,8 @@
           "goal",
           "preconditions",
           "successCriteria",
-          "source"
+          "source",
+          "location"
         ],
         "additionalProperties": false
       }

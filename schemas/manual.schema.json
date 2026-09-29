@@ -257,6 +257,10 @@
           },
           "minItems": 0,
           "uniqueItems": true
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "required": [
