@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "demo",
+  "projectVersion": "demo-v1",
+  "scope": [
+    "查看模块与功能入口"
+  ],
+  "discoveredAt": "2026-09-29T08:00:00Z",
+  "modules": [
+    {
+      "id": "m-overview",
+      "name": "项目总览",
+      "source": "source",
+      "location": "README.md"
+    },
+    {
+      "id": "m-automation",
+      "name": "自动化基础",
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py"
+    }
+  ],
+  "features": [
+    {
+      "id": "f-purpose",
+      "moduleId": "m-overview",
+      "name": "了解项目能力",
+      "roles": [
+        "viewer"
+      ],
+      "source": "source",
+      "location": "README.md#文档入口"
+    },
+    {
+      "id": "f-commands",
+      "moduleId": "m-automation",
+      "name": "运行基础命令",
+      "roles": [
+        "viewer"
+      ],
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py"
+    },
+    {
+      "id": "f-recovery",
+      "moduleId": "m-automation",
+      "name": "恢复任务",
+      "roles": [
+        "viewer"
+      ],
+      "source": "source",
+      "location": "scripts/autoscribe/state.py"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "w-readme",
+      "featureId": "f-purpose",
+      "role": "viewer",
+      "goal": "了解 AutoScribeAI 的能力和限制",
+      "preconditions": [
+        "可阅读仓库文档"
+      ],
+      "successCriteria": "能够区分已实现和待实现能力",
+      "source": "source"
+    },
+    {
+      "id": "w-validate",
+      "featureId": "f-commands",
+      "role": "viewer",
+      "goal": "校验项目配置",
+      "preconditions": [
+        "已安装依赖"
+      ],
+      "successCriteria": "CLI 返回配置有效，或给出可操作的错误",
+      "source": "source"
+    },
+    {
+      "id": "w-resume",
+      "featureId": "f-recovery",
+      "role": "viewer",
+      "goal": "恢复中断任务",
+      "preconditions": [
+        "已有任务目录"
+      ],
+      "successCriteria": "任务恢复至正确阶段，并要求复核中断动作",
+      "source": "source"
+    }
+  ],
+  "scopeItems": [
+    {
+      "scope": "查看模块与功能入口",
+      "workflowIds": [
+        "w-readme",
+        "w-validate",
+        "w-resume"
+      ]
+    }
+  ]
+}

@@ -30,6 +30,9 @@ python scripts/autoscribe_cli.py validate project examples/project.json
 python scripts/autoscribe_cli.py init examples/project.json --run-dir runs/demo --host examples/host.json
 python scripts/autoscribe_cli.py status runs/demo
 python -m unittest discover -s tests -v
+# 生成未验证手册骨架和覆盖计划（示例清单仅作结构演示）
+python scripts/autoscribe_cli.py analyze --config examples/project.json --inventory examples/inventory.json --manual-out runs/demo/manual.json --plan-out runs/demo/coverage-plan.json
+python scripts/autoscribe_cli.py coverage --plan runs/demo/coverage-plan.json --inventory examples/inventory.json --config examples/project.json --manual runs/demo/manual.json --out runs/demo/coverage.json
 ```
 
 示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
@@ -40,11 +43,12 @@ python -m unittest discover -s tests -v
 | --- | --- |
 | 配置、模型、ID/引用/截图摘要与路径校验 | 已实现 |
 | 能力预检、源码模式降级、原子状态、阶段级恢复 | 已实现 |
+| 候选清单导入、范围映射、模块/流程覆盖报告 | 已实现（M1 基础） |
 | 五个技能的职责和交接规范 | 已编写，完成源码模式试用 |
 | 实际浏览器探索、截图处理、步骤级恢复防护 | 待实现与实测 |
 | 离线 HTML、DOCX、Markdown 导出与视觉验收 | 待实现 |
 
-结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md) 和 [证据约定](references/EVIDENCE.md)。
+结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
 
 ## 文档入口
 

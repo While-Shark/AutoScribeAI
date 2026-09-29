@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from autoscribe.state import STAGES, initialize, load, resume, transition
+from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
 
 
@@ -13,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description='AutoScribeAI 无服务运行基础工具')
     commands = parser.add_subparsers(dest='command', required=True)
     check = commands.add_parser('validate')
-    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint'))
+    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint', 'inventory', 'coverage-plan', 'coverage'))
     check.add_argument('file', type=Path)
     check.add_argument('--root', type=Path, help='手册资源根目录，默认为 JSON 所在目录')
     init = commands.add_parser('init')
@@ -31,6 +32,17 @@ def main():
     move.add_argument('stage', choices=STAGES)
     move.add_argument('status', choices=('running', 'completed', 'blocked', 'failed', 'skipped'))
     move.add_argument('--reason')
+    analyze = commands.add_parser('analyze')
+    analyze.add_argument('--config', required=True, type=Path)
+    analyze.add_argument('--inventory', required=True, type=Path)
+    analyze.add_argument('--manual-out', required=True, type=Path)
+    analyze.add_argument('--plan-out', required=True, type=Path)
+    coverage = commands.add_parser('coverage')
+    coverage.add_argument('--plan', required=True, type=Path)
+    coverage.add_argument('--inventory', required=True, type=Path)
+    coverage.add_argument('--config', required=True, type=Path)
+    coverage.add_argument('--manual', required=True, type=Path)
+    coverage.add_argument('--out', required=True, type=Path)
     args = parser.parse_args()
     try:
         if args.command == 'validate':
@@ -42,6 +54,20 @@ def main():
             result = {'valid': True, 'kind': args.kind}
         elif args.command == 'init':
             result = initialize(args.config, args.run_dir, read_json(args.host) if args.host else None)
+        elif args.command == 'analyze':
+            config = validate(read_json(args.config), 'project')
+            inventory = read_json(args.inventory)
+            validate(inventory, 'inventory')
+            manual = inventory_to_manual(inventory, config)
+            validate_manual(manual, args.manual_out.parent)
+            args.manual_out.parent.mkdir(parents=True, exist_ok=True)
+            args.plan_out.parent.mkdir(parents=True, exist_ok=True)
+            from autoscribe.state import atomic_json
+            atomic_json(args.manual_out, manual)
+            plan = create_coverage_plan(args.inventory, args.config, args.plan_out)
+            result = {'manual': str(args.manual_out), 'coveragePlan': str(args.plan_out), 'plannedWorkflows': len(plan['workflows']), 'verified': 0}
+        elif args.command == 'coverage':
+            result = coverage_report(args.plan, args.inventory, args.config, args.manual, args.out)
         elif args.command == 'resume':
             result = resume(args.run_dir, args.config, read_json(args.host) if args.host else None)
         elif args.command == 'stage':
