@@ -137,6 +137,7 @@ def coverage_report(plan_path, inventory_path, config_path, manual_path, output_
     report = {
         'schemaVersion': '0.1', 'projectId': plan['projectId'], 'projectVersion': plan['projectVersion'],
         'scope': plan['scope'], 'scopeItems': [], 'inventorySha256': plan['inventorySha256'],
+        'manualSha256': file_hash(manual_path),
         'planned': denominator, 'verified': totals['verified'],
         'blocked': totals['blocked'], 'unverified': totals['unverified'], 'pending': totals['pending'],
         'coverage': totals['verified'] / denominator if denominator else None,

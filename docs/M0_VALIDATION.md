@@ -38,3 +38,10 @@ M1 自动测试扩展为 45 项，包含原始范围完整映射、无候选项�
 - 截图工具单测检查裁剪/打码/标记坐标、EXIF 方向规范化路径、原图保护、范围限制、输出哈希和损坏文件处理。
 - 有副作用动作日志单测检查运行配置授权、explore 阶段限制、重复动作拒绝、resume 时转为 blocked、未执行核实后受控重试，以及 uncertain 状态不得自动重放。
 - 截至本次增量提交，共 63 项单元测试通过。自动截图采集和真实目标应用端到端动作仍未验证。
+
+
+## M2 HTML smoke test
+
+使用 examples/project.json + examples/inventory.json 执行 analyze → coverage → render-html。输出 index.html、manual.json、coverage.json、quality-report.json；报告列出 3 条未验证流程，ready=false，不宣称有真实截图。
+
+HTML 单测检查真实 PNG 资源复制、相对图片链接、中文替代文本、搜索/放大 UI、脱敏转义、覆盖报告与 manual hash 绑定，以及拒绝覆盖已有输出目录。未进行 Chrome/Firefox 截图比对；HTML 是否在目标用户设备上的视觉效果仍需验收。

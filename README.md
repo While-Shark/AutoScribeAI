@@ -2,7 +2,7 @@
 
 让 AI 理解并操作软件，自动整理各模块的使用流程，生成有真实截图、可核验、可导出的操作手册。
 
-> 当前阶段：M0 运行基础已实现。支持输入与内容校验、能力预检、阶段状态及基本恢复，已有五个技能入口。浏览器采集和 HTML/Word/Markdown 导出尚未实现。
+> 当前阶段：M0 运行基础、M1 清单/覆盖与截图处理、M2 离线 HTML 已实现。浏览器自动操作、真实截图采集、DOCX 和 Markdown 导出仍待完成。
 
 ## 已确定的方向
 
@@ -35,6 +35,8 @@ python scripts/autoscribe_cli.py analyze --config examples/project.json --invent
 python scripts/autoscribe_cli.py coverage --plan runs/demo/coverage-plan.json --inventory examples/inventory.json --config examples/project.json --manual runs/demo/manual.json --out runs/demo/coverage.json
 # 截图安全派生：脱敏后另存；按需要添加 --redact/--callout/--crop 参数
 python scripts/autoscribe_cli.py prepare-image /tmp/capture.png runs/demo/evidence/step-01.png --root runs/demo --redact 0.12,0.08,0.24,0.07 --callout 0.72,0.43
+# 输出离线 HTML 目录包
+python scripts/autoscribe_cli.py render-html --manual runs/demo/manual.json --coverage runs/demo/coverage.json --out-dir runs/demo/html
 ```
 
 示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
@@ -47,12 +49,14 @@ python scripts/autoscribe_cli.py prepare-image /tmp/capture.png runs/demo/eviden
 | 能力预检、源码模式降级、原子状态、阶段级恢复 | 已实现 |
 | 候选清单导入、范围映射、模块/流程覆盖报告 | 已实现（M1 基础） |
 | 截图裁剪、打码、编号标注与 SHA-256 证据准备 | 已实现（需 AI/人工指定坐标） |
+| HTML 离线手册、目录搜索、图片放大、覆盖与质量报告 | 已实现 |
 | 有副作用动作的登记、恢复阻断与明确核查后重试 | 已实现（仍需遵守技能流程） |
 | 五个技能的职责和交接规范 | 已编写，完成源码模式试用 |
-| 实际浏览器探索、截图处理、步骤级恢复防护 | 待实现与实测 |
-| 离线 HTML、DOCX、Markdown 导出与视觉验收 | 待实现 |
+| 浏览器自动探索、真实截图采集、目标应用端到端验证 | 待实现 |
+| HTML 离线输出 | 已实现；未做目标设备视觉验收 |
+| DOCX 与 Markdown 导出 | 待实现 |
 
-结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
+HTML 离线阅读包包含 index.html、evidence/、manual.json、coverage.json 和 quality-report.json。Word 和 Markdown 导出仍在计划中。结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
 
 ## 文档入口
 

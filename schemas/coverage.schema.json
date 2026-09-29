@@ -172,6 +172,10 @@
         ],
         "additionalProperties": false
       }
+    },
+    "manualSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
     }
   },
   "required": [
@@ -188,7 +192,8 @@
     "coverage",
     "coverageDisplay",
     "modules",
-    "scopeItems"
+    "scopeItems",
+    "manualSha256"
   ],
   "additionalProperties": false
 }

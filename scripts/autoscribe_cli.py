@@ -9,6 +9,7 @@ from autoscribe.state import STAGES, initialize, load, resume, transition
 from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
 from autoscribe.evidence_images import prepare_screenshot
 from autoscribe.actions import begin_action, load_actions, resolve_action
+from autoscribe.html_renderer import render_html
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
 
 
@@ -16,7 +17,7 @@ def main():
     parser = argparse.ArgumentParser(description='AutoScribeAI 无服务运行基础工具')
     commands = parser.add_subparsers(dest='command', required=True)
     check = commands.add_parser('validate')
-    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint', 'inventory', 'coverage-plan', 'coverage', 'actions'))
+    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint', 'inventory', 'coverage-plan', 'coverage', 'actions', 'quality-report'))
     check.add_argument('file', type=Path)
     check.add_argument('--root', type=Path, help='手册资源根目录，默认为 JSON 所在目录')
     init = commands.add_parser('init')
@@ -52,6 +53,10 @@ def main():
     image.add_argument('--root', type=Path, help='证据路径的相对根目录，必须包含输出文件')
     image.add_argument('--redact', action='append', default=[], metavar='X,Y,W,H', help='归一化打码框，可重复')
     image.add_argument('--callout', action='append', default=[], metavar='X,Y', help='归一化目标标记，可重复，按参数顺序编号')
+    render = commands.add_parser('render-html')
+    render.add_argument('--manual', required=True, type=Path)
+    render.add_argument('--coverage', required=True, type=Path)
+    render.add_argument('--out-dir', required=True, type=Path)
     action = commands.add_parser('action-begin')
     action.add_argument('run_dir', type=Path)
     action.add_argument('--workflow', required=True)
@@ -76,6 +81,8 @@ def main():
             result = {'valid': True, 'kind': args.kind}
         elif args.command == 'init':
             result = initialize(args.config, args.run_dir, read_json(args.host) if args.host else None)
+        elif args.command == 'render-html':
+            result = render_html(args.manual, args.coverage, args.out_dir)
         elif args.command == 'action-begin':
             result = begin_action(args.run_dir, args.workflow, args.step, args.operation, args.target)
         elif args.command == 'action-status':

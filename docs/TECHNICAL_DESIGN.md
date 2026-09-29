@@ -1,6 +1,6 @@
 # AutoScribeAI 技术方案
 
-状态：M0 基础已实现；其余为待实现方案。日期：2026-09-29。
+状态：M0 和 M1 首批、M2 离线 HTML 已实现；DOCX/Markdown、真实浏览器采集仍在计划中。日期：2026-09-29。
 
 ## 1. 目标与范围
 
@@ -59,7 +59,7 @@
 
 核心关联：Project → Module → Feature → Workflow → Step → Evidence → Manual。
 
-`manual.json` 作为内容的唯一事实来源，HTML 是首要展示形式。Word 和 Markdown 从同一份结构化内容生成，避免反向解析复杂 HTML 导致内容或图片丢失。
+`manual.json` 作为内容的唯一事实来源，HTML 已作为首要展示形式从 manual.json、coverage.json 渲染为离线目录包。Word 和 Markdown 仍计划从同一份结构化内容生成，避免反向解析复杂 HTML 导致内容或图片丢失。
 
 | 对象 | 建议字段与约束 |
 | --- | --- |
