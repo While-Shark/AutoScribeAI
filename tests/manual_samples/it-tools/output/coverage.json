@@ -11,12 +11,12 @@
     {
       "scope": "JSON 변환",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "scope": "텍스트 해시 계산",
@@ -40,25 +40,25 @@
     }
   ],
   "inventorySha256": "5f8093624687b9343348133ebb2cf44154de1e41bbe5fc583eaf92c47368f5be",
-  "manualSha256": "6721664d7233ce98c4ad5f5a000fce142b0809a1905d586e9227a30d4f57b0fe",
+  "manualSha256": "2cdeefafa319e21ca2e8fc234346826066666cf89b40edf9cb528ca81810c908",
   "planned": 3,
-  "verified": 0,
+  "verified": 1,
   "blocked": 0,
-  "unverified": 3,
+  "unverified": 2,
   "pending": 0,
-  "coverage": 0.0,
-  "coverageDisplay": "0/3",
+  "coverage": 0.3333333333333333,
+  "coverageDisplay": "1/3",
   "modules": [
     {
       "id": "json-yaml",
       "name": "JSON 변환",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "id": "hash-text",

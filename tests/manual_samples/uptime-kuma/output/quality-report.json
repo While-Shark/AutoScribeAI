@@ -2,8 +2,8 @@
   "schemaVersion": "0.1",
   "projectId": "uptime-kuma",
   "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
-  "manualSha256": "82b8c6a659a0da4600cbe4fb193e1ea22659cf86f446ece8e92cdec9e5cce582",
-  "coverageSha256": "52c442584d89e60fb529f81f6ab35f6d3de60cf9856d706bb4afcef7274a07e3",
+  "manualSha256": "10f84d39156309417312ef3c891a7a77881e60346083719e07fc0c6bdda8f160",
+  "coverageSha256": "d6fd713358d12a35fb9dcf10b94c71f004fb6d3f501cdefffb780ec3cfe6a48c",
   "workflowCount": 3,
   "verified": 0,
   "blocked": 0,
@@ -14,6 +14,6 @@
   "ready": false,
   "issues": [
     "3 条流程未验证",
-    "本手册依据固定提交的公开源码编写；所有流程均未在运行中的应用界面执行，截图证据为零。菜单位置、字段表现及运行结果仍需在目标实例中复核。"
+    "这份手册固定到指定公开源码提交；三个监控功能流程均未在运行中的应用界面执行。仓库另附首次启动页面截图，但它不作为监控、通知或状态页流程的验证证据。菜单位置、字段和功能结果仍需在目标实例中确认。"
   ]
 }

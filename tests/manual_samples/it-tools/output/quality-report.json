@@ -2,18 +2,20 @@
   "schemaVersion": "0.1",
   "projectId": "it-tools",
   "projectVersion": "d505845f918e946ec300af7b36efc107e2f66e9e",
-  "manualSha256": "6721664d7233ce98c4ad5f5a000fce142b0809a1905d586e9227a30d4f57b0fe",
-  "coverageSha256": "2716822453fc8493c464494ab2d0e183148003688a5e04fc6919cda3bbe38b97",
+  "manualSha256": "2cdeefafa319e21ca2e8fc234346826066666cf89b40edf9cb528ca81810c908",
+  "coverageSha256": "d52bbaa191f482c57c3c36f27cec57bb2d43ee2a76ce50a2354b7d7b3b54a4bc",
   "workflowCount": 3,
-  "verified": 0,
+  "verified": 1,
   "blocked": 0,
-  "unverified": 3,
+  "unverified": 2,
   "pending": 0,
-  "evidenceCount": 0,
-  "copiedEvidenceCount": 0,
+  "evidenceCount": 1,
+  "copiedEvidenceCount": 1,
   "ready": false,
   "issues": [
-    "워크플로 3개 미검증",
-    "이 안내서는 고정 커밋의 공개 소스 코드를 바탕으로 작성했습니다. 실행 중인 앱 화면에서 절차를 수행하지 않았으며 스크린샷 증거도 없습니다. 메뉴 위치, 필드 표시 및 실행 결과는 대상 환경에서 확인해야 합니다."
+    "워크플로 1개 검증됨",
+    "워크플로 2개 미검증",
+    "本手册的源码索引固定到 commit d505845f918e946ec300af7b36efc107e2f66e9e；实测截图取自 IT Tools 公开部署页面，部署版本未与固定源码 commit 对齐。",
+    "仅 JSON→YAML 转换流程已在公开部署页面观察并截图验证；文本哈希和 QR 码流程仍为源码候选，未经界面操作验证。"
   ]
 }

@@ -75,7 +75,7 @@
       "successCriteria": "ソースには監視対象の追加画面と watchlist の処理がある。成功条件は対象 URL が監視一覧に登録されること。",
       "location": "changedetectionio/blueprint/add_watch_ui",
       "status": "unverified",
-      "reason": "固定バージョンの公開ソースをもとに作成しており、対象アプリでの操作・検証は行っていません。",
+      "reason": "公開サイトで監視 URL の入力欄は確認できましたが、送信は有料サブスクリプションへ進むため停止しました。セルフホスト版の UI はこの実行環境で起動できず、監視の作成・保存結果は未検証です。",
       "stepIds": [
         "watch-management-step-1",
         "watch-management-step-2",
@@ -127,8 +127,11 @@
       "action": "監視対象の追加画面を開く。",
       "location": "changedetectionio/blueprint/add_watch_ui",
       "expectedResult": "ソース上、この入口または選択肢から操作できる想定です。",
-      "source": "source",
-      "evidenceIds": []
+      "source": "observed",
+      "evidenceIds": [
+        "ev-changedetection-public-homepage"
+      ],
+      "actualResult": "公式公開サイトのトップに監視 URL 入力欄と月額サブスクリプションの案内が表示されました。監視登録は実行していません。"
     },
     {
       "id": "watch-management-step-2",
@@ -211,7 +214,24 @@
       "evidenceIds": []
     }
   ],
-  "evidence": [],
+  "evidence": [
+    {
+      "id": "ev-changedetection-public-homepage",
+      "stepIds": [
+        "watch-management-step-1"
+      ],
+      "path": "evidence/changedetection-public-homepage.jpg",
+      "capturedAt": "2026-09-29T12:26:34Z",
+      "page": "https://changedetection.io/",
+      "viewport": {
+        "width": 1348,
+        "height": 926
+      },
+      "source": "observed",
+      "sha256": "06c0113b3e50e511d388786f01578a136e9dfabb857038e3519284fbc63ea9db",
+      "redacted": true
+    }
+  ],
   "chapters": [
     {
       "id": "chapter-watch-management",
@@ -272,6 +292,6 @@
     }
   ],
   "limitations": [
-    "このガイドは固定コミットの公開ソースに基づいています。稼働中のアプリ画面で手順を実行しておらず、スクリーンショット証拠はありません。メニュー位置、項目の表示、実行結果は対象環境で確認してください。"
+    "固定コミットのソースに基づいて作成した手順です。公式公開サイトで確認できたのは監視 URL 欄と有料サブスクリプション案内のみです。セルフホスト版を起動できず、監視の作成、内容選択、Browser Steps の実行結果は未検証です。"
   ]
 }

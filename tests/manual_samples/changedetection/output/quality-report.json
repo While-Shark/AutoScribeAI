@@ -2,18 +2,18 @@
   "schemaVersion": "0.1",
   "projectId": "changedetection",
   "projectVersion": "0e0566721b1c483dcf7ae548210ee10532d9b181",
-  "manualSha256": "675692d3fc5b614a5295bebcf5d2ddcbbccf21e3e394dc58a8a34b2f1b503e36",
-  "coverageSha256": "6b940fb9b2a66322081105e124b1c41aaa9523c2b88946f1c69d807864a81cfd",
+  "manualSha256": "142c72147da763c30a8693daffb1195ab26361d681d5922d72913ada32dfe210",
+  "coverageSha256": "9ba23a44c1f4fdb7a5aff03c93e19fad3d4bdb7161a434fb62459c1f1347b607",
   "workflowCount": 3,
   "verified": 0,
   "blocked": 0,
   "unverified": 3,
   "pending": 0,
-  "evidenceCount": 0,
-  "copiedEvidenceCount": 0,
+  "evidenceCount": 1,
+  "copiedEvidenceCount": 1,
   "ready": false,
   "issues": [
     "3 件のワークフロー：未検証",
-    "このガイドは固定コミットの公開ソースに基づいています。稼働中のアプリ画面で手順を実行しておらず、スクリーンショット証拠はありません。メニュー位置、項目の表示、実行結果は対象環境で確認してください。"
+    "固定コミットのソースに基づいて作成した手順です。公式公開サイトで確認できたのは監視 URL 欄と有料サブスクリプション案内のみです。セルフホスト版を起動できず、監視の作成、内容選択、Browser Steps の実行結果は未検証です。"
   ]
 }

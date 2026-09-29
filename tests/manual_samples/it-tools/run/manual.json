@@ -72,10 +72,9 @@
       "preconditions": [
         "IT Tools의 JSON to YAML 도구를 열 수 있다."
       ],
-      "successCriteria": "도구 구성 요소와 E2E 명세에서 JSON→YAML 변환 기능을 확인할 수 있다. 성공 기준은 입력한 JSON의 YAML 표현이 표시되는 것이다.",
+      "successCriteria": "示例 JSON 输入后，输出区域显示对应 YAML。该结果已在 IT Tools 公开部署页面观察到。",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "status": "unverified",
-      "reason": "고정 버전의 공개 소스 코드를 바탕으로 작성했으며 대상 앱에서 직접 조작하거나 검증하지 않았습니다.",
+      "status": "verified",
       "stepIds": [
         "json-yaml-step-1",
         "json-yaml-step-2",
@@ -126,9 +125,12 @@
       "order": 1,
       "action": "JSON to YAML 도구를 연다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "소스 코드 기준으로 이 메뉴 또는 선택 항목에서 작업할 수 있을 것으로 예상됩니다.",
-      "source": "source",
-      "evidenceIds": []
+      "expectedResult": "显示 JSON to YAML 工具标题和输入区域。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "已打开 JSON to YAML converter 页面，显示标题和 JSON 输入区域。"
     },
     {
       "id": "json-yaml-step-2",
@@ -136,9 +138,12 @@
       "order": 2,
       "action": "입력 영역에 변환할 JSON을 입력한다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "설정이 해당 기능 구성에 저장될 것으로 예상됩니다.",
-      "source": "source",
-      "evidenceIds": []
+      "expectedResult": "输入框保留示例 JSON 内容。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "输入 {\"service\":\"demo\",\"enabled\":true} 后，内容显示在 JSON 输入区域。"
     },
     {
       "id": "json-yaml-step-3",
@@ -146,9 +151,12 @@
       "order": 3,
       "action": "출력 영역에서 YAML 변환 결과를 확인한다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "소스 설명 기준으로 저장한 항목이 목록이나 출력 영역에 표시될 것으로 예상되며 실제 확인은 하지 않았습니다.",
-      "source": "source",
-      "evidenceIds": []
+      "expectedResult": "输出区显示等价的 YAML 文本。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "输出区域显示 service: demo 与 enabled: true 两行 YAML。"
     },
     {
       "id": "hash-text-step-1",
@@ -211,7 +219,26 @@
       "evidenceIds": []
     }
   ],
-  "evidence": [],
+  "evidence": [
+    {
+      "id": "ev-it-tools-json-yaml",
+      "stepIds": [
+        "json-yaml-step-1",
+        "json-yaml-step-2",
+        "json-yaml-step-3"
+      ],
+      "path": "evidence/it-tools-json-yaml.jpg",
+      "capturedAt": "2026-09-29T12:18:46Z",
+      "page": "https://it-tools.tech/json-to-yaml-converter",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "3a9fc643c79b3ba32bd47e0439827badf549574297e2024b6178fefbc626ebaf",
+      "redacted": true
+    }
+  ],
   "chapters": [
     {
       "id": "chapter-json-yaml",
@@ -272,6 +299,7 @@
     }
   ],
   "limitations": [
-    "이 안내서는 고정 커밋의 공개 소스 코드를 바탕으로 작성했습니다. 실행 중인 앱 화면에서 절차를 수행하지 않았으며 스크린샷 증거도 없습니다. 메뉴 위치, 필드 표시 및 실행 결과는 대상 환경에서 확인해야 합니다."
+    "本手册的源码索引固定到 commit d505845f918e946ec300af7b36efc107e2f66e9e；实测截图取自 IT Tools 公开部署页面，部署版本未与固定源码 commit 对齐。",
+    "仅 JSON→YAML 转换流程已在公开部署页面观察并截图验证；文本哈希和 QR 码流程仍为源码候选，未经界面操作验证。"
   ]
 }
