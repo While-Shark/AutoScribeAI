@@ -2,7 +2,7 @@
 
 让 AI 理解并操作软件，自动整理各模块的使用流程，生成有真实截图、可核验、可导出的操作手册。
 
-> 当前阶段：技术方案与任务规划。尚未开始功能开发；本文描述的是目标能力，不代表已经实现。用户通知开始开发后，再按任务清单推进。
+> 当前阶段：M0 运行基础已实现。支持输入与内容校验、能力预检、阶段状态及基本恢复，已有五个技能入口。浏览器采集和 HTML/Word/Markdown 导出尚未实现。
 
 ## 已确定的方向
 
@@ -10,7 +10,7 @@
 - 以一套 Skills 交付，利用 AI 运行环境中的浏览器、终端及其他工具工作，无需额外部署常驻后端或数据库服务。
 - 使用真实操作截图解释步骤，兼顾功能入口、前置条件、操作过程和预期结果。
 - 以 HTML 作为主要阅读和交付界面，支持导出 Word（DOCX）和 Markdown。
-- 当前只落地方案和待办，功能开发另行启动。
+- 当前按 M0–M4 逐步开发；完整图文手册闭环仍在开发中。
 
 ## 预期使用方式
 
@@ -19,6 +19,32 @@
 源码模式可以整理模块和候选流程，但没有可访问的运行界面时，不能声称已完成操作验证，也不能编造截图。浏览器模式只能覆盖当前账号可见、可操作的范围。源码与运行环境同时可用时，可以交叉检查遗漏。
 
 “无需部署服务”指 AutoScribeAI 自身不需要独立常驻服务；AI 宿主仍需提供相应工具，目标项目也需要可访问。安装依赖、启动目标项目、登录及测试数据准备应按实际环境处理。
+
+## 开始使用（开发版）
+
+需要 Python 3.10+，无需常驻服务或数据库。在仓库根目录执行：
+
+```bash
+python -m pip install -r requirements.txt
+python scripts/autoscribe_cli.py validate project examples/project.json
+python scripts/autoscribe_cli.py init examples/project.json --run-dir runs/demo --host examples/host.json
+python scripts/autoscribe_cli.py status runs/demo
+python -m unittest discover -s tests -v
+```
+
+示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
+
+让 AI 从 [入口技能](skills/autoscribe-orchestrator/SKILL.md) 开始；当前必须保留完整仓库，技能共同引用根目录脚本、schemas 和 references。尚未提供一键安装包，也不会自动安装到当前 AI 的技能目录。
+
+| 能力 | 状态 |
+| --- | --- |
+| 配置、模型、ID/引用/截图摘要与路径校验 | 已实现 |
+| 能力预检、源码模式降级、原子状态、阶段级恢复 | 已实现 |
+| 五个技能的职责和交接规范 | 已编写，完成源码模式试用 |
+| 实际浏览器探索、截图处理、步骤级恢复防护 | 待实现与实测 |
+| 离线 HTML、DOCX、Markdown 导出与视觉验收 | 待实现 |
+
+结构校验不证明截图真实或内容正确；阶段完成由调用者检查产物后声明。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md) 和 [证据约定](references/EVIDENCE.md)。
 
 ## 文档入口
 

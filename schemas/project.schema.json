@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "environment"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "format": "uri"
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "path"
+          ]
+        },
+        {
+          "required": [
+            "url"
+          ]
+        }
+      ]
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "formats": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "html",
+          "docx",
+          "markdown"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "allowedActions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "read",
+          "create-test-data",
+          "update-test-data",
+          "delete-test-data",
+          "publish",
+          "send",
+          "change-permissions",
+          "pay"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "testDataPolicy": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "project",
+    "source",
+    "roles",
+    "scope",
+    "language",
+    "formats",
+    "allowedActions",
+    "testDataPolicy"
+  ],
+  "additionalProperties": false
+}

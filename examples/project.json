@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1",
+  "project": {"id": "demo", "name": "示例项目", "version": "demo-v1", "environment": "test"},
+  "source": {"path": ".."},
+  "roles": ["viewer"],
+  "scope": ["查看模块与功能入口"],
+  "language": "zh-CN",
+  "formats": ["html", "docx", "markdown"],
+  "allowedActions": ["read"],
+  "testDataPolicy": "只读；不创建、修改或删除业务数据。"
+}

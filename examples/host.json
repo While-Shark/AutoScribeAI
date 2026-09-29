@@ -1,0 +1,8 @@
+{
+  "browser": {
+    "status": "unknown",
+    "provider": "not-probed",
+    "screenshot": false,
+    "reason": "由宿主 AI 验证浏览器及截图能力后填写，不能仅根据浏览器安装情况宣称可用。"
+  }
+}

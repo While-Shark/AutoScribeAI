@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoScribeAI Manual Writer"
+  short_description: "Turn observed steps into structured user manuals"
+  default_prompt: "Use $autoscribe-manual-writer to organize these workflow records."

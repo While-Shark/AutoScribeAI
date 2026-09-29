@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoScribeAI Manual Verifier"
+  short_description: "Check provenance, references and coverage gaps"
+  default_prompt: "Use $autoscribe-manual-verifier to verify this manual."

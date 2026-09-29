@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "revision",
+    "nextStage",
+    "completed",
+    "blocked",
+    "replayActions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nextStage": {
+      "enum": [
+        "preflight",
+        "analyze",
+        "explore",
+        "write",
+        "export",
+        "verify",
+        null
+      ]
+    },
+    "completed": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "preflight",
+          "analyze",
+          "explore",
+          "write",
+          "export",
+          "verify"
+        ]
+      }
+    },
+    "blocked": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "preflight",
+          "analyze",
+          "explore",
+          "write",
+          "export",
+          "verify"
+        ]
+      }
+    },
+    "replayActions": {
+      "const": false
+    }
+  }
+}
