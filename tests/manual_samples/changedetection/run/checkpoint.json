@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.1",
+  "runId": "run-988dc9f40a6e417ea6ce31c244128b8f",
+  "revision": 10,
+  "nextStage": null,
+  "completed": [
+    "analyze",
+    "write",
+    "export",
+    "verify"
+  ],
+  "blocked": [],
+  "replayActions": false
+}

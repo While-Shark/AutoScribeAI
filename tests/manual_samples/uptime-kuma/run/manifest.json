@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "0.1",
+  "runId": "run-bddda14a32c349c7afbe1d3f42e75da6",
+  "revision": 10,
+  "createdAt": "2026-09-29T10:38:03.049423+00:00",
+  "updatedAt": "2026-09-29T10:40:12.279800+00:00",
+  "configHash": "04d2d28bc1b11db31eb97a9ecc01fba6bbe2ccd2f46058de52de0902f4b7c397",
+  "config": {
+    "schemaVersion": "0.1",
+    "project": {
+      "id": "uptime-kuma",
+      "name": "Uptime Kuma",
+      "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+      "environment": "GitHub 源码快照 e7420f8fa546"
+    },
+    "source": {
+      "url": "https://github.com/louislam/uptime-kuma"
+    },
+    "roles": [
+      "user"
+    ],
+    "scope": [
+      "监控项配置",
+      "通知渠道设置",
+      "状态页管理"
+    ],
+    "language": "zh-CN",
+    "formats": [
+      "html",
+      "docx",
+      "markdown"
+    ],
+    "allowedActions": [
+      "read"
+    ],
+    "testDataPolicy": "仅分析公开源码；未访问目标应用，不创建、修改或删除业务数据。"
+  },
+  "capabilities": {
+    "terminal": true,
+    "files": true,
+    "sourceReadable": false,
+    "browser": {
+      "status": "unknown",
+      "provider": "not-probed",
+      "screenshot": false,
+      "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
+    },
+    "canExplore": false,
+    "mode": "blocked",
+    "docxDependency": true,
+    "exportersImplemented": true,
+    "limitations": [
+      "不能验证界面：缺少目标 URL 或宿主确认的浏览器/截图能力"
+    ]
+  },
+  "stages": {
+    "preflight": {
+      "status": "skipped",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    "analyze": {
+      "status": "completed"
+    },
+    "explore": {
+      "status": "skipped",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    "write": {
+      "status": "completed"
+    },
+    "export": {
+      "status": "completed"
+    },
+    "verify": {
+      "status": "completed"
+    }
+  },
+  "events": [
+    {
+      "stage": "preflight",
+      "from": "blocked",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:03.199109+00:00",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    {
+      "stage": "analyze",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:03.343547+00:00"
+    },
+    {
+      "stage": "analyze",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:03.654506+00:00"
+    },
+    {
+      "stage": "explore",
+      "from": "pending",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:03.840608+00:00",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    {
+      "stage": "write",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:04.019852+00:00"
+    },
+    {
+      "stage": "write",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:07.194144+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:07.528852+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:39:05.366695+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:40:12.099080+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:40:12.279785+00:00"
+    }
+  ]
+}

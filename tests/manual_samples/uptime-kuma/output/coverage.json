@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "uptime-kuma",
+  "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+  "scope": [
+    "监控项配置",
+    "通知渠道设置",
+    "状态页管理"
+  ],
+  "scopeItems": [
+    {
+      "scope": "监控项配置",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "scope": "通知渠道设置",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "scope": "状态页管理",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ],
+  "inventorySha256": "0d7ebd191373604cf3d8897108ac1727a08acf90f4eb3cfdf24debb2f8d5bd7d",
+  "manualSha256": "82b8c6a659a0da4600cbe4fb193e1ea22659cf86f446ece8e92cdec9e5cce582",
+  "planned": 3,
+  "verified": 0,
+  "blocked": 0,
+  "unverified": 3,
+  "pending": 0,
+  "coverage": 0.0,
+  "coverageDisplay": "0/3",
+  "modules": [
+    {
+      "id": "monitoring",
+      "name": "监控项配置",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "id": "notifications",
+      "name": "通知渠道设置",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "id": "status-pages",
+      "name": "状态页管理",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ]
+}

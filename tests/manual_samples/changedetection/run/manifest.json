@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "0.1",
+  "runId": "run-988dc9f40a6e417ea6ce31c244128b8f",
+  "revision": 10,
+  "createdAt": "2026-09-29T10:38:00.147783+00:00",
+  "updatedAt": "2026-09-29T10:40:11.596783+00:00",
+  "configHash": "600512afcd8679432d30c3a646f0984c234d109869d00724f990bba1eaef18da",
+  "config": {
+    "schemaVersion": "0.1",
+    "project": {
+      "id": "changedetection",
+      "name": "changedetection.io",
+      "version": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+      "environment": "GitHub の公開ソース（コミット 0e0566721b1c"
+    },
+    "source": {
+      "url": "https://github.com/dgtlmoon/changedetection.io"
+    },
+    "roles": [
+      "user"
+    ],
+    "scope": [
+      "Webサイト監視",
+      "監視内容の選択",
+      "ブラウザ操作の設定"
+    ],
+    "language": "ja-JP",
+    "formats": [
+      "html",
+      "docx",
+      "markdown"
+    ],
+    "allowedActions": [
+      "read"
+    ],
+    "testDataPolicy": "公開ソースのみを分析し、対象アプリにはアクセスしません。業務データの作成・変更・削除は行いません。"
+  },
+  "capabilities": {
+    "terminal": true,
+    "files": true,
+    "sourceReadable": false,
+    "browser": {
+      "status": "unknown",
+      "provider": "not-probed",
+      "screenshot": false,
+      "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
+    },
+    "canExplore": false,
+    "mode": "blocked",
+    "docxDependency": true,
+    "exportersImplemented": true,
+    "limitations": [
+      "不能验证界面：缺少目标 URL 或宿主确认的浏览器/截图能力"
+    ]
+  },
+  "stages": {
+    "preflight": {
+      "status": "skipped",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    "analyze": {
+      "status": "completed"
+    },
+    "explore": {
+      "status": "skipped",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    "write": {
+      "status": "completed"
+    },
+    "export": {
+      "status": "completed"
+    },
+    "verify": {
+      "status": "completed"
+    }
+  },
+  "events": [
+    {
+      "stage": "preflight",
+      "from": "blocked",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:00.305221+00:00",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    {
+      "stage": "analyze",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:00.488128+00:00"
+    },
+    {
+      "stage": "analyze",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:00.824839+00:00"
+    },
+    {
+      "stage": "explore",
+      "from": "pending",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:00.979002+00:00",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    {
+      "stage": "write",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:01.126445+00:00"
+    },
+    {
+      "stage": "write",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:04.456507+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:05.197416+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:05.686931+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:40:11.433327+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:40:11.596769+00:00"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "uptime-kuma",
+    "name": "Uptime Kuma",
+    "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+    "environment": "GitHub 源码快照 e7420f8fa546"
+  },
+  "source": {
+    "url": "https://github.com/louislam/uptime-kuma"
+  },
+  "roles": [
+    "user"
+  ],
+  "scope": [
+    "监控项配置",
+    "通知渠道设置",
+    "状态页管理"
+  ],
+  "language": "zh-CN",
+  "formats": [
+    "html",
+    "docx",
+    "markdown"
+  ],
+  "allowedActions": [
+    "read"
+  ],
+  "testDataPolicy": "仅分析公开源码；未访问目标应用，不创建、修改或删除业务数据。"
+}

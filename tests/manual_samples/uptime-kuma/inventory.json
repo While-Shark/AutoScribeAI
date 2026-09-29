@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "uptime-kuma",
+  "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+  "scope": [
+    "监控项配置",
+    "通知渠道设置",
+    "状态页管理"
+  ],
+  "discoveredAt": "2026-09-29T10:37:59.614154+00:00",
+  "modules": [
+    {
+      "id": "monitoring",
+      "name": "监控项配置",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications",
+      "name": "通知渠道设置",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/components/notifications"
+    },
+    {
+      "id": "status-pages",
+      "name": "状态页管理",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/AddStatusPage.vue"
+    }
+  ],
+  "features": [
+    {
+      "id": "monitoring-feature",
+      "moduleId": "monitoring",
+      "name": "HTTP 监控",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications-feature",
+      "moduleId": "notifications",
+      "name": "配置通知渠道",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/components/notifications"
+    },
+    {
+      "id": "status-pages-feature",
+      "moduleId": "status-pages",
+      "name": "创建状态页",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/AddStatusPage.vue"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "monitoring-flow",
+      "featureId": "monitoring-feature",
+      "role": "user",
+      "goal": "创建 HTTP 监控并设置检查参数",
+      "preconditions": [
+        "已打开 Uptime Kuma 的 Web 界面并具有添加监控项的权限。"
+      ],
+      "successCriteria": "源码显示监控编辑页面包含监控类型与配置字段；成功标准是监控项保存后出现在监控列表中。",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications-flow",
+      "featureId": "notifications-feature",
+      "role": "user",
+      "goal": "配置通知渠道用于接收告警",
+      "preconditions": [
+        "已准备通知服务所需的非敏感连接信息。"
+      ],
+      "successCriteria": "源码包含多个通知提供方配置；成功标准是通知渠道保存并可在监控配置中选择。",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/components/notifications"
+    },
+    {
+      "id": "status-pages-flow",
+      "featureId": "status-pages-feature",
+      "role": "user",
+      "goal": "创建状态页并组织公开展示的监控信息",
+      "preconditions": [
+        "已存在可用于展示的监控项。"
+      ],
+      "successCriteria": "源码包含新增和管理状态页页面；成功标准是状态页配置可保存，并可组织监控展示分组。",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/AddStatusPage.vue"
+    }
+  ],
+  "scopeItems": [
+    {
+      "scope": "监控项配置",
+      "workflowIds": [
+        "monitoring-flow"
+      ]
+    },
+    {
+      "scope": "通知渠道设置",
+      "workflowIds": [
+        "notifications-flow"
+      ]
+    },
+    {
+      "scope": "状态页管理",
+      "workflowIds": [
+        "status-pages-flow"
+      ]
+    }
+  ]
+}

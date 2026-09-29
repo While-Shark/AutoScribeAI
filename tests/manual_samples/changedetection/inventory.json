@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "changedetection",
+  "projectVersion": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+  "scope": [
+    "Webサイト監視",
+    "監視内容の選択",
+    "ブラウザ操作の設定"
+  ],
+  "discoveredAt": "2026-09-29T10:37:59.615972+00:00",
+  "modules": [
+    {
+      "id": "watch-management",
+      "name": "Webサイト監視",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection",
+      "name": "監視内容の選択",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps",
+      "name": "ブラウザ操作の設定",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/browser_steps"
+    }
+  ],
+  "features": [
+    {
+      "id": "watch-management-feature",
+      "moduleId": "watch-management",
+      "name": "監視対象の追加",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection-feature",
+      "moduleId": "content-selection",
+      "name": "ページ内の範囲を選択",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps-feature",
+      "moduleId": "browser-steps",
+      "name": "Browser Steps を構成",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/browser_steps"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "watch-management-flow",
+      "featureId": "watch-management-feature",
+      "role": "user",
+      "goal": "Webサイトを監視対象として追加する",
+      "preconditions": [
+        "changedetection.io の監視一覧を表示できる。"
+      ],
+      "successCriteria": "ソースには監視対象の追加画面と watchlist の処理がある。成功条件は対象 URL が監視一覧に登録されること。",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection-flow",
+      "featureId": "content-selection-feature",
+      "role": "user",
+      "goal": "ページ全体ではなく必要な内容を選択する",
+      "preconditions": [
+        "対象ページが監視一覧に登録されている。"
+      ],
+      "successCriteria": "ソースとドキュメントには Visual Selector による監視範囲の選択が記載されている。成功条件は選択した内容が監視対象として設定されること。",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps-flow",
+      "featureId": "browser-steps-feature",
+      "role": "user",
+      "goal": "ログインや検索などのブラウザ操作を設定する",
+      "preconditions": [
+        "Playwright 対応の content fetcher が構成されている。"
+      ],
+      "successCriteria": "リポジトリには Browser Steps の設定画面・処理がある。成功条件は設定した操作手順が監視設定に保存されること。",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/browser_steps"
+    }
+  ],
+  "scopeItems": [
+    {
+      "scope": "Webサイト監視",
+      "workflowIds": [
+        "watch-management-flow"
+      ]
+    },
+    {
+      "scope": "監視内容の選択",
+      "workflowIds": [
+        "content-selection-flow"
+      ]
+    },
+    {
+      "scope": "ブラウザ操作の設定",
+      "workflowIds": [
+        "browser-steps-flow"
+      ]
+    }
+  ]
+}

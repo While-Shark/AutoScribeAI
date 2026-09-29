@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "changedetection",
+  "projectVersion": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+  "manualSha256": "675692d3fc5b614a5295bebcf5d2ddcbbccf21e3e394dc58a8a34b2f1b503e36",
+  "coverageSha256": "6b940fb9b2a66322081105e124b1c41aaa9523c2b88946f1c69d807864a81cfd",
+  "workflowCount": 3,
+  "verified": 0,
+  "blocked": 0,
+  "unverified": 3,
+  "pending": 0,
+  "evidenceCount": 0,
+  "copiedEvidenceCount": 0,
+  "ready": false,
+  "issues": [
+    "3 件のワークフロー：未検証",
+    "このガイドは固定コミットの公開ソースに基づいています。稼働中のアプリ画面で手順を実行しておらず、スクリーンショット証拠はありません。メニュー位置、項目の表示、実行結果は対象環境で確認してください。"
+  ]
+}

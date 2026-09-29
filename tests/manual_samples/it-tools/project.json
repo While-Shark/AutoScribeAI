@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "it-tools",
+    "name": "IT Tools",
+    "version": "d505845f918e946ec300af7b36efc107e2f66e9e",
+    "environment": "GitHub 공개 소스 스냅샷 d505845f918e"
+  },
+  "source": {
+    "url": "https://github.com/CorentinTh/it-tools"
+  },
+  "roles": [
+    "user"
+  ],
+  "scope": [
+    "JSON 변환",
+    "텍스트 해시 계산",
+    "QR 코드 생성"
+  ],
+  "language": "ko-KR",
+  "formats": [
+    "html",
+    "docx",
+    "markdown"
+  ],
+  "allowedActions": [
+    "read"
+  ],
+  "testDataPolicy": "공개 소스 코드만 분석하며 대상 앱에는 접속하지 않습니다. 업무 데이터 생성·수정·삭제는 하지 않습니다."
+}

@@ -1,0 +1,8 @@
+{
+  "browser": {
+    "status": "unknown",
+    "provider": "not-probed",
+    "screenshot": false,
+    "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "uptime-kuma",
+    "name": "Uptime Kuma",
+    "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+    "environment": "GitHub 源码快照 e7420f8fa546",
+    "language": "zh-CN"
+  },
+  "title": "Uptime Kuma 操作手册",
+  "roles": [
+    "user"
+  ],
+  "modules": [
+    {
+      "id": "monitoring",
+      "name": "监控项配置",
+      "source": "source",
+      "location": "src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications",
+      "name": "通知渠道设置",
+      "source": "source",
+      "location": "src/components/notifications"
+    },
+    {
+      "id": "status-pages",
+      "name": "状态页管理",
+      "source": "source",
+      "location": "src/pages/AddStatusPage.vue"
+    }
+  ],
+  "features": [
+    {
+      "id": "monitoring-feature",
+      "moduleId": "monitoring",
+      "name": "HTTP 监控",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications-feature",
+      "moduleId": "notifications",
+      "name": "配置通知渠道",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/components/notifications"
+    },
+    {
+      "id": "status-pages-feature",
+      "moduleId": "status-pages",
+      "name": "创建状态页",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/pages/AddStatusPage.vue"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "monitoring-flow",
+      "featureId": "monitoring-feature",
+      "role": "user",
+      "goal": "创建 HTTP 监控并设置检查参数",
+      "preconditions": [
+        "已打开 Uptime Kuma 的 Web 界面并具有添加监控项的权限。"
+      ],
+      "successCriteria": "源码显示监控编辑页面包含监控类型与配置字段；成功标准是监控项保存后出现在监控列表中。",
+      "location": "src/pages/EditMonitor.vue",
+      "status": "unverified",
+      "reason": "本流程根据固定版本的公开源码整理，尚未在目标应用中实际操作或验证。",
+      "stepIds": [
+        "monitoring-step-1",
+        "monitoring-step-2",
+        "monitoring-step-3"
+      ]
+    },
+    {
+      "id": "notifications-flow",
+      "featureId": "notifications-feature",
+      "role": "user",
+      "goal": "配置通知渠道用于接收告警",
+      "preconditions": [
+        "已准备通知服务所需的非敏感连接信息。"
+      ],
+      "successCriteria": "源码包含多个通知提供方配置；成功标准是通知渠道保存并可在监控配置中选择。",
+      "location": "src/components/notifications",
+      "status": "unverified",
+      "reason": "本流程根据固定版本的公开源码整理，尚未在目标应用中实际操作或验证。",
+      "stepIds": [
+        "notifications-step-1",
+        "notifications-step-2",
+        "notifications-step-3"
+      ]
+    },
+    {
+      "id": "status-pages-flow",
+      "featureId": "status-pages-feature",
+      "role": "user",
+      "goal": "创建状态页并组织公开展示的监控信息",
+      "preconditions": [
+        "已存在可用于展示的监控项。"
+      ],
+      "successCriteria": "源码包含新增和管理状态页页面；成功标准是状态页配置可保存，并可组织监控展示分组。",
+      "location": "src/pages/AddStatusPage.vue",
+      "status": "unverified",
+      "reason": "本流程根据固定版本的公开源码整理，尚未在目标应用中实际操作或验证。",
+      "stepIds": [
+        "status-pages-step-1",
+        "status-pages-step-2",
+        "status-pages-step-3"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "monitoring-step-1",
+      "workflowId": "monitoring-flow",
+      "order": 1,
+      "action": "打开监控项编辑入口并选择 HTTP 监控类型。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "源码线索表明该入口或选项应可供操作。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "monitoring-step-2",
+      "workflowId": "monitoring-flow",
+      "order": 2,
+      "action": "填写目标 URL、名称和检查间隔等字段。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "设置应保留在此功能的配置中。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "monitoring-step-3",
+      "workflowId": "monitoring-flow",
+      "order": 3,
+      "action": "保存监控项，并在列表中检查其名称和状态入口。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "按源码描述，保存后的目标项应出现在相应列表或输出区域；该结果尚未实测。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "notifications-step-1",
+      "workflowId": "notifications-flow",
+      "order": 1,
+      "action": "进入通知设置并选择一个通知提供方。",
+      "location": "src/components/notifications",
+      "expectedResult": "源码线索表明该入口或选项应可供操作。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "notifications-step-2",
+      "workflowId": "notifications-flow",
+      "order": 2,
+      "action": "填写该提供方要求的配置字段。",
+      "location": "src/components/notifications",
+      "expectedResult": "设置应保留在此功能的配置中。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "notifications-step-3",
+      "workflowId": "notifications-flow",
+      "order": 3,
+      "action": "保存设置，再将通知渠道关联到监控项。",
+      "location": "src/components/notifications",
+      "expectedResult": "按源码描述，保存后的目标项应出现在相应列表或输出区域；该结果尚未实测。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "status-pages-step-1",
+      "workflowId": "status-pages-flow",
+      "order": 1,
+      "action": "打开新增状态页入口。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "源码线索表明该入口或选项应可供操作。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "status-pages-step-2",
+      "workflowId": "status-pages-flow",
+      "order": 2,
+      "action": "填写状态页名称及展示标识。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "设置应保留在此功能的配置中。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "status-pages-step-3",
+      "workflowId": "status-pages-flow",
+      "order": 3,
+      "action": "保存后进入状态页管理，添加需要展示的监控项。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "按源码描述，保存后的目标项应出现在相应列表或输出区域；该结果尚未实测。",
+      "source": "source",
+      "evidenceIds": []
+    }
+  ],
+  "evidence": [],
+  "chapters": [
+    {
+      "id": "chapter-monitoring",
+      "moduleId": "monitoring",
+      "title": "监控项配置",
+      "purpose": "本章介绍HTTP 监控的源码线索与候选操作步骤，供后续在目标实例中逐项验证。",
+      "workflowIds": [
+        "monitoring-flow"
+      ],
+      "faqs": [
+        {
+          "question": "可以监控哪些目标？",
+          "answer": "README 和 monitor-types 源码列出 HTTP、TCP、Ping、DNS 等多种监控类型；具体可用字段取决于所选类型。",
+          "source": "source",
+          "workflowIds": [
+            "monitoring-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-notifications",
+      "moduleId": "notifications",
+      "title": "通知渠道设置",
+      "purpose": "本章介绍配置通知渠道的源码线索与候选操作步骤，供后续在目标实例中逐项验证。",
+      "workflowIds": [
+        "notifications-flow"
+      ],
+      "faqs": [
+        {
+          "question": "通知渠道在哪里配置？",
+          "answer": "项目源码集中提供通知设置组件和通知提供方实现；各渠道所需字段因提供方而异。",
+          "source": "source",
+          "workflowIds": [
+            "notifications-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-status-pages",
+      "moduleId": "status-pages",
+      "title": "状态页管理",
+      "purpose": "本章介绍创建状态页的源码线索与候选操作步骤，供后续在目标实例中逐项验证。",
+      "workflowIds": [
+        "status-pages-flow"
+      ],
+      "faqs": [
+        {
+          "question": "状态页能展示什么？",
+          "answer": "项目提供状态页管理与状态页路由，可将监控信息组织为公开状态展示。",
+          "source": "source",
+          "workflowIds": [
+            "status-pages-flow"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "本手册依据固定提交的公开源码编写；所有流程均未在运行中的应用界面执行，截图证据为零。菜单位置、字段表现及运行结果仍需在目标实例中复核。"
+  ]
+}

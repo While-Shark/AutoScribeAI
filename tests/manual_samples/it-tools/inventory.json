@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "it-tools",
+  "projectVersion": "d505845f918e946ec300af7b36efc107e2f66e9e",
+  "scope": [
+    "JSON 변환",
+    "텍스트 해시 계산",
+    "QR 코드 생성"
+  ],
+  "discoveredAt": "2026-09-29T10:37:59.616742+00:00",
+  "modules": [
+    {
+      "id": "json-yaml",
+      "name": "JSON 변환",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/json-to-yaml-converter/json-to-yaml.vue"
+    },
+    {
+      "id": "hash-text",
+      "name": "텍스트 해시 계산",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/hash-text/hash-text.vue"
+    },
+    {
+      "id": "qr-generator",
+      "name": "QR 코드 생성",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/qr-code-generator/qr-code-generator.vue"
+    }
+  ],
+  "features": [
+    {
+      "id": "json-yaml-feature",
+      "moduleId": "json-yaml",
+      "name": "JSON을 YAML로 변환",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/json-to-yaml-converter/json-to-yaml.vue"
+    },
+    {
+      "id": "hash-text-feature",
+      "moduleId": "hash-text",
+      "name": "텍스트의 해시 계산",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/hash-text/hash-text.vue"
+    },
+    {
+      "id": "qr-generator-feature",
+      "moduleId": "qr-generator",
+      "name": "QR 코드 만들기",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/qr-code-generator/qr-code-generator.vue"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "json-yaml-flow",
+      "featureId": "json-yaml-feature",
+      "role": "user",
+      "goal": "JSON 데이터를 YAML 형식으로 변환한다",
+      "preconditions": [
+        "IT Tools의 JSON to YAML 도구를 열 수 있다."
+      ],
+      "successCriteria": "도구 구성 요소와 E2E 명세에서 JSON→YAML 변환 기능을 확인할 수 있다. 성공 기준은 입력한 JSON의 YAML 표현이 표시되는 것이다.",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/json-to-yaml-converter/json-to-yaml.vue"
+    },
+    {
+      "id": "hash-text-flow",
+      "featureId": "hash-text-feature",
+      "role": "user",
+      "goal": "텍스트에서 해시 값을 계산한다",
+      "preconditions": [
+        "Hash Text 도구를 열 수 있다."
+      ],
+      "successCriteria": "도구 구성 요소와 서비스 코드에서 텍스트 해시 기능을 확인할 수 있다. 성공 기준은 입력 텍스트에 대한 해시 값이 출력되는 것이다.",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/hash-text/hash-text.vue"
+    },
+    {
+      "id": "qr-generator-flow",
+      "featureId": "qr-generator-feature",
+      "role": "user",
+      "goal": "문자열에서 QR 코드를 생성한다",
+      "preconditions": [
+        "QR Code Generator 도구를 열 수 있다."
+      ],
+      "successCriteria": "도구 구성 요소에는 QR 코드 생성 composable 연결이 확인된다. 성공 기준은 입력한 문자열에 해당하는 QR 이미지가 표시되는 것이다.",
+      "source": "source",
+      "location": "https://github.com/CorentinTh/it-tools/blob/d505845f918e946ec300af7b36efc107e2f66e9e/src/tools/qr-code-generator/qr-code-generator.vue"
+    }
+  ],
+  "scopeItems": [
+    {
+      "scope": "JSON 변환",
+      "workflowIds": [
+        "json-yaml-flow"
+      ]
+    },
+    {
+      "scope": "텍스트 해시 계산",
+      "workflowIds": [
+        "hash-text-flow"
+      ]
+    },
+    {
+      "scope": "QR 코드 생성",
+      "workflowIds": [
+        "qr-generator-flow"
+      ]
+    }
+  ]
+}

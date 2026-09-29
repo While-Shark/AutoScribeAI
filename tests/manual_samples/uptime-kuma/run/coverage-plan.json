@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "uptime-kuma",
+  "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+  "scopeHash": "bbd9aa0e970eef197c0e40c954a5749c4822e74d60e31d0e936d78ec50a3591b",
+  "scope": [
+    "监控项配置",
+    "通知渠道设置",
+    "状态页管理"
+  ],
+  "scopeItems": [
+    {
+      "scope": "监控项配置",
+      "workflowIds": [
+        "monitoring-flow"
+      ]
+    },
+    {
+      "scope": "通知渠道设置",
+      "workflowIds": [
+        "notifications-flow"
+      ]
+    },
+    {
+      "scope": "状态页管理",
+      "workflowIds": [
+        "status-pages-flow"
+      ]
+    }
+  ],
+  "inventorySha256": "0d7ebd191373604cf3d8897108ac1727a08acf90f4eb3cfdf24debb2f8d5bd7d",
+  "modules": [
+    {
+      "id": "monitoring",
+      "name": "监控项配置"
+    },
+    {
+      "id": "notifications",
+      "name": "通知渠道设置"
+    },
+    {
+      "id": "status-pages",
+      "name": "状态页管理"
+    }
+  ],
+  "features": [
+    {
+      "id": "monitoring-feature",
+      "moduleId": "monitoring"
+    },
+    {
+      "id": "notifications-feature",
+      "moduleId": "notifications"
+    },
+    {
+      "id": "status-pages-feature",
+      "moduleId": "status-pages"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "monitoring-flow",
+      "featureId": "monitoring-feature",
+      "role": "user",
+      "goal": "创建 HTTP 监控并设置检查参数",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications-flow",
+      "featureId": "notifications-feature",
+      "role": "user",
+      "goal": "配置通知渠道用于接收告警",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/components/notifications"
+    },
+    {
+      "id": "status-pages-flow",
+      "featureId": "status-pages-feature",
+      "role": "user",
+      "goal": "创建状态页并组织公开展示的监控信息",
+      "source": "source",
+      "location": "https://github.com/louislam/uptime-kuma/blob/e7420f8fa546a8baa7ac4bf9d10a32545d4346e0/src/pages/AddStatusPage.vue"
+    }
+  ]
+}

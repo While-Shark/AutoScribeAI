@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "uptime-kuma",
+  "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+  "manualSha256": "82b8c6a659a0da4600cbe4fb193e1ea22659cf86f446ece8e92cdec9e5cce582",
+  "coverageSha256": "52c442584d89e60fb529f81f6ab35f6d3de60cf9856d706bb4afcef7274a07e3",
+  "workflowCount": 3,
+  "verified": 0,
+  "blocked": 0,
+  "unverified": 3,
+  "pending": 0,
+  "evidenceCount": 0,
+  "copiedEvidenceCount": 0,
+  "ready": false,
+  "issues": [
+    "3 条流程未验证",
+    "本手册依据固定提交的公开源码编写；所有流程均未在运行中的应用界面执行，截图证据为零。菜单位置、字段表现及运行结果仍需在目标实例中复核。"
+  ]
+}

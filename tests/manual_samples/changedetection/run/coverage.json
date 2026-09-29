@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "changedetection",
+  "projectVersion": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+  "scope": [
+    "Webサイト監視",
+    "監視内容の選択",
+    "ブラウザ操作の設定"
+  ],
+  "scopeItems": [
+    {
+      "scope": "Webサイト監視",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "scope": "監視内容の選択",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "scope": "ブラウザ操作の設定",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ],
+  "inventorySha256": "8914dedb211f3e0e4aa1f4b2921d51e0a014754d33bd5277687a868733a5c8ea",
+  "manualSha256": "675692d3fc5b614a5295bebcf5d2ddcbbccf21e3e394dc58a8a34b2f1b503e36",
+  "planned": 3,
+  "verified": 0,
+  "blocked": 0,
+  "unverified": 3,
+  "pending": 0,
+  "coverage": 0.0,
+  "coverageDisplay": "0/3",
+  "modules": [
+    {
+      "id": "watch-management",
+      "name": "Webサイト監視",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "id": "content-selection",
+      "name": "監視内容の選択",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "id": "browser-steps",
+      "name": "ブラウザ操作の設定",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ]
+}

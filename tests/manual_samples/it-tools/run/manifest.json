@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "0.1",
+  "runId": "run-d05811b3e7244d078fe3da7f3c70cb88",
+  "revision": 10,
+  "createdAt": "2026-09-29T10:38:01.587210+00:00",
+  "updatedAt": "2026-09-29T10:40:11.934732+00:00",
+  "configHash": "fa66bb07c391e31fe4d21330e6506b586aaaadbcb762181c860e0e3aec1e5c90",
+  "config": {
+    "schemaVersion": "0.1",
+    "project": {
+      "id": "it-tools",
+      "name": "IT Tools",
+      "version": "d505845f918e946ec300af7b36efc107e2f66e9e",
+      "environment": "GitHub 공개 소스 스냅샷 d505845f918e"
+    },
+    "source": {
+      "url": "https://github.com/CorentinTh/it-tools"
+    },
+    "roles": [
+      "user"
+    ],
+    "scope": [
+      "JSON 변환",
+      "텍스트 해시 계산",
+      "QR 코드 생성"
+    ],
+    "language": "ko-KR",
+    "formats": [
+      "html",
+      "docx",
+      "markdown"
+    ],
+    "allowedActions": [
+      "read"
+    ],
+    "testDataPolicy": "공개 소스 코드만 분석하며 대상 앱에는 접속하지 않습니다. 업무 데이터 생성·수정·삭제는 하지 않습니다."
+  },
+  "capabilities": {
+    "terminal": true,
+    "files": true,
+    "sourceReadable": false,
+    "browser": {
+      "status": "unknown",
+      "provider": "not-probed",
+      "screenshot": false,
+      "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
+    },
+    "canExplore": false,
+    "mode": "blocked",
+    "docxDependency": true,
+    "exportersImplemented": true,
+    "limitations": [
+      "不能验证界面：缺少目标 URL 或宿主确认的浏览器/截图能力"
+    ]
+  },
+  "stages": {
+    "preflight": {
+      "status": "skipped",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    "analyze": {
+      "status": "completed"
+    },
+    "explore": {
+      "status": "skipped",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    "write": {
+      "status": "completed"
+    },
+    "export": {
+      "status": "completed"
+    },
+    "verify": {
+      "status": "completed"
+    }
+  },
+  "events": [
+    {
+      "stage": "preflight",
+      "from": "blocked",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:01.765383+00:00",
+      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+    },
+    {
+      "stage": "analyze",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:01.930813+00:00"
+    },
+    {
+      "stage": "analyze",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:02.232950+00:00"
+    },
+    {
+      "stage": "explore",
+      "from": "pending",
+      "to": "skipped",
+      "at": "2026-09-29T10:38:02.390773+00:00",
+      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+    },
+    {
+      "stage": "write",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:38:02.554737+00:00"
+    },
+    {
+      "stage": "write",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:38:06.090806+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:39:05.046145+00:00"
+    },
+    {
+      "stage": "export",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:39:05.223838+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T10:40:11.775280+00:00"
+    },
+    {
+      "stage": "verify",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T10:40:11.934717+00:00"
+    }
+  ]
+}
