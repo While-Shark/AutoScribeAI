@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 import sys
 import tempfile
@@ -58,6 +59,30 @@ class InventoryTests(unittest.TestCase):
         modules = {m['id']: m for m in report['modules']}
         self.assertEqual(modules['m-overview']['blocked'], 1)
         self.assertEqual(modules['m-automation']['planned'], 2)
+
+    def test_only_evidence_backed_verified_workflow_counts(self):
+        manual = self.prepare()
+        image = b'\xff\xd8\xff\xd9'
+        (self.root / 'evidence').mkdir()
+        (self.root / 'evidence' / 'step.jpg').write_bytes(image)
+        manual['workflows'][0]['status'] = 'verified'
+        manual['workflows'][0]['stepIds'] = ['step-readme']
+        manual['steps'] = [{
+            'id': 'step-readme', 'workflowId': 'w-readme', 'order': 1,
+            'action': '打开项目文档', 'location': 'README',
+            'expectedResult': '显示项目功能说明', 'actualResult': '显示项目功能说明',
+            'source': 'observed', 'evidenceIds': ['evidence-readme'],
+        }]
+        manual['evidence'] = [{
+            'id': 'evidence-readme', 'stepIds': ['step-readme'],
+            'path': 'evidence/step.jpg', 'capturedAt': '2026-09-29T08:00:00Z',
+            'page': 'README', 'viewport': {'width': 800, 'height': 600},
+            'source': 'observed', 'sha256': hashlib.sha256(image).hexdigest(), 'redacted': True,
+        }]
+        atomic_json(self.manual_path, manual)
+        report = self.report()
+        self.assertEqual((report['verified'], report['planned'], report['coverageDisplay']), (1, 3, '1/3'))
+        self.assertEqual(report['scopeItems'][0]['coverageDisplay'], '1/3')
 
     def test_zero_workflow_denominator_is_not_applicable(self):
         self.inventory['workflows'] = []
