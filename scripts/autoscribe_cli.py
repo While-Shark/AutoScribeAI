@@ -7,6 +7,7 @@ from pathlib import Path
 
 from autoscribe.state import STAGES, initialize, load, resume, transition
 from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
+from autoscribe.evidence_images import prepare_screenshot
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
 
 
@@ -43,6 +44,13 @@ def main():
     coverage.add_argument('--config', required=True, type=Path)
     coverage.add_argument('--manual', required=True, type=Path)
     coverage.add_argument('--out', required=True, type=Path)
+    image = commands.add_parser('prepare-image')
+    image.add_argument('source', type=Path)
+    image.add_argument('output', type=Path)
+    image.add_argument('--crop', metavar='X,Y,W,H', help='归一化裁剪区域')
+    image.add_argument('--root', type=Path, help='证据路径的相对根目录，必须包含输出文件')
+    image.add_argument('--redact', action='append', default=[], metavar='X,Y,W,H', help='归一化打码框，可重复')
+    image.add_argument('--callout', action='append', default=[], metavar='X,Y', help='归一化目标标记，可重复，按参数顺序编号')
     args = parser.parse_args()
     try:
         if args.command == 'validate':
@@ -54,6 +62,19 @@ def main():
             result = {'valid': True, 'kind': args.kind}
         elif args.command == 'init':
             result = initialize(args.config, args.run_dir, read_json(args.host) if args.host else None)
+        elif args.command == 'prepare-image':
+            def coordinates(value, count):
+                try:
+                    parts = [float(part.strip()) for part in value.split(',')]
+                except ValueError:
+                    raise ValidationError('坐标须为逗号分隔的数字') from None
+                if len(parts) != count:
+                    raise ValidationError(f'该坐标需要 {count} 个数字')
+                return parts
+            result = prepare_screenshot(args.source, args.output,
+                [coordinates(value, 4) for value in args.redact],
+                [coordinates(value, 2) for value in args.callout], args.root,
+                coordinates(args.crop, 4) if args.crop else None)
         elif args.command == 'analyze':
             config = validate(read_json(args.config), 'project')
             inventory = read_json(args.inventory)
