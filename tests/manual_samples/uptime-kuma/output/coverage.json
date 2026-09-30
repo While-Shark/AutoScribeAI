@@ -11,76 +11,76 @@
     {
       "scope": "监控项配置",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "scope": "通知渠道设置",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "scope": "状态页管理",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     }
   ],
   "inventorySha256": "0d7ebd191373604cf3d8897108ac1727a08acf90f4eb3cfdf24debb2f8d5bd7d",
-  "manualSha256": "10f84d39156309417312ef3c891a7a77881e60346083719e07fc0c6bdda8f160",
+  "manualSha256": "18b1aa105914203fe9a49c26f1421b241ee035733e69813c1602700e209eee6e",
   "planned": 3,
-  "verified": 0,
+  "verified": 3,
   "blocked": 0,
-  "unverified": 3,
+  "unverified": 0,
   "pending": 0,
-  "coverage": 0.0,
-  "coverageDisplay": "0/3",
+  "coverage": 1.0,
+  "coverageDisplay": "3/3",
   "modules": [
     {
       "id": "monitoring",
       "name": "监控项配置",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "id": "notifications",
       "name": "通知渠道设置",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     },
     {
       "id": "status-pages",
       "name": "状态页管理",
       "planned": 1,
-      "verified": 0,
+      "verified": 1,
       "blocked": 0,
-      "unverified": 1,
+      "unverified": 0,
       "pending": 0,
-      "coverage": 0.0,
-      "coverageDisplay": "0/1"
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
     }
   ]
 }

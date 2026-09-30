@@ -1,8 +1,10 @@
 {
   "browser": {
-    "status": "unknown",
-    "provider": "not-probed",
-    "screenshot": false,
-    "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
-  }
+    "status": "available",
+    "provider": "cloud browser",
+    "screenshot": true,
+    "reason": "已通过浏览器实测官方演示实例；实例为临时环境并会自动过期。"
+  },
+  "terminal": true,
+  "files": true
 }

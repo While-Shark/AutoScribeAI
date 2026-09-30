@@ -1,88 +1,100 @@
 # AutoScribeAI
 
-让 AI 理解并操作软件，自动整理各模块的使用流程，生成有真实截图、可核验、可导出的操作手册。
+## 把软件的使用过程，变成看得懂、跟得上的图文手册
 
-> 当前阶段：M0 运行基础、M1 清单/覆盖与截图处理、M2 离线 HTML 与 M3 DOCX/Markdown 导出已实现。浏览器自动操作和真实截图采集仍待完成。
+给 AI 一个项目、一个可访问的演示环境和你想讲清楚的功能，让它按技能流程探索界面、记录操作、采集真实截图，再整理成可以阅读、编辑和分享的手册。
 
-安装与宿主要求见[安装指南](docs/INSTALLATION.md)。可用 `python scripts/package_skills.py` 生成保留完整运行目录的 Skills ZIP。
+**一次整理，同时交付离线网页、Word 和 Markdown。支持简体中文、英语、日语、韩语。**
 
-## 已确定的方向
+[查看真实样例](tests/manual_samples/README.md) · [开始使用](#开始使用) · [安装指南](docs/INSTALLATION.md)
 
-- 面向企业级项目及开源项目，围绕软件各模块的实际使用编写操作手册。
-- 以一套 Skills 交付，利用 AI 运行环境中的浏览器、终端及其他工具工作，无需额外部署常驻后端或数据库服务。
-- 使用真实操作截图解释步骤，兼顾功能入口、前置条件、操作过程和预期结果。
-- 以 HTML 作为主要阅读和交付界面，支持导出 Word（DOCX）和 Markdown。
-- 当前按 M0–M4 逐步开发；完整图文手册闭环仍在开发中。
+### 先看一次真实操作的结果
 
-## 预期使用方式
+我们用 Uptime Kuma 的官方临时演示实例，完成了创建 HTTP 监控、保存并关联通知配置、发布状态页三项流程。下面是状态页的真实截图：
 
-向支持该技能包的 AI 提供项目地址或源码，以及可用的演示环境、账号角色和手册范围。AI 检查工具能力后，分析模块、规划操作流程、探索界面、采集证据、生成手册并检查遗漏。
+![Uptime Kuma 状态页：测试监控运行正常](tests/manual_samples/uptime-kuma/screenshots/status-page-public.jpg)
 
-源码模式可以整理模块和候选流程，但没有可访问的运行界面时，不能声称已完成操作验证，也不能编造截图。浏览器模式只能覆盖当前账号可见、可操作的范围。源码与运行环境同时可用时，可以交叉检查遗漏。
+[查看完整图文样例](tests/manual_samples/uptime-kuma/README.md) · [下载 Word](tests/manual_samples/uptime-kuma/output/manual.docx) · [下载 Markdown 包](tests/manual_samples/uptime-kuma/output/manual-markdown.zip)
 
-“无需部署服务”指 AutoScribeAI 自身不需要独立常驻服务；AI 宿主仍需提供相应工具，目标项目也需要可访问。安装依赖、启动目标项目、登录及测试数据准备应按实际环境处理。
+通知使用占位 Webhook 地址，已验证保存和关联，尚未验证消息投递。演示实例的运行版本未与固定源码版本对齐；这些限制也保留在手册和质量报告中。
 
-## 开始使用（开发版）
+## 你会得到什么？
 
-需要 Python 3.10+，无需常驻服务或数据库。在仓库根目录执行：
+| 交付物 | 怎么用 |
+| --- | --- |
+| **离线 HTML 手册** | 在浏览器打开，按目录阅读、搜索内容、放大截图；也能下载 Word 和 Markdown 包 |
+| **Word 文档** | 截图内嵌，方便继续编辑、补充说明、交给客户或培训同事 |
+| **Markdown ZIP** | 包含正文和图片资源，便于放进项目文档、知识库或版本仓库 |
+| **覆盖与质量报告** | 看清哪些流程已经实测、哪些仍待验证，以及当前交付的限制 |
+
+手册围绕使用者的问题展开：**在哪里操作？需要先准备什么？每一步怎么做？完成后应该看到什么？**
+
+## 适合这些时候
+
+- **新同事入门**：把“我演示一遍”整理成能反复查看的操作说明。
+- **交付项目**：给使用者一份有步骤、有截图、可编辑的手册。
+- **维护开源项目**：从项目源码和可用界面整理功能说明，减少反复回答相同问题。
+- **更新培训材料**：重新检查指定流程，再更新对应章节和截图。
+- **面向不同语言的读者**：用中文、英文、日文或韩文交付同一套使用流程。
+
+## 开始使用
+
+### 1. 准备完整项目目录
+
+下载或克隆本仓库，保留完整目录。在仓库根目录安装依赖（Python 3.10+）：
 
 ```bash
 python -m pip install -r requirements.txt
-python scripts/autoscribe_cli.py validate project examples/project.json
-python scripts/autoscribe_cli.py init examples/project.json --run-dir runs/demo --host examples/host.json
-python scripts/autoscribe_cli.py status runs/demo
-python -m unittest discover -s tests -v
-# 生成未验证手册骨架和覆盖计划（示例清单仅作结构演示）
-python scripts/autoscribe_cli.py analyze --config examples/project.json --inventory examples/inventory.json --manual-out runs/demo/manual.json --plan-out runs/demo/coverage-plan.json
-python scripts/autoscribe_cli.py coverage --plan runs/demo/coverage-plan.json --inventory examples/inventory.json --config examples/project.json --manual runs/demo/manual.json --out runs/demo/coverage.json
-# 截图安全派生：脱敏后另存；按需要添加 --redact/--callout/--crop 参数
-python scripts/autoscribe_cli.py prepare-image /tmp/capture.png runs/demo/evidence/step-01.png --root runs/demo --redact 0.12,0.08,0.24,0.07 --callout 0.72,0.43
-# 输出离线 HTML 目录包
-python scripts/autoscribe_cli.py render-html --manual runs/demo/manual.json --coverage runs/demo/coverage.json --out-dir runs/demo/html
-# 也可单独导出 Word 或 Markdown ZIP
-python scripts/autoscribe_cli.py export-docx --manual runs/demo/manual.json --out runs/demo/manual.docx
-python scripts/autoscribe_cli.py export-markdown --manual runs/demo/manual.json --out-zip runs/demo/manual-markdown.zip
 ```
 
-示例只分析此仓库，不连接任何网站。实际使用时复制配置并填写项目来源、版本、角色、范围和允许动作；源码路径相对配置文件解析。已有任务使用 `resume`，不要重新初始化同一目录。
+需要可搬移的技能包时，执行：
 
-让 AI 从 [入口技能](skills/autoscribe-orchestrator/SKILL.md) 开始；五个技能共同引用根目录脚本、schemas 和 references，因此安装时须保留完整目录。可用打包脚本生成便携 ZIP；它不会自动安装到特定 AI 产品的全局技能目录。
+```bash
+python scripts/package_skills.py --output dist/autoscribeai-skills.zip
+```
 
-| 能力 | 状态 |
+### 2. 让 AI 读取入口技能
+
+在支持本地 Skills 的 AI 环境中，提供完整项目目录，并让它从 [`skills/autoscribe-orchestrator/SKILL.md`](skills/autoscribe-orchestrator/SKILL.md) 开始。不要只复制一个 `SKILL.md`，其他脚本和资源也需要保留。
+
+AI 环境需要终端和文件读写能力；要生成实测截图，还需要可用且已授权的浏览器与截图能力。AutoScribeAI 自身无需部署常驻服务，目标软件仍需要可以访问。
+
+### 3. 告诉 AI，你想为谁写什么
+
+可以从这样的任务开始，替换其中的项目和地址：
+
+> 请使用 AutoScribeAI，为我的项目生成一份面向普通使用者的简体中文操作手册。先读取入口技能。项目源码在［源码路径］，测试环境是［演示地址］，使用者角色是［角色］。范围包括创建监控、配置通知和发布状态页。允许在测试环境创建合成测试数据，请记录真实操作结果并采集截图。输出离线 HTML、Word 和 Markdown ZIP；无法验证的步骤请明确说明。
+
+需要日语或韩语时，把输出语言改为“日语”或“韩语”即可。登录凭据通过宿主的安全登录方式提供，不写进配置或手册。
+
+详细安装、宿主要求和命令行流程见[安装指南](docs/INSTALLATION.md)。
+
+## 三个项目，三种语言，直接看效果
+
+| 样例 | 语言 | 当前实测范围 | 查看 |
+| --- | --- | --- | --- |
+| **Uptime Kuma** | 简体中文 | 监控、通知配置、状态页，3/3 流程；通知投递未验证 | [手册与截图](tests/manual_samples/uptime-kuma/README.md) |
+| **changedetection.io** | 日本語 | 公开页面截图；功能流程 0/3，订阅入口阻碍继续验证 | [手册与截图](tests/manual_samples/changedetection/README.md) |
+| **IT Tools** | 한국어 | JSON→YAML 转换，1/3 流程；哈希和二维码未验证 | [手册与截图](tests/manual_samples/it-tools/README.md) |
+
+每份样例都保留了输入配置、截图、导出文件和质量报告，可以对照检查。[打开样例索引](tests/manual_samples/README.md)。
+
+## 关于当前版本
+
+AutoScribeAI 目前为开发版。项目分析、截图处理、离线 HTML、DOCX、Markdown 导出及四种语言模板已实现；真实浏览器操作由 AI 宿主提供，尚无通用的浏览器自动采集适配器。
+
+只有源码时，可以整理功能清单和候选流程；具备可访问的界面后，才能实际验证操作并采集截图。流程状态和截图证据会保留在输出中。质量报告中的 `ready: false` 表示仍有需要说明或处理的缺口，交付前请检查内容、截图及 Word 排版。
+
+其他语言可以由 AI 撰写正文，固定模板标签暂时回退为英语。
+
+## 想进一步了解或参与？
+
+| 入口 | 内容 |
 | --- | --- |
-| 配置、模型、ID/引用/截图摘要与路径校验 | 已实现 |
-| 能力预检、源码模式降级、原子状态、阶段级恢复 | 已实现 |
-| 候选清单导入、范围映射、模块/流程覆盖报告 | 已实现（M1 基础） |
-| 截图裁剪、打码、编号标注与 SHA-256 证据准备 | 已实现（需 AI/人工指定坐标） |
-| HTML 离线手册、目录搜索、图片放大、覆盖与质量报告 | 已实现 |
-| 有副作用动作的登记、恢复阻断与明确核查后重试 | 已实现（仍需遵守技能流程） |
-| 五个技能的职责和交接规范 | 已编写，完成源码模式试用 |
-| DOCX 导出（含内嵌截图、图注与页码） | 已实现；需视觉复核输出 |
-| Markdown ZIP 导出（相对图片资源） | 已实现 |
-| HTML 下载 DOCX 与 Markdown 包 | 已实现 |
-| 多语言手册（简体中文、英语、日语、韩语） | 已实现；其他语言正文可由 AI 撰写，模板标签回退英语 |
-| 浏览器自动探索、真实截图采集、目标应用端到端验证 | 待实现 |
-| 跨格式版式与章节一致性验收 | 进行中 |
+| [安装指南](docs/INSTALLATION.md) | 安装技能、准备环境、执行命令 |
+| [技术方案](docs/TECHNICAL_DESIGN.md) | 技能分工、内容模型和导出方案 |
+| [开发计划](docs/ROADMAP.md) | 当前进度与后续工作 |
+| [运行约定](references/RUN_PROTOCOL.md) | 任务恢复与操作记录 |
+| [证据约定](references/EVIDENCE.md) | 截图、脱敏与核验 |
 
-HTML 离线阅读包包含 index.html、evidence/、manual.json、coverage.json、quality-report.json、manual.docx 和 manual-markdown.zip。Markdown ZIP 中的图片使用相对路径；DOCX 图片内嵌。结构校验不证明截图真实或内容正确；交付前仍需检查截图、DOCX 页面和内容一致性。文本敏感信息检测属于启发式规则，仍需人工审阅。详见 [运行约定](references/RUN_PROTOCOL.md)、[证据约定](references/EVIDENCE.md) 和 [清单格式](references/INVENTORY.md)。
-
-## 文档入口
-
-| 文档 | 内容 |
-| --- | --- |
-| [技术方案](docs/TECHNICAL_DESIGN.md) | 技能分工、执行流程、证据结构、HTML 与导出方案、边界和质量检查 |
-| [开发任务](docs/ROADMAP.md) | 优先级、依赖、阶段交付、验收标准和当前状态 |
-
-## 设计原则
-
-1. 手册内容能够追溯到实际界面与操作证据；未知信息明确标注。
-2. 高内聚、低耦合；按清晰职责拆分，避免庞大的单文件和无意义的层级。
-3. 同一份结构化内容生成不同格式，避免 HTML、Word、Markdown 各自维护。
-4. 探索过程可暂停、可恢复；覆盖范围和阻塞原因可见。
-5. 不将测试账号密码、Cookie、令牌或未经脱敏的业务数据写入仓库或交付物。
-
-## 方案记录
-
-整理日期：2026-09-29。
-
-依据：用户当前指令及可恢复的前次讨论。用户提供的分享链接本次未能直接读取，因此这里不是原对话的逐字归档。五个 Skill 的拆分、结构化中间模型、阶段安排等属于待验证的实现方案；上文“已确定的方向”是需求约束。
+发现说明不清楚、截图缺失或步骤有误，欢迎提交 [Issue](https://github.com/While-Shark/AutoScribeAI/issues)，附上对应章节、运行环境和实际结果。反馈中请移除密码、令牌及业务敏感数据。

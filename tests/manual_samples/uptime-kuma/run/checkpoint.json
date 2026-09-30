@@ -1,10 +1,12 @@
 {
   "schemaVersion": "0.1",
   "runId": "run-bddda14a32c349c7afbe1d3f42e75da6",
-  "revision": 10,
+  "revision": 11,
   "nextStage": null,
   "completed": [
+    "preflight",
     "analyze",
+    "explore",
     "write",
     "export",
     "verify"

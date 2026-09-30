@@ -2,18 +2,21 @@
   "schemaVersion": "0.1",
   "projectId": "uptime-kuma",
   "projectVersion": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
-  "manualSha256": "10f84d39156309417312ef3c891a7a77881e60346083719e07fc0c6bdda8f160",
-  "coverageSha256": "d6fd713358d12a35fb9dcf10b94c71f004fb6d3f501cdefffb780ec3cfe6a48c",
+  "manualSha256": "18b1aa105914203fe9a49c26f1421b241ee035733e69813c1602700e209eee6e",
+  "coverageSha256": "ec0fedfa6b33e35953c114f2f0f38b576b5ea743a488ee0ab31932a52a867909",
   "workflowCount": 3,
-  "verified": 0,
+  "verified": 3,
   "blocked": 0,
-  "unverified": 3,
+  "unverified": 0,
   "pending": 0,
-  "evidenceCount": 0,
-  "copiedEvidenceCount": 0,
+  "evidenceCount": 6,
+  "copiedEvidenceCount": 6,
   "ready": false,
   "issues": [
-    "3 条流程未验证",
-    "这份手册固定到指定公开源码提交；三个监控功能流程均未在运行中的应用界面执行。仓库另附首次启动页面截图，但它不作为监控、通知或状态页流程的验证证据。菜单位置、字段和功能结果仍需在目标实例中确认。"
+    "3 条流程已验证",
+    "运行验证于 Uptime Kuma 官方临时演示实例 demo.kuma.pet，演示实例会自动过期；截图记录的是 2026-09-29 的会话。",
+    "手册源码引用固定到公开提交 e7420f8fa546a8baa7ac4bf9d10a32545d4346e0；演示站运行版本未单独核实，源码版本与演示实例版本可能不同。",
+    "通知流程只验证了 Webhook 配置保存及与监控项关联。接收地址使用 example.invalid 保留域，未点击“测试”，因此没有验证真实通知投递。",
+    "截图不包含密码或通知密钥。"
   ]
 }

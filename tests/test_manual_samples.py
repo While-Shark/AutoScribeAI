@@ -15,8 +15,8 @@ class ManualSampleTests(unittest.TestCase):
         samples = sorted(p for p in (ROOT / 'tests/manual_samples').iterdir() if p.is_dir())
         self.assertEqual({p.name for p in samples}, {'uptime-kuma', 'changedetection', 'it-tools'})
         expected_languages = {'uptime-kuma': 'zh-CN', 'changedetection': 'ja-JP', 'it-tools': 'ko-KR'}
-        expected_verified = {'uptime-kuma': 0, 'changedetection': 0, 'it-tools': 1}
-        expected_evidence = {'uptime-kuma': 0, 'changedetection': 1, 'it-tools': 1}
+        expected_verified = {'uptime-kuma': 3, 'changedetection': 0, 'it-tools': 1}
+        expected_evidence = {'uptime-kuma': 6, 'changedetection': 1, 'it-tools': 1}
         for sample in samples:
             with self.subTest(sample=sample.name):
                 config = read_json(sample / 'project.json')
@@ -44,7 +44,7 @@ class ManualSampleTests(unittest.TestCase):
                 self.assertFalse(quality['ready'])
                 self.assertEqual(quality['evidenceCount'], expected_evidence[sample.name])
                 self.assertEqual(quality['copiedEvidenceCount'], expected_evidence[sample.name])
-                self.assertEqual(manifest['stages']['explore']['status'], 'skipped')
+                self.assertEqual(manifest['stages']['explore']['status'], 'completed' if sample.name == 'uptime-kuma' else 'skipped')
                 self.assertEqual(manifest['stages']['export']['status'], 'completed')
                 self.assertEqual(manifest['stages']['verify']['status'], 'completed')
 
@@ -78,6 +78,12 @@ class ManualSampleTests(unittest.TestCase):
                     self.assertIn(f'src="evidence/{evidence["id"]}{path.suffix}"', html)
                     self.assertIn(evidence['id'], '\n'.join(image_assets))
 
+        uptime = ROOT / 'tests/manual_samples/uptime-kuma'
+        kuma_manual = read_json(uptime / 'run/manual.json')
+        self.assertEqual([w['status'] for w in kuma_manual['workflows']], ['verified', 'verified', 'verified'])
+        self.assertTrue(all(step['source'] == 'observed' and step.get('actualResult') and step['evidenceIds'] for step in kuma_manual['steps']))
+        self.assertTrue(any('example.invalid' in item for item in kuma_manual['limitations']))
+
         it_tools = ROOT / 'tests/manual_samples/it-tools'
         it_manual = read_json(it_tools / 'run/manual.json')
         self.assertEqual([w['status'] for w in it_manual['workflows']], ['verified', 'unverified', 'unverified'])
@@ -93,7 +99,7 @@ class ManualSampleTests(unittest.TestCase):
         self.assertEqual(cd_manual['evidence'][0]['page'], 'https://changedetection.io/')
 
         samples_readme = (ROOT / 'tests/manual_samples/README.md').read_text(encoding='utf-8')
-        self.assertIn('uptime-kuma/screenshots/uptime-kuma-initial-setup.jpg', samples_readme)
+        self.assertIn('uptime-kuma/screenshots/monitor-created-dashboard.jpg', samples_readme)
         self.assertIn('changedetection/screenshots/changedetection-public-homepage.jpg', samples_readme)
         self.assertIn('it-tools/output/evidence/ev-it-tools-json-yaml.jpg', samples_readme)
 

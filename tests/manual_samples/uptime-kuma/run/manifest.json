@@ -1,17 +1,17 @@
 {
   "schemaVersion": "0.1",
   "runId": "run-bddda14a32c349c7afbe1d3f42e75da6",
-  "revision": 10,
+  "revision": 11,
   "createdAt": "2026-09-29T10:38:03.049423+00:00",
-  "updatedAt": "2026-09-29T10:40:12.279800+00:00",
-  "configHash": "04d2d28bc1b11db31eb97a9ecc01fba6bbe2ccd2f46058de52de0902f4b7c397",
+  "updatedAt": "2026-09-29T14:16:11+00:00",
+  "configHash": "d26ec8f97cd52af84e4e3212b6b361f8f19d999f8e3afe0c55c581d80f72b9db",
   "config": {
     "schemaVersion": "0.1",
     "project": {
       "id": "uptime-kuma",
       "name": "Uptime Kuma",
       "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
-      "environment": "GitHub 源码快照 e7420f8fa546"
+      "environment": "Uptime Kuma 官方演示实例 demo.kuma.pet（2026-09-29；临时环境）"
     },
     "source": {
       "url": "https://github.com/louislam/uptime-kuma"
@@ -31,39 +31,41 @@
       "markdown"
     ],
     "allowedActions": [
-      "read"
+      "read",
+      "create-test-data",
+      "update-test-data",
+      "publish"
     ],
-    "testDataPolicy": "仅分析公开源码；未访问目标应用，不创建、修改或删除业务数据。"
+    "testDataPolicy": "仅在官方短时演示实例中使用合成测试数据；不使用真实通知凭据、不发送通知测试、不保留生产数据。"
   },
   "capabilities": {
     "terminal": true,
     "files": true,
     "sourceReadable": false,
     "browser": {
-      "status": "unknown",
-      "provider": "not-probed",
-      "screenshot": false,
-      "reason": "本样例仅分析固定版本的公开源码，未启动目标应用或连接浏览器。"
+      "status": "available",
+      "provider": "cloud browser",
+      "screenshot": true,
+      "reason": "已通过浏览器实测官方演示实例；实例为临时环境并会自动过期。"
     },
-    "canExplore": false,
-    "mode": "blocked",
+    "canExplore": true,
+    "mode": "interactive",
     "docxDependency": true,
     "exportersImplemented": true,
     "limitations": [
-      "不能验证界面：缺少目标 URL 或宿主确认的浏览器/截图能力"
+      "官方演示实例自动过期，运行版本未单独核实是否与固定源码提交一致。",
+      "通知配置使用 .invalid 占位目标，未测试实际消息投递。"
     ]
   },
   "stages": {
     "preflight": {
-      "status": "skipped",
-      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+      "status": "completed"
     },
     "analyze": {
       "status": "completed"
     },
     "explore": {
-      "status": "skipped",
-      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+      "status": "completed"
     },
     "write": {
       "status": "completed"
@@ -78,65 +80,81 @@
   "events": [
     {
       "stage": "preflight",
-      "from": "blocked",
-      "to": "skipped",
-      "at": "2026-09-29T10:38:03.199109+00:00",
-      "reason": "已从 GitHub 固定提交读取并分析公开源码；本地未克隆完整仓库，目标应用和浏览器未启动。"
+      "from": "pending",
+      "to": "running",
+      "at": "2026-09-29T14:15:59+00:00"
+    },
+    {
+      "stage": "preflight",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T14:16:00+00:00",
+      "reason": "浏览器与本地证据目录可用"
     },
     {
       "stage": "analyze",
       "from": "pending",
       "to": "running",
-      "at": "2026-09-29T10:38:03.343547+00:00"
+      "at": "2026-09-29T14:16:01+00:00"
     },
     {
       "stage": "analyze",
       "from": "running",
       "to": "completed",
-      "at": "2026-09-29T10:38:03.654506+00:00"
+      "at": "2026-09-29T14:16:02+00:00",
+      "reason": "源码范围与三项流程已整理"
     },
     {
       "stage": "explore",
       "from": "pending",
-      "to": "skipped",
-      "at": "2026-09-29T10:38:03.840608+00:00",
-      "reason": "仅依据固定版本公开源码编写；未在目标界面执行流程或采集截图。"
+      "to": "running",
+      "at": "2026-09-29T14:16:03+00:00"
+    },
+    {
+      "stage": "explore",
+      "from": "running",
+      "to": "completed",
+      "at": "2026-09-29T14:16:04+00:00",
+      "reason": "已在官方演示环境走通监控、通知配置和状态页"
     },
     {
       "stage": "write",
       "from": "pending",
       "to": "running",
-      "at": "2026-09-29T10:38:04.019852+00:00"
+      "at": "2026-09-29T14:16:05+00:00"
     },
     {
       "stage": "write",
       "from": "running",
       "to": "completed",
-      "at": "2026-09-29T10:38:07.194144+00:00"
+      "at": "2026-09-29T14:16:06+00:00",
+      "reason": "已记录六份实测截图及流程结果"
     },
     {
       "stage": "export",
       "from": "pending",
       "to": "running",
-      "at": "2026-09-29T10:38:07.528852+00:00"
+      "at": "2026-09-29T14:16:07+00:00"
     },
     {
       "stage": "export",
       "from": "running",
       "to": "completed",
-      "at": "2026-09-29T10:39:05.366695+00:00"
+      "at": "2026-09-29T14:16:08+00:00",
+      "reason": "HTML、DOCX、Markdown ZIP 和覆盖报告已重新生成"
     },
     {
       "stage": "verify",
       "from": "pending",
       "to": "running",
-      "at": "2026-09-29T10:40:12.099080+00:00"
+      "at": "2026-09-29T14:16:09+00:00"
     },
     {
       "stage": "verify",
       "from": "running",
       "to": "completed",
-      "at": "2026-09-29T10:40:12.279785+00:00"
+      "at": "2026-09-29T14:16:10+00:00",
+      "reason": "结构验证和 75 项测试通过"
     }
   ]
 }
