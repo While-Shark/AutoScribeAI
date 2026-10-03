@@ -177,9 +177,12 @@ def build_docx(manual, asset_root, output_path):
         doc.save(output_path)
 
 
-def render_docx(manual_path, out_docx):
+def render_docx(manual_path, out_docx, role=None):
     manual_path, out_docx = Path(manual_path), Path(out_docx)
     manual = validate_manual(read_json(manual_path), manual_path.parent)
+    if role:
+        from .role_view import for_role
+        manual = validate_manual(for_role(manual, role), manual_path.parent)
     if out_docx.exists() or out_docx.is_symlink():
         raise ValidationError('DOCX 输出文件已存在；请使用新的路径，避免覆盖用户文件')
     out_docx.parent.mkdir(parents=True, exist_ok=True)

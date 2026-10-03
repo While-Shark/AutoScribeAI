@@ -30,6 +30,7 @@ Live Demo에는 실제 프로젝트 3개가 포함되어 있습니다.
 - **Word / DOCX**
 - **Markdown**
 - **Coverage / Quality report**
+- **검토 도구**: 역할별 보기, 중단된 작업 재개, 버전 변경 검토, 결과물 링크 검사.
 
 실제 조작 결과와 증거가 없는 워크플로는 verified로 표시되지 않습니다.
 

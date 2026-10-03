@@ -13,7 +13,7 @@ python scripts/autoscribe_cli.py resume runs/demo --config examples/project.json
 python scripts/autoscribe_cli.py status runs/demo
 ```
 
-`source.path` 相对配置文件解析；初始化时转换为绝对路径。目标版本在 project.version 中填写提交 SHA/产品版本；当前不会自动探测代码或线上部署版本，恢复者必须核对。未填写版本时尤须人工复核。
+`source.path` 相对配置文件解析；初始化时转换为绝对路径。目标版本在 project.version 中填写提交 SHA/产品版本；当前不会自动探测代码或线上部署版本，恢复者必须核对。未填写版本时尤须人工复核。分析完成后运行 `plan-summary runs/demo/coverage-plan.json` 检查范围、角色与目标流程。
 
 `host.json` 由宿主观察实际工具后填写。available 表示当前可使用的工具，不代表已登录、目标可达或拥有指定角色。未声明或 resume 时没有重新提供 host，浏览器恢复为 unknown。终端/文件能力由脚本实际执行和临时写入检查；docxDependency 只表示依赖存在，不代表导出实现可用。
 
@@ -32,7 +32,16 @@ manifest.json 是唯一权威状态；checkpoint.json 是可修复投影。每�
 
 进入 running 前，前置阶段必须 completed 或 skipped。blocked、failed、skipped 必须有原因。跳过允许降级，但不等于验收通过。阶段 completed 是调用者检查产物后的声明；M0 不强制检查各阶段产物，尚无自动执行引擎。
 
-resume 将中断的 running 改为 blocked，返回复核清单；它不会调用浏览器或重放任何操作。对登录、目标版本、截图有效性和有副作用操作，宿主必须自行复核。仅实现阶段级恢复，步骤级幂等和执行日志在 T12 中实现。
+resume 将中断的 running 阶段和 `workflow-progress.json` 中进行中的流程改为 blocked，返回复核清单；它不会调用浏览器或重放任何操作。对登录、目标版本、截图有效性和有副作用操作，宿主必须自行复核。流程进度 completed 仅表示操作者记录了结论；手册 verified 仍需实际结果与截图证据。
+
+```bash
+python scripts/autoscribe_cli.py workflow-progress runs/demo --workflow w-example --status running --note "开始核对界面"
+python scripts/autoscribe_cli.py workflow-progress runs/demo --workflow w-example --status completed --note "已核对结果与截图"
+python scripts/autoscribe_cli.py workflow-progress runs/demo
+python scripts/autoscribe_cli.py diff-manuals old/manual.json new/manual.json
+```
+
+版本变化时 `diff-manuals` 将全部当前流程列入复核清单；内容和截图摘要变化会列出具体差异。旧证据不会自动当作新版证据。
 
 `.state.lock` 拒绝并发写入。进程被强杀时可能遗留锁；确认没有写入进程后才人工移除。不要根据时间自动删除锁。
 
@@ -57,3 +66,5 @@ python scripts/autoscribe_cli.py action-resolve runs/demo <action-id> --result c
 只有 `explore=running` 时才能登记动作。`resume` 会把仍在 begun 状态的动作转成 blocked。blocked、begun、completed 状态均不可重复启动。只有在目标系统核实“完全没有执行”并写出原因后，使用 `action-resolve --result not-applied --reason ...`，此时才允许同一动作再试一次。结果不明确时标记 uncertain/blocked 并人工处理；恢复后的完成结果也要提供核查依据。
 
 此日志不能感知绕开 CLI 的浏览器操作。探索技能必须遵循先登记后操作；已登记不等于允许执行。只读动作不需登记。强杀进程可能留 `.actions.lock`，确认没有其他写入者后才手工移除。
+
+`test-data-report runs/demo` 根据成功的创建与删除动作列出尚待清理的测试对象；它不执行删除，也无法识别绕过动作日志的操作。

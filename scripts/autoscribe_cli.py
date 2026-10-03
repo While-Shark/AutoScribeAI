@@ -6,9 +6,12 @@ import sys
 from pathlib import Path
 
 from autoscribe.state import STAGES, initialize, load, resume, transition
-from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
+from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual, plan_summary
 from autoscribe.evidence_images import prepare_screenshot
-from autoscribe.actions import begin_action, load_actions, resolve_action
+from autoscribe.actions import begin_action, load_actions, resolve_action, test_data_report
+from autoscribe.progress import read_progress, update_progress
+from autoscribe.diff import compare_manuals
+from autoscribe.audit import audit_package
 from autoscribe.html_renderer import render_html
 from autoscribe.docx_renderer import render_docx
 from autoscribe.markdown_renderer import render_markdown_zip
@@ -19,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description='AutoScribeAI 无服务运行基础工具')
     commands = parser.add_subparsers(dest='command', required=True)
     check = commands.add_parser('validate')
-    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint', 'inventory', 'coverage-plan', 'coverage', 'actions', 'quality-report'))
+    check.add_argument('kind', choices=('project', 'manual', 'host', 'manifest', 'checkpoint', 'inventory', 'coverage-plan', 'coverage', 'actions', 'quality-report', 'workflow-progress'))
     check.add_argument('file', type=Path)
     check.add_argument('--root', type=Path, help='手册资源根目录，默认为 JSON 所在目录')
     init = commands.add_parser('init')
@@ -48,6 +51,8 @@ def main():
     coverage.add_argument('--config', required=True, type=Path)
     coverage.add_argument('--manual', required=True, type=Path)
     coverage.add_argument('--out', required=True, type=Path)
+    preview = commands.add_parser('plan-summary')
+    preview.add_argument('plan', type=Path)
     image = commands.add_parser('prepare-image')
     image.add_argument('source', type=Path)
     image.add_argument('output', type=Path)
@@ -62,9 +67,11 @@ def main():
     docx = commands.add_parser('export-docx')
     docx.add_argument('--manual', required=True, type=Path)
     docx.add_argument('--out', required=True, type=Path)
+    docx.add_argument('--role', help='只导出指定角色的流程')
     markdown = commands.add_parser('export-markdown')
     markdown.add_argument('--manual', required=True, type=Path)
     markdown.add_argument('--out-zip', required=True, type=Path)
+    markdown.add_argument('--role', help='只导出指定角色的流程')
     action = commands.add_parser('action-begin')
     action.add_argument('run_dir', type=Path)
     action.add_argument('--workflow', required=True)
@@ -73,11 +80,26 @@ def main():
     action.add_argument('--target', required=True, help='非敏感目标引用；不写账号或业务载荷')
     action_status = commands.add_parser('action-status')
     action_status.add_argument('run_dir', type=Path)
+    cleanup = commands.add_parser('test-data-report')
+    cleanup.add_argument('run_dir', type=Path)
     resolve = commands.add_parser('action-resolve')
     resolve.add_argument('run_dir', type=Path)
     resolve.add_argument('action_id')
     resolve.add_argument('--result', required=True, choices=('completed', 'not-applied', 'uncertain'))
     resolve.add_argument('--reason')
+    progress = commands.add_parser('workflow-progress')
+    progress.add_argument('run_dir', type=Path)
+    progress.add_argument('--workflow')
+    progress.add_argument('--status', choices=('running', 'blocked', 'completed'))
+    progress.add_argument('--note')
+    compare = commands.add_parser('diff-manuals')
+    compare.add_argument('old', type=Path)
+    compare.add_argument('new', type=Path)
+    audit = commands.add_parser('audit')
+    audit.add_argument('--manual', required=True, type=Path)
+    audit.add_argument('--coverage', required=True, type=Path)
+    audit.add_argument('--package', required=True, type=Path)
+    audit.add_argument('--out', required=True, type=Path)
     args = parser.parse_args()
     try:
         if args.command == 'validate':
@@ -92,15 +114,25 @@ def main():
         elif args.command == 'render-html':
             result = render_html(args.manual, args.coverage, args.out_dir)
         elif args.command == 'export-docx':
-            result = render_docx(args.manual, args.out)
+            result = render_docx(args.manual, args.out, args.role)
         elif args.command == 'export-markdown':
-            result = render_markdown_zip(args.manual, args.out_zip)
+            result = render_markdown_zip(args.manual, args.out_zip, args.role)
         elif args.command == 'action-begin':
             result = begin_action(args.run_dir, args.workflow, args.step, args.operation, args.target)
         elif args.command == 'action-status':
             result = load_actions(args.run_dir)
+        elif args.command == 'test-data-report':
+            result = test_data_report(args.run_dir)
         elif args.command == 'action-resolve':
             result = resolve_action(args.run_dir, args.action_id, args.result, args.reason)
+        elif args.command == 'workflow-progress':
+            if bool(args.workflow) != bool(args.status) or (args.workflow and not args.note):
+                raise ValidationError('更新流程进度须同时提供 --workflow、--status 和 --note')
+            result = update_progress(args.run_dir, args.workflow, args.status, args.note) if args.workflow else read_progress(args.run_dir)
+        elif args.command == 'diff-manuals':
+            result = compare_manuals(args.old, args.new)
+        elif args.command == 'audit':
+            result = audit_package(args.manual, args.coverage, args.package, args.out)
         elif args.command == 'prepare-image':
             def coordinates(value, count):
                 try:
@@ -128,6 +160,8 @@ def main():
             result = {'manual': str(args.manual_out), 'coveragePlan': str(args.plan_out), 'plannedWorkflows': len(plan['workflows']), 'verified': 0}
         elif args.command == 'coverage':
             result = coverage_report(args.plan, args.inventory, args.config, args.manual, args.out)
+        elif args.command == 'plan-summary':
+            result = plan_summary(args.plan)
         elif args.command == 'resume':
             result = resume(args.run_dir, args.config, read_json(args.host) if args.host else None)
         elif args.command == 'stage':

@@ -110,6 +110,19 @@ def create_coverage_plan(inventory_path, config_path, plan_path):
     return plan
 
 
+def plan_summary(plan_path):
+    """Present a reviewable task list before browser exploration."""
+    plan = validate(read_json(plan_path), 'coverage-plan')
+    by_role = {}
+    for workflow in plan['workflows']:
+        by_role.setdefault(workflow['role'], []).append({'id': workflow['id'], 'goal': workflow['goal']})
+    return {'projectId': plan['projectId'], 'projectVersion': plan['projectVersion'],
+            'scope': [{'name': item['scope'], 'workflowIds': item['workflowIds'],
+                       'reason': item.get('reason')} for item in plan['scopeItems']],
+            'roles': by_role, 'plannedWorkflows': len(plan['workflows']),
+            'note': '开始操作前核对范围与角色；截图数量由实际步骤决定。'}
+
+
 def coverage_report(plan_path, inventory_path, config_path, manual_path, output_path):
     plan_path, inventory_path, config_path, manual_path, output_path = map(Path, (plan_path, inventory_path, config_path, manual_path, output_path))
     plan = validate(read_json(plan_path), 'coverage-plan')

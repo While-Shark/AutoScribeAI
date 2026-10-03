@@ -90,9 +90,12 @@ def render_markdown(manual, asset_prefix="assets"):
     return "\n".join(lines)
 
 
-def render_markdown_zip(manual_path, out_zip):
+def render_markdown_zip(manual_path, out_zip, role=None):
     manual_path, out_zip = Path(manual_path), Path(out_zip)
     manual = validate_manual(read_json(manual_path), manual_path.parent)
+    if role:
+        from .role_view import for_role
+        manual = validate_manual(for_role(manual, role), manual_path.parent)
     if out_zip.exists() or out_zip.is_symlink():
         raise ValidationError('Markdown ZIP 输出文件已存在；请使用新的路径，避免覆盖用户文件')
     out_zip.parent.mkdir(parents=True, exist_ok=True)
