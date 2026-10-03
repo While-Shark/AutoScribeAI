@@ -152,6 +152,15 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, '角色'):
             inventory_to_manual(self.inventory, self.config)
 
+    def test_missing_language_defaults_to_english(self):
+        config = copy.deepcopy(self.config)
+        config.pop('language')
+        validate(config, 'project')
+        manual = inventory_to_manual(self.inventory, config)
+        self.assertEqual(manual['project']['language'], 'en-US')
+        self.assertEqual(manual['title'], 'Example Project User Manual')
+        self.assertIn('Not yet executed and verified', manual['workflows'][0]['reason'])
+
     def test_cli_end_to_end(self):
         subprocess = __import__('subprocess')
         import sys
