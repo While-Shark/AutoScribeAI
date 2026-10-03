@@ -95,6 +95,9 @@ class ImprovementTests(unittest.TestCase):
         page.write_text(page.read_text() + '<a href="missing.html">broken</a>')
         bad = audit_package(manual_path, coverage_path, package, self.root / 'audit.json')
         self.assertIn('broken-link', {item['code'] for item in bad['findings']})
+        page.write_bytes(b'\xff\xfe')
+        corrupt = audit_package(manual_path, coverage_path, package, self.root / 'audit.json')
+        self.assertIn('invalid-html', {item['code'] for item in corrupt['findings']})
 
     def test_cleanup_report_only_counts_confirmed_deletes(self):
         run = self.root / 'run'
@@ -109,11 +112,16 @@ class ImprovementTests(unittest.TestCase):
         manual['roles'].append('admin')
         manual['features'][0]['roles'].append('admin')
         manual['workflows'][0]['role'] = 'admin'
+        manual['chapters'][0]['faqs'] = [
+            {'question': 'General question', 'answer': 'For all roles', 'source': 'human'},
+            {'question': 'Admin question', 'answer': 'Admin answer', 'source': 'human', 'workflowIds': ['w-readme']},
+        ]
         projected = for_role(manual, 'admin')
         validate_manual(projected, self.root)
         self.assertEqual(projected['roles'], ['admin'])
         self.assertEqual([w['id'] for w in projected['workflows']], ['w-readme'])
         self.assertEqual(len(projected['features']), 1)
+        self.assertEqual(len(projected['chapters'][0]['faqs']), 2)
         path = self.root / 'manual.json'
         atomic_json(path, manual)
         render_docx(path, self.root / 'admin.docx', role='admin')
@@ -122,11 +130,30 @@ class ImprovementTests(unittest.TestCase):
         from zipfile import ZipFile
         text = '\n'.join(p.text for p in Document(self.root / 'admin.docx').paragraphs)
         self.assertIn(manual['workflows'][0]['goal'], text)
+        self.assertIn('General question', text)
         self.assertNotIn(manual['workflows'][1]['goal'], text)
         with ZipFile(self.root / 'admin.zip') as archive:
             markdown = archive.read('README.md').decode()
         self.assertIn(manual['workflows'][0]['goal'], markdown)
+        self.assertIn('General question', markdown)
         self.assertNotIn(manual['workflows'][1]['goal'], markdown)
+
+    def test_html_marks_faq_workflow_scope_for_role_filter(self):
+        manual = inventory_to_manual(read_json(self.inventory_path), self.config)
+        manual['chapters'][0]['faqs'] = [
+            {'question': 'General question', 'answer': 'For all roles', 'source': 'human'},
+            {'question': 'Related question', 'answer': 'Only this workflow', 'source': 'human', 'workflowIds': ['w-readme']},
+        ]
+        manual_path = self.root / 'manual.json'
+        atomic_json(manual_path, manual)
+        plan, coverage, package = self.root / 'plan.json', self.root / 'coverage.json', self.root / 'html'
+        create_coverage_plan(self.inventory_path, self.config_path, plan)
+        coverage_report(plan, self.inventory_path, self.config_path, manual_path, coverage)
+        render_html(manual_path, coverage, package)
+        html = (package / 'index.html').read_text()
+        self.assertIn('data-workflows="w-readme"', html)
+        self.assertIn('data-workflows=""', html)
+        self.assertIn("refs.every(id=>document.getElementById('workflow-'+id)?.dataset.role===role.value)", html)
 
 
 if __name__ == '__main__':

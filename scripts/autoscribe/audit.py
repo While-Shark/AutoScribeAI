@@ -52,7 +52,13 @@ def audit_package(manual_path, coverage_path, package_dir, output_path):
         issue('missing-html', 'index.html')
     else:
         links = Links()
-        links.feed(html_file.read_text(encoding='utf-8'))
+        try:
+            html_text = html_file.read_text(encoding='utf-8')
+            links.feed(html_text)
+            if '<html' not in html_text.lower() or '</html>' not in html_text.lower():
+                issue('invalid-html', 'index.html')
+        except (UnicodeError, OSError, ValueError):
+            issue('invalid-html', 'index.html')
         for link in links.links:
             parsed = urlsplit(link)
             if parsed.scheme or parsed.netloc:

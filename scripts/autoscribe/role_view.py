@@ -31,8 +31,8 @@ def for_role(manual, role):
             continue
         item = deepcopy(chapter)
         item['workflowIds'] = relevant
-        item['faqs'] = [{**faq, 'workflowIds': list(faq['workflowIds'])}
-                        for faq in chapter.get('faqs', []) if faq.get('workflowIds') and set(faq['workflowIds']) <= workflow_ids]
+        item['faqs'] = [deepcopy(faq) for faq in chapter.get('faqs', [])
+                        if not faq.get('workflowIds') or set(faq['workflowIds']) <= workflow_ids]
         result['chapters'].append(item)
     result['title'] = f"{manual['title']} · {role}"
     return result
