@@ -1,10 +1,14 @@
 """Exercise interruption, change review and package integrity on real artifacts."""
 import copy
+import hashlib
 import json
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
+
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -98,6 +102,57 @@ class ImprovementTests(unittest.TestCase):
         page.write_bytes(b'\xff\xfe')
         corrupt = audit_package(manual_path, coverage_path, package, self.root / 'audit.json')
         self.assertIn('invalid-html', {item['code'] for item in corrupt['findings']})
+
+    def test_audit_detects_changed_evidence_and_missing_content(self):
+        manual = inventory_to_manual(read_json(self.inventory_path), self.config)
+        image_path = self.root / 'evidence' / 'screen.png'
+        image_path.parent.mkdir()
+        Image.new('RGB', (96, 64), (220, 230, 240)).save(image_path)
+        workflow = manual['workflows'][0]
+        workflow.update(status='verified', stepIds=['step-screen'])
+        manual['steps'] = [{'id': 'step-screen', 'workflowId': workflow['id'], 'order': 1,
+                            'action': 'Open the page', 'location': 'Menu', 'expectedResult': 'Page opens',
+                            'actualResult': 'Page opened', 'source': 'observed', 'evidenceIds': ['ev-screen']}]
+        manual['evidence'] = [{'id': 'ev-screen', 'stepIds': ['step-screen'], 'path': 'evidence/screen.png',
+                               'capturedAt': '2026-10-03T00:00:00Z', 'page': 'Example page',
+                               'viewport': {'width': 96, 'height': 64}, 'source': 'observed',
+                               'sha256': hashlib.sha256(image_path.read_bytes()).hexdigest(), 'redacted': False}]
+        manual_path = self.root / 'manual.json'
+        atomic_json(manual_path, manual)
+        plan, coverage, package = self.root / 'plan.json', self.root / 'coverage.json', self.root / 'html'
+        create_coverage_plan(self.inventory_path, self.config_path, plan)
+        coverage_report(plan, self.inventory_path, self.config_path, manual_path, coverage)
+        render_html(manual_path, coverage, package)
+
+        copied = package / 'evidence' / 'ev-screen.png'
+        Image.new('RGB', (96, 64), (10, 20, 30)).save(copied)
+        html = package / 'index.html'
+        html.write_text(html.read_text().replace(workflow['goal'], 'Removed heading'))
+        (package / 'manual.json').write_text('{}')
+        quality = read_json(package / 'quality-report.json')
+        quality['manualSha256'] = '0' * 64
+        atomic_json(package / 'quality-report.json', quality)
+        from docx import Document
+        docx = package / 'manual.docx'
+        document = Document(docx)
+        for paragraph in document.paragraphs:
+            if workflow['goal'] == paragraph.text:
+                paragraph.text = 'Removed heading'
+        document.save(docx)
+        markdown_zip = package / 'manual-markdown.zip'
+        with zipfile.ZipFile(markdown_zip) as archive:
+            contents = {name: archive.read(name) for name in archive.namelist()}
+        contents['README.md'] = contents['README.md'].replace(workflow['goal'].encode(), b'Removed heading')
+        contents['assets/ev-screen.png'] = b'changed image'
+        with zipfile.ZipFile(markdown_zip, 'w') as archive:
+            for name, data in contents.items():
+                archive.writestr(name, data)
+        result = audit_package(manual_path, coverage, package, self.root / 'audit.json')
+        codes = {item['code'] for item in result['findings']}
+        self.assertFalse(result['mechanicalChecksPassed'])
+        self.assertTrue({'changed-copied-evidence', 'changed-package-file', 'stale-quality-report',
+                         'missing-html-content', 'missing-docx-content', 'missing-markdown-content',
+                         'changed-markdown-evidence'} <= codes)
 
     def test_cleanup_report_only_counts_confirmed_deletes(self):
         run = self.root / 'run'
