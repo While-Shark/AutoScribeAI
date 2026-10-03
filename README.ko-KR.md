@@ -44,21 +44,21 @@ python -m pip install -r requirements.txt
 이 디렉터리에서 AI Agent를 실행하고 다음과 같이 요청합니다.
 
 ```text
-Read skills/autoscribe-orchestrator/SKILL.md and use AutoScribeAI
+Read skills/autoscribe/SKILL.md and use AutoScribeAI
 to generate a complete illustrated user manual.
 ```
 
 <details>
 <summary><strong>Codex</strong></summary>
 
-AutoScribeAI 루트에서 `codex`를 실행하고 `skills/autoscribe-orchestrator/SKILL.md`를 읽도록 요청합니다.
+AutoScribeAI 루트에서 `codex`를 실행하고 `skills/autoscribe/SKILL.md`를 읽도록 요청합니다.
 
 </details>
 
 <details>
 <summary><strong>Claude Code</strong></summary>
 
-AutoScribeAI 루트에서 `claude`를 실행하고 orchestrator Skill을 읽도록 요청합니다.
+AutoScribeAI 루트에서 `claude`를 실행하고 autoscribe Skill을 읽도록 요청합니다.
 
 Claude Code는 native Skills를 지원하지만 AutoScribeAI는 공용 scripts / schemas / references를 사용하므로 전체 저장소를 유지하는 방식이 가장 단순합니다.
 
@@ -67,21 +67,21 @@ Claude Code는 native Skills를 지원하지만 AutoScribeAI는 공용 scripts /
 <details>
 <summary><strong>Pi</strong></summary>
 
-AutoScribeAI 루트에서 Pi를 실행하고 `skills/autoscribe-orchestrator/SKILL.md`를 읽게 합니다. Pi는 Agent Skills / `SKILL.md`를 지원합니다.
+AutoScribeAI 루트에서 Pi를 실행하고 `skills/autoscribe/SKILL.md`를 읽게 합니다. Pi는 Agent Skills / `SKILL.md`를 지원합니다.
 
 </details>
 
 <details>
 <summary><strong>Agy / Google Antigravity</strong></summary>
 
-AutoScribeAI 루트에서 `agy`를 실행하고 orchestrator Skill을 읽게 합니다. Antigravity는 Agent Skills를 네이티브 지원합니다.
+AutoScribeAI 루트에서 `agy`를 실행하고 autoscribe Skill을 읽게 합니다. Antigravity는 Agent Skills를 네이티브 지원합니다.
 
 </details>
 
 <details>
 <summary><strong>OpenCode</strong></summary>
 
-AutoScribeAI 루트에서 OpenCode를 실행하고 orchestrator Skill을 읽게 합니다. OpenCode는 `SKILL.md` 및 Agent Skills를 지원합니다.
+AutoScribeAI 루트에서 OpenCode를 실행하고 autoscribe Skill을 읽게 합니다. OpenCode는 `SKILL.md` 및 Agent Skills를 지원합니다.
 
 </details>
 
@@ -90,7 +90,7 @@ AutoScribeAI 루트에서 OpenCode를 실행하고 orchestrator Skill을 읽게 
 
 Cursor, Cline, Roo Code, Gemini CLI 등도 파일 읽기와 명령 실행이 가능하면 사용할 수 있습니다.
 
-전체 AutoScribeAI 디렉터리를 워크스페이스로 열고 orchestrator Skill을 읽도록 요청하면 됩니다.
+전체 AutoScribeAI 디렉터리를 워크스페이스로 열고 autoscribe Skill을 읽도록 요청하면 됩니다.
 
 </details>
 
