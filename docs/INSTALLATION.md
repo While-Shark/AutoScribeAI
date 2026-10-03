@@ -41,7 +41,7 @@ HTML、截图和 Markdown ZIP 使用 Pillow 与标准库；Word 导出还需要 
 
 ## 让 AI 使用技能
 
-把 `AutoScribeAI/skills/` 下的五个技能目录提供给支持本地 Skills 的 AI 宿主，并在说明中指出完整仓库根目录路径。若宿主只支持单文件技能导入，先保留整个 `AutoScribeAI/` 目录可供 AI 和终端访问，再在任务中要求它从 `skills/autoscribe-orchestrator/SKILL.md` 开始；其余四个技能作为专项流程按需读取。
+把 `AutoScribeAI/skills/` 下的五个技能目录提供给支持本地 Skills 的 AI 宿主，并在说明中指出完整仓库根目录路径。若宿主只支持单文件技能导入，先保留整个 `AutoScribeAI/` 目录可供 AI 和终端访问，再在任务中要求它从 `skills/autoscribe/SKILL.md` 开始；其余四个技能作为专项流程按需读取。
 
 项目配置中的 `language` 决定手册正文及导出模板的语言；省略该字段时默认使用 `en-US`。当前内置模板支持 `en-US`（英语，默认）、`zh-CN`（简体中文）、`ja-JP`（日语）和 `ko-KR`（韩语）；`zh`、`en`、`ja`、`ko` 等语言前缀也会自动匹配。其他 BCP-47 语言代码仍可用于 AI 撰写正文，固定模板标签暂时回退为英语。菜单、按钮等产品原始名称建议保留，并用目标语言解释。
 
