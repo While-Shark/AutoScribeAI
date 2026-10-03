@@ -181,9 +181,9 @@ CATALOGS = {
 
 
 def locale_for(language):
-    """Return a bundled locale; legacy manuals without a locale stay Chinese."""
+    """Return a bundled locale; omitted locales default to English."""
     if not language:
-        return 'zh-CN'
+        return 'en-US'
     normalized = str(language).replace('_', '-').lower()
     if normalized == 'zh' or normalized.startswith('zh-'):
         return 'zh-CN'
