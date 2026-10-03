@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="AutoScribeAI demo gallery: real software workflows turned into evidence-backed HTML, Word and Markdown manuals.">
+  <meta name="color-scheme" content="light">
+  <title>AutoScribeAI Demo Gallery</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#examples">Skip to examples</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="AutoScribeAI demo home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>AutoScribeAI</span>
+      </a>
+      <nav class="top-links" aria-label="Primary">
+        <a href="#examples">Examples</a>
+        <a href="#workflow">How it works</a>
+        <a href="https://github.com/While-Shark/AutoScribeAI" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Evidence-backed software manuals</div>
+          <h1>Give AI a project.<br>Get a manual people can actually follow.</h1>
+          <p class="hero-copy">
+            AutoScribeAI turns real, authorized software usage into illustrated documentation.
+            It keeps screenshots, workflow evidence, verification status and exportable deliverables together—without requiring a hosted AutoScribeAI backend.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#examples">Explore real outputs</a>
+            <a class="button secondary" href="https://github.com/While-Shark/AutoScribeAI" target="_blank" rel="noreferrer">View source</a>
+          </div>
+          <div class="trust-row" aria-label="Key capabilities">
+            <span>Offline HTML</span>
+            <span>Word DOCX</span>
+            <span>Markdown</span>
+            <span>Real screenshots</span>
+          </div>
+        </div>
+
+        <div class="hero-panel" aria-label="AutoScribeAI output flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div><strong>Analyze</strong><small>Modules, features, roles, candidate workflows</small></div>
+          </div>
+          <div class="flow-line"></div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div><strong>Explore</strong><small>Operate the UI and capture real evidence</small></div>
+          </div>
+          <div class="flow-line"></div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div><strong>Verify</strong><small>Keep observed results separate from inference</small></div>
+          </div>
+          <div class="flow-line"></div>
+          <div class="flow-step">
+            <span class="flow-num">04</span>
+            <div><strong>Deliver</strong><small>HTML, Word, Markdown and coverage reports</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="signal-strip">
+      <div class="container signal-grid">
+        <div><strong>3</strong><span>real project examples</span></div>
+        <div><strong>4</strong><span>built-in output languages</span></div>
+        <div><strong>3</strong><span>delivery formats</span></div>
+        <div><strong>0</strong><span>AutoScribeAI servers to deploy</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="examples">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Real outputs</div>
+            <h2>See what the generated manuals look like</h2>
+          </div>
+          <p>
+            These are not mockups. Each example keeps its actual screenshots, structured manual,
+            coverage status and export files. Unverified workflows stay visibly unverified.
+          </p>
+        </div>
+
+        <div class="sample-grid">
+          <article class="sample-card">
+            <button class="sample-image" data-preview="html" data-sample="uptime-kuma" aria-label="Open Uptime Kuma manual preview">
+              <img src="/manuals/uptime-kuma/evidence/ev-kuma-status-public.jpg" alt="Uptime Kuma status page captured during the verified workflow">
+              <span class="image-chip success">3 / 3 verified</span>
+            </button>
+            <div class="sample-body">
+              <div class="sample-meta"><span>Uptime Kuma</span><span>简体中文</span></div>
+              <h3>Monitor, notification and public status page</h3>
+              <p>All three target workflows were exercised in a temporary demo instance with real screenshots. Webhook delivery itself was intentionally not tested.</p>
+              <div class="sample-actions">
+                <button class="button primary small" data-preview="html" data-sample="uptime-kuma">Open manual</button>
+                <button class="button secondary small" data-preview="word" data-sample="uptime-kuma">Preview Word</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="sample-card">
+            <button class="sample-image" data-preview="html" data-sample="changedetection" aria-label="Open changedetection.io manual preview">
+              <img src="/manuals/changedetection/evidence/ev-changedetection-public-homepage.jpg" alt="changedetection.io public page captured during exploration">
+              <span class="image-chip warning">0 / 3 verified</span>
+            </button>
+            <div class="sample-body">
+              <div class="sample-meta"><span>changedetection.io</span><span>日本語</span></div>
+              <h3>Honest documentation when exploration is blocked</h3>
+              <p>The public site was observed, but paid subscription gates prevented the target workflows from being validated. The manual records that limitation instead of inventing steps.</p>
+              <div class="sample-actions">
+                <button class="button primary small" data-preview="html" data-sample="changedetection">Open manual</button>
+                <button class="button secondary small" data-preview="word" data-sample="changedetection">Preview Word</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="sample-card">
+            <button class="sample-image" data-preview="html" data-sample="it-tools" aria-label="Open IT Tools manual preview">
+              <img src="/manuals/it-tools/evidence/ev-it-tools-json-yaml.jpg" alt="IT Tools JSON to YAML conversion captured during the verified workflow">
+              <span class="image-chip partial">1 / 3 verified</span>
+            </button>
+            <div class="sample-body">
+              <div class="sample-meta"><span>IT Tools</span><span>한국어</span></div>
+              <h3>Mixed verified and source-discovered workflows</h3>
+              <p>JSON → YAML was executed and verified. Hash and QR workflows remain source-derived candidates, so the output clearly separates observed evidence from planned coverage.</p>
+              <div class="sample-actions">
+                <button class="button primary small" data-preview="html" data-sample="it-tools">Open manual</button>
+                <button class="button secondary small" data-preview="word" data-sample="it-tools">Preview Word</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <p class="preview-note">
+          Word preview opens the actual generated <code>.docx</code> through Microsoft Office's public web viewer.
+          A direct DOCX link is always available in the preview dialog.
+        </p>
+      </div>
+    </section>
+
+    <section class="section soft" id="workflow">
+      <div class="container">
+        <div class="section-head compact">
+          <div>
+            <div class="eyebrow">Why it is useful</div>
+            <h2>Documentation that stays tied to what really happened</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article><span>01</span><h3>Evidence, not hallucinated clicks</h3><p>Verified workflows require observed results and screenshot evidence. Source analysis can suggest coverage, but it cannot masquerade as a completed operation.</p></article>
+          <article><span>02</span><h3>One source, multiple deliverables</h3><p><code>manual.json</code> is the single source of truth. The same content renders to searchable HTML, editable DOCX and repository-friendly Markdown.</p></article>
+          <article><span>03</span><h3>Works with different AI hosts</h3><p>The Skill Pack adapts to the browser, computer-use, terminal and file tools available in the host instead of depending on a dedicated AutoScribeAI service.</p></article>
+          <article><span>04</span><h3>Safe to stop and resume</h3><p>File-based manifests and checkpoints preserve progress. Interrupted side-effecting actions are reviewed before continuing rather than blindly replayed.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section callout">
+      <div class="container callout-inner">
+        <div>
+          <div class="eyebrow">Portable Skill Pack</div>
+          <h2>No AutoScribeAI server required.</h2>
+          <p>Keep the skills, schemas and scripts together, give them to an AI host, and point the AI at the project you want documented.</p>
+        </div>
+        <a class="button primary" href="https://github.com/While-Shark/AutoScribeAI" target="_blank" rel="noreferrer">Open AutoScribeAI on GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>AutoScribeAI · evidence-backed visual manuals</span>
+      <span>HTML · DOCX · Markdown</span>
+    </div>
+  </footer>
+
+  <dialog class="preview-dialog" id="preview-dialog" aria-labelledby="preview-title">
+    <div class="preview-shell">
+      <div class="preview-toolbar">
+        <div>
+          <span class="preview-kicker" id="preview-kind">Manual preview</span>
+          <strong id="preview-title">Example</strong>
+        </div>
+        <div class="preview-actions">
+          <a id="preview-direct" class="text-link" href="#" target="_blank" rel="noreferrer">Open directly ↗</a>
+          <button class="icon-button" id="preview-close" aria-label="Close preview">×</button>
+        </div>
+      </div>
+      <div class="preview-loading" id="preview-loading">Loading preview…</div>
+      <iframe id="preview-frame" title="Manual preview" loading="lazy"></iframe>
+    </div>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

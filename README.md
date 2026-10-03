@@ -2,14 +2,23 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
 
-## Turn real software usage into evidence-backed visual manuals
+## Turn a software project into a manual people can actually use
 
-Give an AI a project, an accessible test environment, and the workflows you want documented. AutoScribeAI guides the AI to inspect the project, operate authorized interfaces, capture real screenshots, preserve evidence, and generate a manual that users can actually follow.
+Give an AI a project, an accessible test environment and the workflows that matter. AutoScribeAI guides it to map the product, operate authorized UI flows, capture real screenshots, record observed results and export an evidence-backed manual.
 
-**One workflow can produce an offline HTML manual, editable Word document, and Markdown package. English is the default output language, with built-in templates for Simplified Chinese, Japanese, and Korean.**
+**No AutoScribeAI backend is required. One run can produce searchable offline HTML, editable Word / DOCX, Markdown and a coverage report.**
 
-[View real samples](tests/manual_samples/README.md) · [Get started](#get-started) · [Installation guide](docs/INSTALLATION.md)
+**Useful for:** project delivery, onboarding, internal systems, open-source documentation, customer training, acceptance handoff and keeping manuals current after releases.
 
+### Demo Gallery
+
+A single Vercel-ready gallery now showcases all three real samples and lets you open the generated HTML manual or preview the actual generated Word document.
+
+- Uptime Kuma — Simplified Chinese — **3/3 target workflows verified**
+- changedetection.io — Japanese — **0/3 verified**, with the paid-flow blocker preserved instead of invented steps
+- IT Tools — Korean — **1/3 verified**, clearly separating observed and source-discovered workflows
+
+Gallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
 ### A real end-to-end example
 
 The Uptime Kuma sample was created from a real temporary demo instance. It covers creating an HTTP monitor, saving and associating a notification configuration, and publishing a status page.

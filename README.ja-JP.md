@@ -2,12 +2,23 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
 
-## 実際のソフトウェア操作から、証拠付きの画像マニュアルを生成
+## AI にプロジェクトを渡して、実際に使える画像付き操作マニュアルを生成
 
-AI にプロジェクト、アクセス可能なテスト環境、対象ワークフローを渡すと、AutoScribeAI がプロジェクト分析、許可された UI 操作、実スクリーンショット収集、証拠保存、マニュアル生成までの手順を提供します。
+プロジェクト、アクセス可能なテスト環境、対象ワークフローを AI に渡すと、AutoScribeAI がモジュール分析、許可された UI の実操作、スクリーンショット収集、実結果の記録、マニュアル出力までをガイドします。
 
-**1 回のワークフローから、オフライン HTML、Word、Markdown を出力できます。既定の出力言語は英語で、簡体字中国語・日本語・韓国語のテンプレートも内蔵しています。**
+**AutoScribeAI 用の常駐バックエンドは不要です。1 回の実行から Offline HTML、Word / DOCX、Markdown、カバレッジレポートを生成できます。**
 
+プロジェクト納品、オンボーディング、社内システム、OSS ドキュメント、研修、受入資料、リリース後のマニュアル更新に実用的です。
+
+### Demo Gallery
+
+3 つの実サンプルを 1 ページにまとめた Vercel-ready Gallery を追加しました。生成済み HTML マニュアルと実際の Word 文書をそのまま確認できます。
+
+- Uptime Kuma — 简体中文 — **3/3 verified**
+- changedetection.io — 日本語 — **0/3 verified**。有料フローで止まった事実をそのまま記録
+- IT Tools — 한국어 — **1/3 verified**。実測とソース由来候補を明確に分離
+
+Gallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
 ## 設計のポイント
 
 - HTML を主要な閲覧形式として使用
