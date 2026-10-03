@@ -80,7 +80,7 @@ def inventory_to_manual(inventory, config):
     return {
         'schemaVersion': '0.1',
         'project': {**config['project'], 'version': inventory['projectVersion'],
-                    'language': config.get('language', 'zh-CN')},
+                    'language': config.get('language', 'en-US')},
         'title': config['project']['name'] + ' ' + t(config.get('language'), 'manual_suffix'), 'roles': config['roles'],
         'modules': inventory['modules'], 'features': inventory['features'],
         'workflows': workflows, 'steps': [], 'evidence': [], 'chapters': chapters,
