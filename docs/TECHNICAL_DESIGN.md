@@ -22,7 +22,7 @@
 
 | Skill | 责任 | 主要产出 |
 | --- | --- | --- |
-| orchestrator | 检查输入与宿主能力，协调阶段、记录状态、暂停和恢复 | manifest、checkpoint、执行报告 |
+| autoscribe | 检查输入与宿主能力，协调阶段、记录状态、暂停和恢复 | manifest、checkpoint、执行报告 |
 | project-analyzer | 阅读源码或已有说明，发现模块、角色、功能和候选流程 | 项目地图、覆盖矩阵、探索计划 |
 | software-explorer | 操作界面，观察结果，采集截图和动作证据 | 步骤记录、截图、阻塞记录 |
 | manual-writer | 将证据整理为自然语言说明并输出不同格式 | manual.json、HTML、DOCX、Markdown |
