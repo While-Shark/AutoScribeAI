@@ -19,6 +19,8 @@
 - IT Tools — 한국어 — **1/3 verified**。実測とソース由来候補を明確に分離
 
 Gallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
+
+[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWhile-Shark%2FAutoScribeAI&project-name=autoscribeai-demo&repository-name=AutoScribeAI)
 ## 設計のポイント
 
 - HTML を主要な閲覧形式として使用
