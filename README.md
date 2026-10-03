@@ -1,6 +1,8 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)\n\n**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+
+**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
 
 ## Turn a software project into a manual people can actually use
 
@@ -18,7 +20,9 @@ The live gallery showcases all three real samples in one place and lets you open
 - changedetection.io — Japanese — **0/3 verified**, with the paid-flow blocker preserved instead of invented steps
 - IT Tools — Korean — **1/3 verified**, clearly separating observed and source-discovered workflows
 
-**Open the live gallery:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)\n\nGallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
+**Open the live gallery:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+
+Gallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
 
 [![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ### A real end-to-end example
