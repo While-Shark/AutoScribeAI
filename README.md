@@ -20,7 +20,7 @@ A single Vercel-ready gallery now showcases all three real samples and lets you 
 
 Gallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
 
-[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWhile-Shark%2FAutoScribeAI&project-name=autoscribeai-demo&repository-name=AutoScribeAI)
+[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ### A real end-to-end example
 
 The Uptime Kuma sample was created from a real temporary demo instance. It covers creating an HTTP monitor, saving and associating a notification configuration, and publishing a status page.
