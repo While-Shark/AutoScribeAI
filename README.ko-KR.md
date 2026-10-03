@@ -1,62 +1,109 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+[English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja-JP.md) · [한국어](README.ko-KR.md)
 
-**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+> 소프트웨어 프로젝트를 AI에 전달하면 실제 스크린샷이 포함된 사용자 매뉴얼을 생성합니다.
 
-## 프로젝트를 AI에 전달하고, 실제로 사용할 수 있는 이미지 매뉴얼을 생성
+**Live Demo:** https://auto-scribe-ai-tau.vercel.app
 
-프로젝트, 접근 가능한 테스트 환경, 문서화할 워크플로를 AI에 제공하면 AutoScribeAI가 모듈 분석, 승인된 UI의 실제 조작, 스크린샷 수집, 실제 결과 기록, 매뉴얼 출력을 안내합니다.
+AutoScribeAI는 프로젝트 분석, 승인된 UI 조작, 스크린샷 수집, 실제 결과 기록을 거쳐 **HTML, Word / DOCX, Markdown**을 출력하는 휴대형 Skill Pack입니다.
 
-**AutoScribeAI 전용 백엔드는 필요하지 않습니다. 한 번의 실행으로 Offline HTML, Word / DOCX, Markdown, 커버리지 보고서를 만들 수 있습니다.**
+AutoScribeAI 전용 백엔드는 필요하지 않습니다.
 
-프로젝트 납품, 신규 사용자 온보딩, 사내 시스템, 오픈소스 문서, 고객 교육, 인수 자료, 릴리스 후 매뉴얼 갱신에 실용적입니다.
+## 먼저 결과 보기
 
-### Demo Gallery
+Live Demo에는 실제 프로젝트 3개가 포함되어 있습니다.
 
-3개의 실제 프로젝트 샘플을 한 페이지에서 비교할 수 있는 Demo Gallery를 공개했습니다. 생성된 HTML 매뉴얼과 실제 Word 문서를 바로 확인할 수 있습니다.
+| Project | Language | Verified |
+| --- | --- | --- |
+| Uptime Kuma | 简体中文 | **3/3** |
+| changedetection.io | 日本語 | **0/3**. 막힌 이유를 보존하고 실행하지 않은 절차를 만들지 않음 |
+| IT Tools | 한국어 | **1/3**. 실제 관찰과 소스 기반 후보를 구분 |
 
-- Uptime Kuma — 简体中文 — **3/3 verified**
-- changedetection.io — 日本語 — **0/3 verified**, 유료 흐름으로 막힌 상태를 그대로 보존
-- IT Tools — 한국어 — **1/3 verified**, 실제 관찰과 소스 기반 후보를 구분
+**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app)**
 
-**Open live demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+생성된 HTML 매뉴얼, 실제 Word 문서, 스크린샷, 검증 상태를 바로 볼 수 있습니다.
 
-Gallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
+## 결과물
 
-[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
-## 핵심 설계
+- **Offline HTML**
+- **Word / DOCX**
+- **Markdown**
+- **Coverage / Quality report**
 
-- HTML을 기본 읽기 경험으로 사용
-- `manual.json`을 단일 기준 데이터로 사용
-- 실제 실행 결과와 스크린샷 증거가 있을 때만 검증 완료로 표시
-- 상시 실행 서버가 필요 없는 5개 Skills + 로컬 스크립트 구조
-- 체크포인트 기반으로 중단된 작업을 안전하게 재개
+실제 조작 결과와 증거가 없는 워크플로는 verified로 표시되지 않습니다.
 
-## Skills
+## 사용 방법
 
-- `autoscribe-orchestrator` — 계획, 시작, 재개, 전체 조정
-- `autoscribe-project-analyzer` — 모듈, 기능, 역할, 후보 워크플로 분석
-- `autoscribe-software-explorer` — 실제 UI 조작 및 증거 수집
-- `autoscribe-manual-writer` — 증거를 `manual.json`으로 정리
-- `autoscribe-manual-verifier` — 출처, 참조, 커버리지, 품질 검증
+```bash
+git clone https://github.com/While-Shark/AutoScribeAI.git
+cd AutoScribeAI
+python -m pip install -r requirements.txt
+```
 
-## 언어
+이 디렉터리에서 AI Agent를 실행하고 다음과 같이 요청합니다.
 
-- English — `en-US` **기본값**
+```text
+Read skills/autoscribe-orchestrator/SKILL.md and use AutoScribeAI
+to generate a complete illustrated user manual.
+```
+
+<details>
+<summary><strong>Codex</strong></summary>
+
+AutoScribeAI 루트에서 `codex`를 실행하고 `skills/autoscribe-orchestrator/SKILL.md`를 읽도록 요청합니다.
+
+</details>
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+AutoScribeAI 루트에서 `claude`를 실행하고 orchestrator Skill을 읽도록 요청합니다.
+
+Claude Code는 native Skills를 지원하지만 AutoScribeAI는 공용 scripts / schemas / references를 사용하므로 전체 저장소를 유지하는 방식이 가장 단순합니다.
+
+</details>
+
+<details>
+<summary><strong>Pi</strong></summary>
+
+AutoScribeAI 루트에서 Pi를 실행하고 `skills/autoscribe-orchestrator/SKILL.md`를 읽게 합니다. Pi는 Agent Skills / `SKILL.md`를 지원합니다.
+
+</details>
+
+<details>
+<summary><strong>Agy / Google Antigravity</strong></summary>
+
+AutoScribeAI 루트에서 `agy`를 실행하고 orchestrator Skill을 읽게 합니다. Antigravity는 Agent Skills를 네이티브 지원합니다.
+
+</details>
+
+<details>
+<summary><strong>OpenCode</strong></summary>
+
+AutoScribeAI 루트에서 OpenCode를 실행하고 orchestrator Skill을 읽게 합니다. OpenCode는 `SKILL.md` 및 Agent Skills를 지원합니다.
+
+</details>
+
+<details>
+<summary><strong>Other agents</strong></summary>
+
+Cursor, Cline, Roo Code, Gemini CLI 등도 파일 읽기와 명령 실행이 가능하면 사용할 수 있습니다.
+
+전체 AutoScribeAI 디렉터리를 워크스페이스로 열고 orchestrator Skill을 읽도록 요청하면 됩니다.
+
+</details>
+
+## Languages
+
+- **English — `en-US` (default)**
 - 简体中文 — `zh-CN`
 - 日本語 — `ja-JP`
 - 한국어 — `ko-KR`
 
-프로젝트 설정에서 `language`를 생략하면 `en-US`가 사용됩니다. 다른 BCP-47 언어도 AI 본문 작성에 사용할 수 있으며, 고정 템플릿 라벨은 영어로 폴백합니다.
+## Links
 
-## 빠른 시작
-
-```bash
-python -m pip install -r requirements.txt
-python scripts/package_skills.py --output dist/autoscribeai-skills.zip
-```
-
-AI에는 `skills/autoscribe-orchestrator/SKILL.md`부터 읽도록 요청하세요. 실제 스크린샷을 생성하려면 AI 호스트에 승인된 브라우저 또는 Computer Use 기능이 필요합니다.
-
-실제 예시는 [tests/manual_samples](tests/manual_samples/README.md), 자세한 사용법은 [Installation](docs/INSTALLATION.md)을 참고하세요.
+- [Live Demo](https://auto-scribe-ai-tau.vercel.app)
+- [Samples](tests/manual_samples/README.md)
+- [Installation](docs/INSTALLATION.md)
+- [Technical design](docs/TECHNICAL_DESIGN.md)
