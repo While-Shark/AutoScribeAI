@@ -1,4 +1,0 @@
-interface:
-  display_name: "AutoScribeAI Orchestrator"
-  short_description: "Plan and resume evidence based software manuals"
-  default_prompt: "Use $autoscribe-orchestrator to create a software manual from this project."
