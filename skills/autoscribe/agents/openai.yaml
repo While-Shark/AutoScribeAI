@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoScribeAI"
+  short_description: "Create evidence based visual software manuals"
+  default_prompt: "Use $autoscribe to create a complete visual software manual from this project."
