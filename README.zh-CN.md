@@ -50,7 +50,7 @@ python -m pip install -r requirements.txt
 然后在这个目录里启动你的 AI Agent，并告诉它：
 
 ```text
-读取 skills/autoscribe-orchestrator/SKILL.md，
+读取 skills/autoscribe/SKILL.md，
 使用 AutoScribeAI 为目标项目生成完整的带图操作手册。
 ```
 
@@ -68,7 +68,7 @@ codex
 然后告诉 Codex：
 
 ```text
-读取 skills/autoscribe-orchestrator/SKILL.md，
+读取 skills/autoscribe/SKILL.md，
 按照 AutoScribeAI 工作流生成操作手册。
 ```
 
@@ -88,7 +88,7 @@ claude
 然后输入：
 
 ```text
-读取 skills/autoscribe-orchestrator/SKILL.md，
+读取 skills/autoscribe/SKILL.md，
 并按照 AutoScribeAI 流程执行。
 ```
 
@@ -102,7 +102,7 @@ Claude Code 原生支持文件系统 Skills，但 AutoScribeAI 的多个 Skill �
 在 AutoScribeAI 根目录启动 Pi，然后让它读取：
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 Pi 原生支持 Agent Skills / `SKILL.md`。对于 AutoScribeAI，直接以整个仓库作为工作区最简单。
@@ -115,7 +115,7 @@ Pi 原生支持 Agent Skills / `SKILL.md`。对于 AutoScribeAI，直接以整�
 在 AutoScribeAI 根目录运行 `agy`，然后告诉它读取：
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 Antigravity 原生支持 Agent Skills。保留完整工作区可以避免 Skill 与共享脚本、Schema、参考文件之间的相对路径失效。
@@ -128,7 +128,7 @@ Antigravity 原生支持 Agent Skills。保留完整工作区可以避免 Skill 
 在 AutoScribeAI 根目录启动 OpenCode，然后告诉它读取：
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 OpenCode 原生支持 `SKILL.md`，也兼容 `.opencode/skills`、`.claude/skills` 和 `.agents/skills`。AutoScribeAI 默认推荐直接使用完整仓库。
@@ -143,7 +143,7 @@ OpenCode 原生支持 `SKILL.md`，也兼容 `.opencode/skills`、`.claude/skill
 把 AutoScribeAI 仓库作为工作区打开，然后输入：
 
 ```text
-读取 skills/autoscribe-orchestrator/SKILL.md。
+读取 skills/autoscribe/SKILL.md。
 保留完整 AutoScribeAI 目录，
 使用其中的 scripts、schemas、references 和 skills 生成操作手册。
 ```
