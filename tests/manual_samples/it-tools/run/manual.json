@@ -72,7 +72,7 @@
       "preconditions": [
         "IT Tools의 JSON to YAML 도구를 열 수 있다."
       ],
-      "successCriteria": "示例 JSON 输入后，输出区域显示对应 YAML。该结果已在 IT Tools 公开部署页面观察到。",
+      "successCriteria": "예시 JSON을 입력하면 출력 영역에 해당 YAML이 표시된다. 이 결과는 IT Tools 공개 배포 페이지에서 관찰했다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
       "status": "verified",
       "stepIds": [
@@ -125,12 +125,12 @@
       "order": 1,
       "action": "JSON to YAML 도구를 연다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "显示 JSON to YAML 工具标题和输入区域。",
+      "expectedResult": "JSON to YAML 도구의 제목과 입력 영역이 표시된다.",
       "source": "observed",
       "evidenceIds": [
         "ev-it-tools-json-yaml"
       ],
-      "actualResult": "已打开 JSON to YAML converter 页面，显示标题和 JSON 输入区域。"
+      "actualResult": "JSON to YAML converter 페이지를 열어 제목과 JSON 입력 영역을 확인했다."
     },
     {
       "id": "json-yaml-step-2",
@@ -138,12 +138,12 @@
       "order": 2,
       "action": "입력 영역에 변환할 JSON을 입력한다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "输入框保留示例 JSON 内容。",
+      "expectedResult": "입력란에 예시 JSON 내용이 유지된다.",
       "source": "observed",
       "evidenceIds": [
         "ev-it-tools-json-yaml"
       ],
-      "actualResult": "输入 {\"service\":\"demo\",\"enabled\":true} 后，内容显示在 JSON 输入区域。"
+      "actualResult": "{\"service\":\"demo\",\"enabled\":true}를 입력한 뒤 JSON 입력 영역에 내용이 표시되는 것을 확인했다."
     },
     {
       "id": "json-yaml-step-3",
@@ -151,12 +151,12 @@
       "order": 3,
       "action": "출력 영역에서 YAML 변환 결과를 확인한다.",
       "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
-      "expectedResult": "输出区显示等价的 YAML 文本。",
+      "expectedResult": "출력 영역에 동등한 YAML 텍스트가 표시된다.",
       "source": "observed",
       "evidenceIds": [
         "ev-it-tools-json-yaml"
       ],
-      "actualResult": "输出区域显示 service: demo 与 enabled: true 两行 YAML。"
+      "actualResult": "출력 영역에 service: demo와 enabled: true의 YAML 두 줄이 표시되는 것을 확인했다."
     },
     {
       "id": "hash-text-step-1",
@@ -299,7 +299,7 @@
     }
   ],
   "limitations": [
-    "本手册的源码索引固定到 commit d505845f918e946ec300af7b36efc107e2f66e9e；实测截图取自 IT Tools 公开部署页面，部署版本未与固定源码 commit 对齐。",
-    "仅 JSON→YAML 转换流程已在公开部署页面观察并截图验证；文本哈希和 QR 码流程仍为源码候选，未经界面操作验证。"
+    "이 설명서의 소스 코드 색인은 commit d505845f918e946ec300af7b36efc107e2f66e9e에 고정되어 있다. 실제 스크린샷은 IT Tools 공개 배포 페이지에서 가져왔으며 배포 버전과 고정한 소스 commit의 일치 여부는 확인하지 못했다.",
+    "JSON→YAML 변환 흐름만 공개 배포 페이지에서 관찰하고 스크린샷으로 검증했다. 텍스트 해시와 QR 코드 흐름은 소스 코드에서 추린 후보이며 UI에서 실제로 실행해 검증하지 않았다."
   ]
 }
