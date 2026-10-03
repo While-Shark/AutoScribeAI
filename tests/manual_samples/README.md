@@ -1,6 +1,6 @@
 # 三份公开项目样例手册
 
-**在线 Demo Gallery：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+**在线 Demo Gallery：** [https://auto-scribe-ai-tau.vercel.app/?lang=zh-CN](https://auto-scribe-ai-tau.vercel.app/?lang=zh-CN)
 
 这些样例通过 AutoScribeAI 的项目分析、手册编写、流程核验技能制作，并从 `manual.json` 导出 HTML、DOCX 和 Markdown ZIP。每个项目固定到下表的 Git commit。
 
