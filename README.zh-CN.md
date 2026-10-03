@@ -4,7 +4,7 @@
 
 > 把一个软件项目交给 AI，自动得到一套带真实截图的操作手册。
 
-**在线 Demo：** https://auto-scribe-ai-tau.vercel.app
+**在线 Demo：** https://auto-scribe-ai-tau.vercel.app/?lang=zh-CN
 
 AutoScribeAI 是一套便携 Skills。它让 AI 自动理解项目、操作已授权界面、采集截图、记录真实结果，并输出 **HTML、Word / DOCX、Markdown** 操作手册。
 
@@ -20,7 +20,7 @@ AutoScribeAI 是一套便携 Skills。它让 AI 自动理解项目、操作已�
 | changedetection.io | 日本語 | **0/3**，受阻原因保留，不编造步骤 |
 | IT Tools | 한국어 | **1/3**，真实操作与源码候选流程明确分开 |
 
-**[打开在线 Demo →](https://auto-scribe-ai-tau.vercel.app)**
+**[打开在线 Demo →](https://auto-scribe-ai-tau.vercel.app/?lang=zh-CN)**
 
 进去后可以直接：
 
@@ -163,7 +163,7 @@ OpenCode 原生支持 `SKILL.md`，也兼容 `.opencode/skills`、`.claude/skill
 
 ## 更多
 
-- [在线 Demo](https://auto-scribe-ai-tau.vercel.app)
+- [在线 Demo](https://auto-scribe-ai-tau.vercel.app/?lang=zh-CN)
 - [真实样例](tests/manual_samples/README.md)
 - [安装说明](docs/INSTALLATION.md)
 - [技术方案](docs/TECHNICAL_DESIGN.md)
