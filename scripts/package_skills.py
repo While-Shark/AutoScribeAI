@@ -35,7 +35,7 @@ def build_bundle(output, root=ROOT):
         raise FileExistsError('输出文件已存在；请指定新的 ZIP 路径')
     files = package_files(root)
     required = {'README.md', 'requirements.txt', 'docs/INSTALLATION.md',
-                'scripts/autoscribe_cli.py', 'skills/autoscribe-orchestrator/SKILL.md'}
+                'scripts/autoscribe_cli.py', 'skills/autoscribe/SKILL.md'}
     included = {path.relative_to(root).as_posix() for path in files}
     missing = sorted(required - included)
     if missing:
