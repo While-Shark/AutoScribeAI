@@ -32,11 +32,11 @@ class SkillsBundleTests(unittest.TestCase):
         })
         self.assertEqual(skill_paths, [
             'autoscribe-manual-verifier', 'autoscribe-manual-writer',
-            'autoscribe-orchestrator', 'autoscribe-project-analyzer',
+            'autoscribe', 'autoscribe-project-analyzer',
             'autoscribe-software-explorer',
         ])
         for path in (
-            'AutoScribeAI/skills/autoscribe-orchestrator/SKILL.md',
+            'AutoScribeAI/skills/autoscribe/SKILL.md',
             'AutoScribeAI/skills/autoscribe-manual-writer/SKILL.md',
             'AutoScribeAI/references/RUN_PROTOCOL.md',
             'AutoScribeAI/schemas/manual.schema.json',
