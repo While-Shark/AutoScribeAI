@@ -15,6 +15,7 @@ from autoscribe.html_renderer import render_html
 from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
 from autoscribe.progress import read_progress, update_progress
 from autoscribe.role_view import for_role
+from autoscribe.locale_check import compare_locales
 from autoscribe.docx_renderer import render_docx
 from autoscribe.markdown_renderer import render_markdown_zip
 from autoscribe.state import atomic_json, initialize, resume, transition
@@ -65,6 +66,19 @@ class ImprovementTests(unittest.TestCase):
         result = compare_manuals(old_path, new_path)
         self.assertEqual(result['changed'], ['w-readme'])
         self.assertEqual(set(result['reviewRequired']), {w['id'] for w in old['workflows']})
+
+    def test_locale_check_flags_stale_structure(self):
+        source = inventory_to_manual(read_json(self.inventory_path), self.config)
+        translated = copy.deepcopy(source)
+        translated['project']['language'] = 'ja-JP'
+        source_path, translated_path = self.root / 'source.json', self.root / 'ja.json'
+        atomic_json(source_path, source)
+        atomic_json(translated_path, translated)
+        self.assertTrue(compare_locales(source_path, translated_path)['aligned'])
+        translated['workflows'][0]['status'] = 'blocked'
+        translated['workflows'][0]['reason'] = 'Unable to access the page'
+        atomic_json(translated_path, translated)
+        self.assertIn('workflows/w-readme', compare_locales(source_path, translated_path)['differences'])
 
     def test_audit_detects_broken_package_link(self):
         manual = inventory_to_manual(read_json(self.inventory_path), self.config)

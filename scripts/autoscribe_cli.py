@@ -12,6 +12,7 @@ from autoscribe.actions import begin_action, load_actions, resolve_action, test_
 from autoscribe.progress import read_progress, update_progress
 from autoscribe.diff import compare_manuals
 from autoscribe.audit import audit_package
+from autoscribe.locale_check import compare_locales
 from autoscribe.html_renderer import render_html
 from autoscribe.docx_renderer import render_docx
 from autoscribe.markdown_renderer import render_markdown_zip
@@ -100,6 +101,9 @@ def main():
     audit.add_argument('--coverage', required=True, type=Path)
     audit.add_argument('--package', required=True, type=Path)
     audit.add_argument('--out', required=True, type=Path)
+    locales = commands.add_parser('check-locales')
+    locales.add_argument('source', type=Path)
+    locales.add_argument('translation', type=Path)
     args = parser.parse_args()
     try:
         if args.command == 'validate':
@@ -133,6 +137,8 @@ def main():
             result = compare_manuals(args.old, args.new)
         elif args.command == 'audit':
             result = audit_package(args.manual, args.coverage, args.package, args.out)
+        elif args.command == 'check-locales':
+            result = compare_locales(args.source, args.translation)
         elif args.command == 'prepare-image':
             def coordinates(value, count):
                 try:
