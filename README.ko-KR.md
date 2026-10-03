@@ -4,7 +4,7 @@
 
 > 소프트웨어 프로젝트를 AI에 전달하면 실제 스크린샷이 포함된 사용자 매뉴얼을 생성합니다.
 
-**Live Demo:** https://auto-scribe-ai-tau.vercel.app
+**Live Demo:** https://auto-scribe-ai-tau.vercel.app/?lang=ko
 
 AutoScribeAI는 프로젝트 분석, 승인된 UI 조작, 스크린샷 수집, 실제 결과 기록을 거쳐 **HTML, Word / DOCX, Markdown**을 출력하는 휴대형 Skill Pack입니다.
 
@@ -20,7 +20,7 @@ Live Demo에는 실제 프로젝트 3개가 포함되어 있습니다.
 | changedetection.io | 日本語 | **0/3**. 막힌 이유를 보존하고 실행하지 않은 절차를 만들지 않음 |
 | IT Tools | 한국어 | **1/3**. 실제 관찰과 소스 기반 후보를 구분 |
 
-**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app)**
+**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app/?lang=ko)**
 
 생성된 HTML 매뉴얼, 실제 Word 문서, 스크린샷, 검증 상태를 바로 볼 수 있습니다.
 
@@ -103,7 +103,7 @@ Cursor, Cline, Roo Code, Gemini CLI 등도 파일 읽기와 명령 실행이 가
 
 ## Links
 
-- [Live Demo](https://auto-scribe-ai-tau.vercel.app)
+- [Live Demo](https://auto-scribe-ai-tau.vercel.app/?lang=ko)
 - [Samples](tests/manual_samples/README.md)
 - [Installation](docs/INSTALLATION.md)
 - [Technical design](docs/TECHNICAL_DESIGN.md)
