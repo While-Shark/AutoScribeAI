@@ -1,6 +1,6 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)\n\n**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
 
 ## Turn a software project into a manual people can actually use
 
@@ -12,13 +12,13 @@ Give an AI a project, an accessible test environment and the workflows that matt
 
 ### Demo Gallery
 
-A single Vercel-ready gallery now showcases all three real samples and lets you open the generated HTML manual or preview the actual generated Word document.
+The live gallery showcases all three real samples in one place and lets you open the generated HTML manual or preview the actual generated Word document.
 
 - Uptime Kuma — Simplified Chinese — **3/3 target workflows verified**
 - changedetection.io — Japanese — **0/3 verified**, with the paid-flow blocker preserved instead of invented steps
 - IT Tools — Korean — **1/3 verified**, clearly separating observed and source-discovered workflows
 
-Gallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
+**Open the live gallery:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)\n\nGallery source: [`demo/`](demo/) · Vercel configuration: [`vercel.json`](vercel.json) · Raw sample artifacts: [`tests/manual_samples`](tests/manual_samples/README.md)
 
 [![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ### A real end-to-end example
