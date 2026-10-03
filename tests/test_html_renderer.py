@@ -33,6 +33,7 @@ class HtmlRendererTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
         self.config=read_json(ROOT/'examples/project.json')
+        self.config['language'] = 'zh-CN'  # Keep baseline assertions Chinese; language matrix below covers English/default.
         self.config_path=self.root/'project.json'; self.config_path.write_text(json.dumps(self.config))
         self.inventory=read_json(ROOT/'examples/inventory.json')
         self.inventory_path=self.root/'inventory.json'; self.inventory_path.write_text(json.dumps(self.inventory))
