@@ -1,6 +1,6 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)\n\n**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
 
 ## 프로젝트를 AI에 전달하고, 실제로 사용할 수 있는 이미지 매뉴얼을 생성
 
@@ -12,13 +12,13 @@
 
 ### Demo Gallery
 
-3개의 실제 프로젝트 샘플을 한 페이지에서 비교할 수 있는 Vercel-ready Gallery를 추가했습니다. 생성된 HTML 매뉴얼과 실제 Word 문서를 바로 확인할 수 있습니다.
+3개의 실제 프로젝트 샘플을 한 페이지에서 비교할 수 있는 Demo Gallery를 공개했습니다. 생성된 HTML 매뉴얼과 실제 Word 문서를 바로 확인할 수 있습니다.
 
 - Uptime Kuma — 简体中文 — **3/3 verified**
 - changedetection.io — 日本語 — **0/3 verified**, 유료 흐름으로 막힌 상태를 그대로 보존
 - IT Tools — 한국어 — **1/3 verified**, 실제 관찰과 소스 기반 후보를 구분
 
-Gallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
+**Open live demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)\n\nGallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
 
 [![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ## 핵심 설계
