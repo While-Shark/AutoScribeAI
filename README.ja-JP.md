@@ -44,21 +44,21 @@ python -m pip install -r requirements.txt
 AI Agent をこのディレクトリで起動し、次のように指示します。
 
 ```text
-Read skills/autoscribe-orchestrator/SKILL.md and use AutoScribeAI
+Read skills/autoscribe/SKILL.md and use AutoScribeAI
 to generate a complete illustrated user manual.
 ```
 
 <details>
 <summary><strong>Codex</strong></summary>
 
-AutoScribeAI ルートで `codex` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読むよう指示します。
+AutoScribeAI ルートで `codex` を起動し、`skills/autoscribe/SKILL.md` を読むよう指示します。
 
 </details>
 
 <details>
 <summary><strong>Claude Code</strong></summary>
 
-AutoScribeAI ルートで `claude` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読むよう指示します。
+AutoScribeAI ルートで `claude` を起動し、`skills/autoscribe/SKILL.md` を読むよう指示します。
 
 Claude Code は native Skills をサポートしますが、AutoScribeAI は共有 scripts / schemas / references を利用するため、完全なリポジトリを保持する方法を推奨します。
 
@@ -67,21 +67,21 @@ Claude Code は native Skills をサポートしますが、AutoScribeAI は共�
 <details>
 <summary><strong>Pi</strong></summary>
 
-AutoScribeAI ルートで Pi を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。Pi は Agent Skills / `SKILL.md` をサポートします。
+AutoScribeAI ルートで Pi を起動し、`skills/autoscribe/SKILL.md` を読み込ませます。Pi は Agent Skills / `SKILL.md` をサポートします。
 
 </details>
 
 <details>
 <summary><strong>Agy / Google Antigravity</strong></summary>
 
-AutoScribeAI ルートで `agy` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。Antigravity は Agent Skills をネイティブサポートします。
+AutoScribeAI ルートで `agy` を起動し、`skills/autoscribe/SKILL.md` を読み込ませます。Antigravity は Agent Skills をネイティブサポートします。
 
 </details>
 
 <details>
 <summary><strong>OpenCode</strong></summary>
 
-AutoScribeAI ルートで OpenCode を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。OpenCode は `SKILL.md` と Agent Skills をサポートします。
+AutoScribeAI ルートで OpenCode を起動し、`skills/autoscribe/SKILL.md` を読み込ませます。OpenCode は `SKILL.md` と Agent Skills をサポートします。
 
 </details>
 
@@ -90,7 +90,7 @@ AutoScribeAI ルートで OpenCode を起動し、`skills/autoscribe-orchestrato
 
 Cursor、Cline、Roo Code、Gemini CLI などでも、ファイル読み取りとコマンド実行が可能なら利用できます。
 
-完全な AutoScribeAI ディレクトリをワークスペースとして開き、orchestrator Skill を読むよう指示してください。
+完全な AutoScribeAI ディレクトリをワークスペースとして開き、autoscribe Skill を読むよう指示してください。
 
 </details>
 
