@@ -1,103 +1,170 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+[English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja-JP.md) · [한국어](README.ko-KR.md)
 
-**在线 Demo：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+> 把一个软件项目交给 AI，自动得到一套带真实截图的操作手册。
 
-## 把一个软件项目交给 AI，直接得到能交付的图文操作手册
+**在线 Demo：** https://auto-scribe-ai-tau.vercel.app
 
-给 AI 一个项目、可访问的测试环境和需要覆盖的流程，AutoScribeAI 会指导它梳理模块、真实操作已授权界面、采集截图、记录实际结果，再生成有证据的操作手册。
+AutoScribeAI 是一套便携 Skills。它让 AI 自动理解项目、操作已授权界面、采集截图、记录真实结果，并输出 **HTML、Word / DOCX、Markdown** 操作手册。
 
-**不需要部署 AutoScribeAI 后端。一次执行即可同时得到可搜索的离线 HTML、可编辑 Word / DOCX、Markdown 和覆盖率报告。**
+**不需要部署 AutoScribeAI 后端服务。**
 
-**特别适合：** 项目交付、新员工培训、企业内部系统、开源项目文档、客户培训、验收材料，以及版本更新后的手册维护。
+## 先看效果
 
-### 先看 Demo，再决定要不要用
+在线 Demo 里有 3 个真实测试项目：
 
-在线 Demo Gallery 已经发布，把 3 个真实测试项目放在同一页；可以直接打开生成的 HTML 手册，也可以预览实际生成的 Word 文档。
+| 项目 | 语言 | 实际验证情况 |
+| --- | --- | --- |
+| Uptime Kuma | 简体中文 | **3/3** 流程已验证 |
+| changedetection.io | 日本語 | **0/3**，受阻原因保留，不编造步骤 |
+| IT Tools | 한국어 | **1/3**，真实操作与源码候选流程明确分开 |
 
-- Uptime Kuma：简体中文，目标流程 **3/3 已验证**
-- changedetection.io：日语，受公开付费流程限制，**0/3 已验证**，不会编造未执行步骤
-- IT Tools：韩语，**1/3 已验证**，已验证与源码候选流程明确分开
+**[打开在线 Demo →](https://auto-scribe-ai-tau.vercel.app)**
 
-**立即查看在线效果：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+进去后可以直接：
 
-Demo 源码：[`demo/`](demo/) · Vercel 配置：[`vercel.json`](vercel.json) · 真实产物：[`tests/manual_samples`](tests/manual_samples/README.md)
+- 查看生成的 HTML 操作手册；
+- 预览实际生成的 Word 文档；
+- 查看真实截图和验证状态。
 
-[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
-### 核心特点
+## 最后能得到什么
 
-- **HTML 是主阅读体验**：支持目录、搜索、截图查看和离线使用。
-- **manual.json 是唯一事实源**：Word 和 Markdown 与 HTML 共享同一结构化数据，不做脆弱的格式互转。
-- **证据优先**：源码分析只能形成候选流程；只有真实执行结果和截图证据才能标为“已验证”。
-- **无需部署服务**：项目由五个 Skills + 本地确定性脚本组成，浏览器操作能力由 AI 宿主提供。
-- **可恢复**：运行状态保存在文件中，中断后可从 checkpoint 继续，不自动重放有副作用的动作。
+- **离线 HTML**：可搜索、可浏览、适合日常查看。
+- **Word / DOCX**：方便客户交付、培训和二次编辑。
+- **Markdown**：适合 Git 仓库、Wiki、知识库。
+- **覆盖率 / 质量报告**：明确哪些流程已验证、受阻或未验证。
 
-## 五个 Skills
+AutoScribeAI 只有在存在真实操作结果和截图证据时，才会把流程标记为“已验证”。只通过源码发现的功能仍然保持未验证状态。
 
-- `autoscribe-orchestrator`：任务规划、启动、恢复与协调。
-- `autoscribe-project-analyzer`：模块、功能、角色和候选流程分析。
-- `autoscribe-software-explorer`：真实界面探索、操作与截图证据采集。
-- `autoscribe-manual-writer`：将证据整理成统一 `manual.json`。
-- `autoscribe-manual-verifier`：检查来源、引用、覆盖率与交付质量。
+## 怎么使用
 
-## 输出结构
-
-```text
-项目 / 界面探索
-      ↓
-    Evidence
-      ↓
-  manual.json
-      ↓
- ┌────┼────────────┐
- ↓    ↓            ↓
-HTML  DOCX    Markdown ZIP
-```
-
-## 多语言
-
-内置固定模板支持：
-
-- English — `en-US` **默认**
-- 简体中文 — `zh-CN`
-- 日本語 — `ja-JP`
-- 한국어 — `ko-KR`
-
-项目配置省略 `language` 时自动使用 `en-US`。其他 BCP-47 语言也可用于 AI 编写正文，固定模板标签回退到英文。菜单、按钮、字段等产品原始名称在有助于准确性的情况下应保留原文。
-
-## 快速开始
-
-安装依赖：
+先保留完整仓库：
 
 ```bash
+git clone https://github.com/While-Shark/AutoScribeAI.git
+cd AutoScribeAI
 python -m pip install -r requirements.txt
 ```
 
-生成便携技能包：
+然后在这个目录里启动你的 AI Agent，并告诉它：
 
-```bash
-python scripts/package_skills.py --output dist/autoscribeai-skills.zip
+```text
+读取 skills/autoscribe-orchestrator/SKILL.md，
+使用 AutoScribeAI 为目标项目生成完整的带图操作手册。
 ```
 
-让 AI 从以下入口开始：
+Agent 至少需要文件和终端能力；如果要真正操作界面、验证流程和截图，还需要浏览器或 Computer Use 能力。
+
+<details>
+<summary><strong>Codex</strong></summary>
+
+在 AutoScribeAI 根目录启动：
+
+```bash
+codex
+```
+
+然后告诉 Codex：
+
+```text
+读取 skills/autoscribe-orchestrator/SKILL.md，
+按照 AutoScribeAI 工作流生成操作手册。
+```
+
+不需要把单个 Skill 拷贝出去，直接让 Codex 在完整仓库里工作最稳妥。
+
+</details>
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+在 AutoScribeAI 根目录启动：
+
+```bash
+claude
+```
+
+然后输入：
+
+```text
+读取 skills/autoscribe-orchestrator/SKILL.md，
+并按照 AutoScribeAI 流程执行。
+```
+
+Claude Code 原生支持文件系统 Skills，但 AutoScribeAI 的多个 Skill 会共同使用仓库里的 `scripts/`、`schemas/`、`references/`，因此推荐保留完整目录直接运行。
+
+</details>
+
+<details>
+<summary><strong>Pi</strong></summary>
+
+在 AutoScribeAI 根目录启动 Pi，然后让它读取：
 
 ```text
 skills/autoscribe-orchestrator/SKILL.md
 ```
 
-示例任务：
+Pi 原生支持 Agent Skills / `SKILL.md`。对于 AutoScribeAI，直接以整个仓库作为工作区最简单。
 
-> 使用 AutoScribeAI 为这个项目生成完整操作手册。源码是［路径或仓库］，测试环境是［URL］，使用角色是［角色］。允许在测试环境创建合成测试数据。请真实执行流程、采集截图，无法验证的内容明确保留未验证状态，并输出离线 HTML、Word 和 Markdown。
+</details>
 
-如果没有指定语言，默认生成英文手册；需要中文时显式指定 `zh-CN` 或直接说明“生成简体中文手册”。
+<details>
+<summary><strong>Agy / Google Antigravity</strong></summary>
 
-## 真实样例
+在 AutoScribeAI 根目录运行 `agy`，然后告诉它读取：
 
-| 样例 | 语言 | 实测范围 |
-| --- | --- | --- |
-| [Uptime Kuma](tests/manual_samples/uptime-kuma/README.md) | 简体中文 | 监控、通知配置、状态页，3/3 |
-| [changedetection.io](tests/manual_samples/changedetection/README.md) | 日本語 | 公开页面证据；功能流程 0/3 |
-| [IT Tools](tests/manual_samples/it-tools/README.md) | 한국어 | JSON→YAML，1/3 |
+```text
+skills/autoscribe-orchestrator/SKILL.md
+```
 
-详细内容见 [安装指南](docs/INSTALLATION.md)、[技术方案](docs/TECHNICAL_DESIGN.md)、[开发计划](docs/ROADMAP.md)、[运行约定](references/RUN_PROTOCOL.md) 和 [证据约定](references/EVIDENCE.md)。
+Antigravity 原生支持 Agent Skills。保留完整工作区可以避免 Skill 与共享脚本、Schema、参考文件之间的相对路径失效。
+
+</details>
+
+<details>
+<summary><strong>OpenCode</strong></summary>
+
+在 AutoScribeAI 根目录启动 OpenCode，然后告诉它读取：
+
+```text
+skills/autoscribe-orchestrator/SKILL.md
+```
+
+OpenCode 原生支持 `SKILL.md`，也兼容 `.opencode/skills`、`.claude/skills` 和 `.agents/skills`。AutoScribeAI 默认推荐直接使用完整仓库。
+
+</details>
+
+<details>
+<summary><strong>其他 Agent：Cursor、Cline、Roo Code、Gemini CLI 等</strong></summary>
+
+只要 Agent 能读文件、执行命令，就可以使用。
+
+把 AutoScribeAI 仓库作为工作区打开，然后输入：
+
+```text
+读取 skills/autoscribe-orchestrator/SKILL.md。
+保留完整 AutoScribeAI 目录，
+使用其中的 scripts、schemas、references 和 skills 生成操作手册。
+```
+
+如果 Agent 还具备浏览器或 Computer Use 能力，就可以继续做真实 UI 验证和截图采集。
+
+</details>
+
+## 多语言
+
+内置手册界面支持：
+
+- **English — `en-US`（默认）**
+- 简体中文 — `zh-CN`
+- 日本語 — `ja-JP`
+- 한국어 — `ko-KR`
+
+## 更多
+
+- [在线 Demo](https://auto-scribe-ai-tau.vercel.app)
+- [真实样例](tests/manual_samples/README.md)
+- [安装说明](docs/INSTALLATION.md)
+- [技术方案](docs/TECHNICAL_DESIGN.md)
+- [证据规则](references/EVIDENCE.md)
