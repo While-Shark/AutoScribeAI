@@ -31,8 +31,8 @@ class SkillsBundleTests(unittest.TestCase):
             if name.startswith('AutoScribeAI/skills/') and name.endswith('/SKILL.md')
         })
         self.assertEqual(skill_paths, [
-            'autoscribe-manual-verifier', 'autoscribe-manual-writer',
-            'autoscribe', 'autoscribe-project-analyzer',
+            'autoscribe', 'autoscribe-manual-verifier',
+            'autoscribe-manual-writer', 'autoscribe-project-analyzer',
             'autoscribe-software-explorer',
         ])
         for path in (
