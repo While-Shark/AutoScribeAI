@@ -1,62 +1,109 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+[English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja-JP.md) · [한국어](README.ko-KR.md)
 
-**Live Demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+> ソフトウェアプロジェクトを AI に渡して、実スクリーンショット付きの操作マニュアルを生成します。
 
-## AI にプロジェクトを渡して、実際に使える画像付き操作マニュアルを生成
+**Live Demo:** https://auto-scribe-ai-tau.vercel.app
 
-プロジェクト、アクセス可能なテスト環境、対象ワークフローを AI に渡すと、AutoScribeAI がモジュール分析、許可された UI の実操作、スクリーンショット収集、実結果の記録、マニュアル出力までをガイドします。
+AutoScribeAI は、プロジェクト解析、許可された UI 操作、スクリーンショット取得、実結果の記録を行い、**HTML、Word / DOCX、Markdown** を出力するポータブル Skill Pack です。
 
-**AutoScribeAI 用の常駐バックエンドは不要です。1 回の実行から Offline HTML、Word / DOCX、Markdown、カバレッジレポートを生成できます。**
+AutoScribeAI 専用バックエンドは不要です。
 
-プロジェクト納品、オンボーディング、社内システム、OSS ドキュメント、研修、受入資料、リリース後のマニュアル更新に実用的です。
+## まず結果を見る
 
-### Demo Gallery
+Live Demo には 3 つの実サンプルがあります。
 
-3 つの実サンプルを 1 ページにまとめた Demo Gallery を公開しました。生成済み HTML マニュアルと実際の Word 文書をそのまま確認できます。
+| Project | Language | Verified |
+| --- | --- | --- |
+| Uptime Kuma | 简体中文 | **3/3** |
+| changedetection.io | 日本語 | **0/3**。ブロッカーを保持し、未実行手順を生成しません |
+| IT Tools | 한국어 | **1/3**。実測とソース由来候補を分離 |
 
-- Uptime Kuma — 简体中文 — **3/3 verified**
-- changedetection.io — 日本語 — **0/3 verified**。有料フローで止まった事実をそのまま記録
-- IT Tools — 한국어 — **1/3 verified**。実測とソース由来候補を明確に分離
+**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app)**
 
-**Open live demo:** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+HTML マニュアル、生成済み Word、実スクリーンショット、検証状態を直接確認できます。
 
-Gallery: [`demo/`](demo/) · Vercel: [`vercel.json`](vercel.json) · Samples: [`tests/manual_samples`](tests/manual_samples/README.md)
+## 出力
 
-[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
-## 設計のポイント
+- **Offline HTML**
+- **Word / DOCX**
+- **Markdown**
+- **Coverage / Quality report**
 
-- HTML を主要な閲覧形式として使用
-- `manual.json` を単一の信頼できるデータ源として使用
-- 実操作とスクリーンショット証拠がある場合のみ「検証済み」とする
-- 常駐サービスは不要。5 つの Skills とローカルスクリプトで構成
-- チェックポイントにより中断した実行を安全に再開
+実際の操作結果と証拠がないワークフローは verified になりません。
 
-## Skills
+## 使い方
 
-- `autoscribe-orchestrator` — 実行計画、開始、再開、全体調整
-- `autoscribe-project-analyzer` — モジュール、機能、ロール、候補ワークフローの分析
-- `autoscribe-software-explorer` — 実 UI の操作と証拠収集
-- `autoscribe-manual-writer` — 証拠から `manual.json` を生成
-- `autoscribe-manual-verifier` — 出典、参照、カバレッジ、品質を検証
+```bash
+git clone https://github.com/While-Shark/AutoScribeAI.git
+cd AutoScribeAI
+python -m pip install -r requirements.txt
+```
 
-## 言語
+AI Agent をこのディレクトリで起動し、次のように指示します。
 
-- English — `en-US` **既定**
+```text
+Read skills/autoscribe-orchestrator/SKILL.md and use AutoScribeAI
+to generate a complete illustrated user manual.
+```
+
+<details>
+<summary><strong>Codex</strong></summary>
+
+AutoScribeAI ルートで `codex` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読むよう指示します。
+
+</details>
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+AutoScribeAI ルートで `claude` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読むよう指示します。
+
+Claude Code は native Skills をサポートしますが、AutoScribeAI は共有 scripts / schemas / references を利用するため、完全なリポジトリを保持する方法を推奨します。
+
+</details>
+
+<details>
+<summary><strong>Pi</strong></summary>
+
+AutoScribeAI ルートで Pi を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。Pi は Agent Skills / `SKILL.md` をサポートします。
+
+</details>
+
+<details>
+<summary><strong>Agy / Google Antigravity</strong></summary>
+
+AutoScribeAI ルートで `agy` を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。Antigravity は Agent Skills をネイティブサポートします。
+
+</details>
+
+<details>
+<summary><strong>OpenCode</strong></summary>
+
+AutoScribeAI ルートで OpenCode を起動し、`skills/autoscribe-orchestrator/SKILL.md` を読み込ませます。OpenCode は `SKILL.md` と Agent Skills をサポートします。
+
+</details>
+
+<details>
+<summary><strong>Other agents</strong></summary>
+
+Cursor、Cline、Roo Code、Gemini CLI などでも、ファイル読み取りとコマンド実行が可能なら利用できます。
+
+完全な AutoScribeAI ディレクトリをワークスペースとして開き、orchestrator Skill を読むよう指示してください。
+
+</details>
+
+## Languages
+
+- **English — `en-US` (default)**
 - 简体中文 — `zh-CN`
 - 日本語 — `ja-JP`
 - 한국어 — `ko-KR`
 
-`language` を省略すると `en-US` が使用されます。他の BCP-47 言語も本文生成に使用できますが、固定テンプレートのラベルは英語にフォールバックします。
+## Links
 
-## クイックスタート
-
-```bash
-python -m pip install -r requirements.txt
-python scripts/package_skills.py --output dist/autoscribeai-skills.zip
-```
-
-AI には `skills/autoscribe-orchestrator/SKILL.md` から開始するよう指示してください。実スクリーンショットを取得するには、AI ホスト側に許可済みブラウザまたは Computer Use 機能が必要です。
-
-実例は [tests/manual_samples](tests/manual_samples/README.md)、詳細は [Installation](docs/INSTALLATION.md) を参照してください。
+- [Live Demo](https://auto-scribe-ai-tau.vercel.app)
+- [Samples](tests/manual_samples/README.md)
+- [Installation](docs/INSTALLATION.md)
+- [Technical design](docs/TECHNICAL_DESIGN.md)
