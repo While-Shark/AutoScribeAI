@@ -4,7 +4,7 @@
 
 > ソフトウェアプロジェクトを AI に渡して、実スクリーンショット付きの操作マニュアルを生成します。
 
-**Live Demo:** https://auto-scribe-ai-tau.vercel.app
+**Live Demo:** https://auto-scribe-ai-tau.vercel.app/?lang=ja
 
 AutoScribeAI は、プロジェクト解析、許可された UI 操作、スクリーンショット取得、実結果の記録を行い、**HTML、Word / DOCX、Markdown** を出力するポータブル Skill Pack です。
 
@@ -20,7 +20,7 @@ Live Demo には 3 つの実サンプルがあります。
 | changedetection.io | 日本語 | **0/3**。ブロッカーを保持し、未実行手順を生成しません |
 | IT Tools | 한국어 | **1/3**。実測とソース由来候補を分離 |
 
-**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app)**
+**[Open Live Demo →](https://auto-scribe-ai-tau.vercel.app/?lang=ja)**
 
 HTML マニュアル、生成済み Word、実スクリーンショット、検証状態を直接確認できます。
 
@@ -103,7 +103,7 @@ Cursor、Cline、Roo Code、Gemini CLI などでも、ファイル読み取り�
 
 ## Links
 
-- [Live Demo](https://auto-scribe-ai-tau.vercel.app)
+- [Live Demo](https://auto-scribe-ai-tau.vercel.app/?lang=ja)
 - [Samples](tests/manual_samples/README.md)
 - [Installation](docs/INSTALLATION.md)
 - [Technical design](docs/TECHNICAL_DESIGN.md)
