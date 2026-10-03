@@ -20,7 +20,7 @@
 
 Demo 源码：[`demo/`](demo/) · Vercel 配置：[`vercel.json`](vercel.json) · 真实产物：[`tests/manual_samples`](tests/manual_samples/README.md)
 
-[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWhile-Shark%2FAutoScribeAI&project-name=autoscribeai-demo&repository-name=AutoScribeAI)
+[![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ### 核心特点
 
 - **HTML 是主阅读体验**：支持目录、搜索、截图查看和离线使用。
