@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^act-[a-f0-9]{32}$"
+          },
+          "workflowId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stepId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operation": {
+            "enum": [
+              "create-test-data",
+              "update-test-data",
+              "delete-test-data",
+              "publish",
+              "send",
+              "change-permissions",
+              "pay"
+            ]
+          },
+          "targetRef": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "begun",
+              "blocked",
+              "retryable",
+              "completed"
+            ]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "firstStartedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastStartedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checkedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "workflowId",
+          "stepId",
+          "operation",
+          "targetRef",
+          "status",
+          "attempts",
+          "firstStartedAt",
+          "lastStartedAt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "actionId": {
+            "type": "string",
+            "pattern": "^act-[a-f0-9]{32}$"
+          },
+          "status": {
+            "enum": [
+              "begun",
+              "blocked",
+              "retryable",
+              "completed"
+            ]
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "actionId",
+          "status",
+          "at"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "actions",
+    "events"
+  ],
+  "additionalProperties": false
+}

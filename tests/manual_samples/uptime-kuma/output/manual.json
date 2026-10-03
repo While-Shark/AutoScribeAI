@@ -1,0 +1,409 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "uptime-kuma",
+    "name": "Uptime Kuma",
+    "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+    "environment": "Uptime Kuma 官方演示实例 demo.kuma.pet（2026-09-29；临时环境）",
+    "language": "zh-CN"
+  },
+  "title": "Uptime Kuma 操作手册",
+  "roles": [
+    "user"
+  ],
+  "modules": [
+    {
+      "id": "monitoring",
+      "name": "监控项配置",
+      "source": "source",
+      "location": "src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications",
+      "name": "通知渠道设置",
+      "source": "source",
+      "location": "src/components/notifications"
+    },
+    {
+      "id": "status-pages",
+      "name": "状态页管理",
+      "source": "source",
+      "location": "src/pages/AddStatusPage.vue"
+    }
+  ],
+  "features": [
+    {
+      "id": "monitoring-feature",
+      "moduleId": "monitoring",
+      "name": "HTTP 监控",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/pages/EditMonitor.vue"
+    },
+    {
+      "id": "notifications-feature",
+      "moduleId": "notifications",
+      "name": "配置通知渠道",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/components/notifications"
+    },
+    {
+      "id": "status-pages-feature",
+      "moduleId": "status-pages",
+      "name": "创建状态页",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/pages/AddStatusPage.vue"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "monitoring-flow",
+      "featureId": "monitoring-feature",
+      "role": "user",
+      "goal": "创建 HTTP 监控并设置检查参数",
+      "preconditions": [
+        "已打开 Uptime Kuma 的 Web 界面并具有添加监控项的权限。"
+      ],
+      "successCriteria": "HTTP 监控保存后出现在仪表盘，显示正常状态和成功心跳。",
+      "location": "src/pages/EditMonitor.vue",
+      "status": "verified",
+      "reason": "已在官方临时演示实例保存 HTTP(s) 监控，并观察到正常状态及 HTTP 200 成功心跳。",
+      "stepIds": [
+        "monitoring-step-1",
+        "monitoring-step-2",
+        "monitoring-step-3"
+      ]
+    },
+    {
+      "id": "notifications-flow",
+      "featureId": "notifications-feature",
+      "role": "user",
+      "goal": "配置通知渠道用于接收告警",
+      "preconditions": [
+        "已准备通知服务所需的非敏感连接信息。"
+      ],
+      "successCriteria": "通知渠道可保存，并可在监控编辑页选择并关联。该验证不包含实际消息投递。",
+      "location": "src/components/notifications",
+      "status": "verified",
+      "reason": "已保存并关联使用保留域名 .invalid 的 Webhook 占位配置；未点击测试，因此消息投递未验证。",
+      "stepIds": [
+        "notifications-step-1",
+        "notifications-step-2",
+        "notifications-step-3"
+      ]
+    },
+    {
+      "id": "status-pages-flow",
+      "featureId": "status-pages-feature",
+      "role": "user",
+      "goal": "创建状态页并组织公开展示的监控信息",
+      "preconditions": [
+        "已存在可用于展示的监控项。"
+      ],
+      "successCriteria": "状态页保存成功，公开视图显示已添加的测试监控及其运行状态。",
+      "location": "src/pages/AddStatusPage.vue",
+      "status": "verified",
+      "reason": "已在官方临时演示实例创建状态页、添加测试监控并保存，公开页面显示服务正常。",
+      "stepIds": [
+        "status-pages-step-1",
+        "status-pages-step-2",
+        "status-pages-step-3"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "monitoring-step-1",
+      "workflowId": "monitoring-flow",
+      "order": 1,
+      "action": "进入“添加监控项”，选择 HTTP(s) 类型。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "添加监控项表单显示 HTTP(s) 类型及名称、URL、检查间隔等配置项。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-monitor"
+      ],
+      "actualResult": "添加监控项表单显示 HTTP(s) 类型及名称、URL、检查间隔等配置项。"
+    },
+    {
+      "id": "monitoring-step-2",
+      "workflowId": "monitoring-flow",
+      "order": 2,
+      "action": "填写名称 AutoScribe Demo Website 和 URL https://example.com，保留 60 秒检查间隔。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "表单使用合成名称与 example.com；保存后的监控详情显示该 URL 和 60 秒检查间隔。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-monitor"
+      ],
+      "actualResult": "表单使用合成名称与 example.com；保存后的监控详情显示该 URL 和 60 秒检查间隔。"
+    },
+    {
+      "id": "monitoring-step-3",
+      "workflowId": "monitoring-flow",
+      "order": 3,
+      "action": "保存监控，并在仪表盘和心跳历史中核对状态。",
+      "location": "src/pages/EditMonitor.vue",
+      "expectedResult": "仪表盘出现 AutoScribe Demo Website；首次及后续心跳均为 HTTP 200 - OK，状态正常。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-monitor"
+      ],
+      "actualResult": "仪表盘出现 AutoScribe Demo Website；首次及后续心跳均为 HTTP 200 - OK，状态正常。"
+    },
+    {
+      "id": "notifications-step-1",
+      "workflowId": "notifications-flow",
+      "order": 1,
+      "action": "在“设置 → 通知”中打开新增通知渠道，选择 Webhook。",
+      "location": "src/components/notifications",
+      "expectedResult": "通知类型列表包含 Webhook，切换后显示 Post URL、HTTP 方法和请求体字段。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-notification"
+      ],
+      "actualResult": "通知类型列表包含 Webhook，切换后显示 Post URL、HTTP 方法和请求体字段。"
+    },
+    {
+      "id": "notifications-step-2",
+      "workflowId": "notifications-flow",
+      "order": 2,
+      "action": "填入 Demo Placeholder Webhook 与 https://example.invalid/uptime-kuma-test，并选择 application/json 请求体。",
+      "location": "src/components/notifications",
+      "expectedResult": "渠道保存成功，通知列表出现 Demo Placeholder Webhook。未点击“测试”，未发送通知。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-notification"
+      ],
+      "actualResult": "渠道保存成功，通知列表出现 Demo Placeholder Webhook。未点击“测试”，未发送通知。"
+    },
+    {
+      "id": "notifications-step-3",
+      "workflowId": "notifications-flow",
+      "order": 3,
+      "action": "编辑 AutoScribe Demo Website，勾选 Demo Placeholder Webhook 并保存。",
+      "location": "src/components/notifications",
+      "expectedResult": "监控编辑页中 Demo Placeholder Webhook 复选框已勾选，页面提示已保存。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-notification-assignment"
+      ],
+      "actualResult": "监控编辑页中 Demo Placeholder Webhook 复选框已勾选，页面提示已保存。"
+    },
+    {
+      "id": "status-pages-step-1",
+      "workflowId": "status-pages-flow",
+      "order": 1,
+      "action": "从“状态页面”管理页点击“新的状态页”。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "进入“添加新的状态页”页面，要求填写名称和路径。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-status-editor"
+      ],
+      "actualResult": "进入“添加新的状态页”页面，要求填写名称和路径。"
+    },
+    {
+      "id": "status-pages-step-2",
+      "workflowId": "status-pages-flow",
+      "order": 2,
+      "action": "设置名称 AutoScribe Demo Status 和路径 autoscribe-demo，进入状态页编辑器。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "编辑器标题显示 AutoScribe Demo Status，路径显示 /status/autoscribe-demo。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-status-editor"
+      ],
+      "actualResult": "编辑器标题显示 AutoScribe Demo Status，路径显示 /status/autoscribe-demo。"
+    },
+    {
+      "id": "status-pages-step-3",
+      "workflowId": "status-pages-flow",
+      "order": 3,
+      "action": "将 AutoScribe Demo Website 加入状态页并保存，打开公开视图确认。",
+      "location": "src/pages/AddStatusPage.vue",
+      "expectedResult": "公开状态页显示“所有服务运行正常”、服务分组、AutoScribe Demo Website 和 100% 在线状态。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-kuma-status-picker",
+        "ev-kuma-status-public"
+      ],
+      "actualResult": "公开状态页显示“所有服务运行正常”、服务分组、AutoScribe Demo Website 和 100% 在线状态。"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev-kuma-monitor",
+      "stepIds": [
+        "monitoring-step-1",
+        "monitoring-step-2",
+        "monitoring-step-3"
+      ],
+      "path": "evidence/monitor-created-dashboard.jpg",
+      "capturedAt": "2026-09-29T22:04:20+08:00",
+      "page": "https://demo.kuma.pet/dashboard/1",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "36ca0bfab7911b6d8fa1d03e15ba2005e6b4e2393ef2667c84d83bdf040c8fc6",
+      "redacted": true
+    },
+    {
+      "id": "ev-kuma-notification",
+      "stepIds": [
+        "notifications-step-1",
+        "notifications-step-2"
+      ],
+      "path": "evidence/notification-saved.jpg",
+      "capturedAt": "2026-09-29T22:07:20+08:00",
+      "page": "https://demo.kuma.pet/settings/notifications",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "c87c310d428ae98b81fc77dfd3d62b77684d12732854292ce861d7eef2dc4994",
+      "redacted": true
+    },
+    {
+      "id": "ev-kuma-notification-assignment",
+      "stepIds": [
+        "notifications-step-3"
+      ],
+      "path": "evidence/notification-assigned-to-monitor.jpg",
+      "capturedAt": "2026-09-29T22:07:52+08:00",
+      "page": "https://demo.kuma.pet/edit/1",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "5e89fa70b5bcd5effbe48e22c1f60f375919f9d61f6e8ad78f654851042003a8",
+      "redacted": true
+    },
+    {
+      "id": "ev-kuma-status-editor",
+      "stepIds": [
+        "status-pages-step-1",
+        "status-pages-step-2"
+      ],
+      "path": "evidence/status-page-editor-before-monitor.jpg",
+      "capturedAt": "2026-09-29T21:59:32+08:00",
+      "page": "https://demo.kuma.pet/status/autoscribe-demo",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "567927679b62999fa578b76e3d25bfbf645f2b1615fa674afd86e2a0a3f3c93f",
+      "redacted": true
+    },
+    {
+      "id": "ev-kuma-status-picker",
+      "stepIds": [
+        "status-pages-step-3"
+      ],
+      "path": "evidence/status-page-monitor-picker.jpg",
+      "capturedAt": "2026-09-29T22:00:05+08:00",
+      "page": "https://demo.kuma.pet/status/autoscribe-demo",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "12eb5bf7d9f84c3f92465a0c995360e5f3301ae471056eebc7a2520d317eacf6",
+      "redacted": true
+    },
+    {
+      "id": "ev-kuma-status-public",
+      "stepIds": [
+        "status-pages-step-3"
+      ],
+      "path": "evidence/status-page-public.jpg",
+      "capturedAt": "2026-09-29T22:05:28+08:00",
+      "page": "https://demo.kuma.pet/status/autoscribe-demo",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "7a198e3f607943ee47554accf6af39175e0bb74572b229f75ba91071489f10d2",
+      "redacted": true
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-monitoring",
+      "moduleId": "monitoring",
+      "title": "监控项配置",
+      "purpose": "监控项配置的实际界面流程与结果，按 Uptime Kuma 官方临时演示实例记录。",
+      "workflowIds": [
+        "monitoring-flow"
+      ],
+      "faqs": [
+        {
+          "question": "可以监控哪些目标？",
+          "answer": "README 和 monitor-types 源码列出 HTTP、TCP、Ping、DNS 等多种监控类型；具体可用字段取决于所选类型。",
+          "source": "source",
+          "workflowIds": [
+            "monitoring-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-notifications",
+      "moduleId": "notifications",
+      "title": "通知渠道设置",
+      "purpose": "通知渠道设置的实际界面流程与结果，按 Uptime Kuma 官方临时演示实例记录。",
+      "workflowIds": [
+        "notifications-flow"
+      ],
+      "faqs": [
+        {
+          "question": "通知渠道在哪里配置？",
+          "answer": "项目源码集中提供通知设置组件和通知提供方实现；各渠道所需字段因提供方而异。",
+          "source": "source",
+          "workflowIds": [
+            "notifications-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-status-pages",
+      "moduleId": "status-pages",
+      "title": "状态页管理",
+      "purpose": "状态页管理的实际界面流程与结果，按 Uptime Kuma 官方临时演示实例记录。",
+      "workflowIds": [
+        "status-pages-flow"
+      ],
+      "faqs": [
+        {
+          "question": "状态页能展示什么？",
+          "answer": "项目提供状态页管理与状态页路由，可将监控信息组织为公开状态展示。",
+          "source": "source",
+          "workflowIds": [
+            "status-pages-flow"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "运行验证于 Uptime Kuma 官方临时演示实例 demo.kuma.pet，演示实例会自动过期；截图记录的是 2026-09-29 的会话。",
+    "手册源码引用固定到公开提交 e7420f8fa546a8baa7ac4bf9d10a32545d4346e0；演示站运行版本未单独核实，源码版本与演示实例版本可能不同。",
+    "通知流程只验证了 Webhook 配置保存及与监控项关联。接收地址使用 example.invalid 保留域，未点击“测试”，因此没有验证真实通知投递。",
+    "截图不包含密码或通知密钥。"
+  ]
+}

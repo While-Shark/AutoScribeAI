@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "it-tools",
+  "projectVersion": "d505845f918e946ec300af7b36efc107e2f66e9e",
+  "scope": [
+    "JSON 변환",
+    "텍스트 해시 계산",
+    "QR 코드 생성"
+  ],
+  "scopeItems": [
+    {
+      "scope": "JSON 변환",
+      "planned": 1,
+      "verified": 1,
+      "blocked": 0,
+      "unverified": 0,
+      "pending": 0,
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
+    },
+    {
+      "scope": "텍스트 해시 계산",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "scope": "QR 코드 생성",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ],
+  "inventorySha256": "5f8093624687b9343348133ebb2cf44154de1e41bbe5fc583eaf92c47368f5be",
+  "manualSha256": "2cdeefafa319e21ca2e8fc234346826066666cf89b40edf9cb528ca81810c908",
+  "planned": 3,
+  "verified": 1,
+  "blocked": 0,
+  "unverified": 2,
+  "pending": 0,
+  "coverage": 0.3333333333333333,
+  "coverageDisplay": "1/3",
+  "modules": [
+    {
+      "id": "json-yaml",
+      "name": "JSON 변환",
+      "planned": 1,
+      "verified": 1,
+      "blocked": 0,
+      "unverified": 0,
+      "pending": 0,
+      "coverage": 1.0,
+      "coverageDisplay": "1/1"
+    },
+    {
+      "id": "hash-text",
+      "name": "텍스트 해시 계산",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    },
+    {
+      "id": "qr-generator",
+      "name": "QR 코드 생성",
+      "planned": 1,
+      "verified": 0,
+      "blocked": 0,
+      "unverified": 1,
+      "pending": 0,
+      "coverage": 0.0,
+      "coverageDisplay": "0/1"
+    }
+  ]
+}

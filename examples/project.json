@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "0.1",
+  "project": {"id": "demo", "name": "Example Project", "version": "demo-v1", "environment": "test"},
+  "source": {"path": ".."},
+  "roles": ["viewer"],
+  "scope": ["Browse modules and feature entry points"],
+  "language": "en-US",
+  "formats": ["html", "docx", "markdown"],
+  "allowedActions": ["read"],
+  "testDataPolicy": "Read-only; do not create, update, or delete business data."
+}

@@ -1,0 +1,305 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "it-tools",
+    "name": "IT Tools",
+    "version": "d505845f918e946ec300af7b36efc107e2f66e9e",
+    "environment": "GitHub 공개 소스 스냅샷 d505845f918e",
+    "language": "ko-KR"
+  },
+  "title": "IT Tools 사용 설명서",
+  "roles": [
+    "user"
+  ],
+  "modules": [
+    {
+      "id": "json-yaml",
+      "name": "JSON 변환",
+      "source": "source",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue"
+    },
+    {
+      "id": "hash-text",
+      "name": "텍스트 해시 계산",
+      "source": "source",
+      "location": "src/tools/hash-text/hash-text.vue"
+    },
+    {
+      "id": "qr-generator",
+      "name": "QR 코드 생성",
+      "source": "source",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue"
+    }
+  ],
+  "features": [
+    {
+      "id": "json-yaml-feature",
+      "moduleId": "json-yaml",
+      "name": "JSON을 YAML로 변환",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue"
+    },
+    {
+      "id": "hash-text-feature",
+      "moduleId": "hash-text",
+      "name": "텍스트의 해시 계산",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/tools/hash-text/hash-text.vue"
+    },
+    {
+      "id": "qr-generator-feature",
+      "moduleId": "qr-generator",
+      "name": "QR 코드 만들기",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "json-yaml-flow",
+      "featureId": "json-yaml-feature",
+      "role": "user",
+      "goal": "JSON 데이터를 YAML 형식으로 변환한다",
+      "preconditions": [
+        "IT Tools의 JSON to YAML 도구를 열 수 있다."
+      ],
+      "successCriteria": "示例 JSON 输入后，输出区域显示对应 YAML。该结果已在 IT Tools 公开部署页面观察到。",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
+      "status": "verified",
+      "stepIds": [
+        "json-yaml-step-1",
+        "json-yaml-step-2",
+        "json-yaml-step-3"
+      ]
+    },
+    {
+      "id": "hash-text-flow",
+      "featureId": "hash-text-feature",
+      "role": "user",
+      "goal": "텍스트에서 해시 값을 계산한다",
+      "preconditions": [
+        "Hash Text 도구를 열 수 있다."
+      ],
+      "successCriteria": "도구 구성 요소와 서비스 코드에서 텍스트 해시 기능을 확인할 수 있다. 성공 기준은 입력 텍스트에 대한 해시 값이 출력되는 것이다.",
+      "location": "src/tools/hash-text/hash-text.vue",
+      "status": "unverified",
+      "reason": "고정 버전의 공개 소스 코드를 바탕으로 작성했으며 대상 앱에서 직접 조작하거나 검증하지 않았습니다.",
+      "stepIds": [
+        "hash-text-step-1",
+        "hash-text-step-2",
+        "hash-text-step-3"
+      ]
+    },
+    {
+      "id": "qr-generator-flow",
+      "featureId": "qr-generator-feature",
+      "role": "user",
+      "goal": "문자열에서 QR 코드를 생성한다",
+      "preconditions": [
+        "QR Code Generator 도구를 열 수 있다."
+      ],
+      "successCriteria": "도구 구성 요소에는 QR 코드 생성 composable 연결이 확인된다. 성공 기준은 입력한 문자열에 해당하는 QR 이미지가 표시되는 것이다.",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue",
+      "status": "unverified",
+      "reason": "고정 버전의 공개 소스 코드를 바탕으로 작성했으며 대상 앱에서 직접 조작하거나 검증하지 않았습니다.",
+      "stepIds": [
+        "qr-generator-step-1",
+        "qr-generator-step-2",
+        "qr-generator-step-3"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "json-yaml-step-1",
+      "workflowId": "json-yaml-flow",
+      "order": 1,
+      "action": "JSON to YAML 도구를 연다.",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
+      "expectedResult": "显示 JSON to YAML 工具标题和输入区域。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "已打开 JSON to YAML converter 页面，显示标题和 JSON 输入区域。"
+    },
+    {
+      "id": "json-yaml-step-2",
+      "workflowId": "json-yaml-flow",
+      "order": 2,
+      "action": "입력 영역에 변환할 JSON을 입력한다.",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
+      "expectedResult": "输入框保留示例 JSON 内容。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "输入 {\"service\":\"demo\",\"enabled\":true} 后，内容显示在 JSON 输入区域。"
+    },
+    {
+      "id": "json-yaml-step-3",
+      "workflowId": "json-yaml-flow",
+      "order": 3,
+      "action": "출력 영역에서 YAML 변환 결과를 확인한다.",
+      "location": "src/tools/json-to-yaml-converter/json-to-yaml.vue",
+      "expectedResult": "输出区显示等价的 YAML 文本。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-it-tools-json-yaml"
+      ],
+      "actualResult": "输出区域显示 service: demo 与 enabled: true 两行 YAML。"
+    },
+    {
+      "id": "hash-text-step-1",
+      "workflowId": "hash-text-flow",
+      "order": 1,
+      "action": "Hash Text 도구를 연다.",
+      "location": "src/tools/hash-text/hash-text.vue",
+      "expectedResult": "소스 코드 기준으로 이 메뉴 또는 선택 항목에서 작업할 수 있을 것으로 예상됩니다.",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "hash-text-step-2",
+      "workflowId": "hash-text-flow",
+      "order": 2,
+      "action": "텍스트 입력란에 계산할 문자열을 입력한다.",
+      "location": "src/tools/hash-text/hash-text.vue",
+      "expectedResult": "설정이 해당 기능 구성에 저장될 것으로 예상됩니다.",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "hash-text-step-3",
+      "workflowId": "hash-text-flow",
+      "order": 3,
+      "action": "표시된 해시 결과를 확인한다.",
+      "location": "src/tools/hash-text/hash-text.vue",
+      "expectedResult": "소스 설명 기준으로 저장한 항목이 목록이나 출력 영역에 표시될 것으로 예상되며 실제 확인은 하지 않았습니다.",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "qr-generator-step-1",
+      "workflowId": "qr-generator-flow",
+      "order": 1,
+      "action": "QR Code Generator 도구를 연다.",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue",
+      "expectedResult": "소스 코드 기준으로 이 메뉴 또는 선택 항목에서 작업할 수 있을 것으로 예상됩니다.",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "qr-generator-step-2",
+      "workflowId": "qr-generator-flow",
+      "order": 2,
+      "action": "QR 코드로 만들 텍스트를 입력한다.",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue",
+      "expectedResult": "설정이 해당 기능 구성에 저장될 것으로 예상됩니다.",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "qr-generator-step-3",
+      "workflowId": "qr-generator-flow",
+      "order": 3,
+      "action": "화면에 생성된 QR 코드를 확인한다.",
+      "location": "src/tools/qr-code-generator/qr-code-generator.vue",
+      "expectedResult": "소스 설명 기준으로 저장한 항목이 목록이나 출력 영역에 표시될 것으로 예상되며 실제 확인은 하지 않았습니다.",
+      "source": "source",
+      "evidenceIds": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev-it-tools-json-yaml",
+      "stepIds": [
+        "json-yaml-step-1",
+        "json-yaml-step-2",
+        "json-yaml-step-3"
+      ],
+      "path": "evidence/it-tools-json-yaml.jpg",
+      "capturedAt": "2026-09-29T12:18:46Z",
+      "page": "https://it-tools.tech/json-to-yaml-converter",
+      "viewport": {
+        "width": 1363,
+        "height": 936
+      },
+      "source": "observed",
+      "sha256": "3a9fc643c79b3ba32bd47e0439827badf549574297e2024b6178fefbc626ebaf",
+      "redacted": true
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-json-yaml",
+      "moduleId": "json-yaml",
+      "title": "JSON 변환",
+      "purpose": "이 장에서는 JSON을 YAML로 변환의 소스 코드 근거와 검증할 작업 단계를 안내합니다. 대상 환경에서 확인하기 전 참고용입니다.",
+      "workflowIds": [
+        "json-yaml-flow"
+      ],
+      "faqs": [
+        {
+          "question": "잘못된 JSON을 입력하면 어떻게 되나요?",
+          "answer": "소스에는 변환 도구 구성 요소와 E2E 명세가 있으나, 오류 문구와 예외 동작은 실제 실행으로 확인되지 않았다.",
+          "source": "source",
+          "workflowIds": [
+            "json-yaml-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-hash-text",
+      "moduleId": "hash-text",
+      "title": "텍스트 해시 계산",
+      "purpose": "이 장에서는 텍스트의 해시 계산의 소스 코드 근거와 검증할 작업 단계를 안내합니다. 대상 환경에서 확인하기 전 참고용입니다.",
+      "workflowIds": [
+        "hash-text-flow"
+      ],
+      "faqs": [
+        {
+          "question": "어떤 해시 알고리즘을 지원하나요?",
+          "answer": "알고리즘 지원 범위는 해시 도구 서비스 구현에 정의되어 있다. 이 샘플은 실제 브라우저에서 알고리즘 선택지를 확인하지 않았다.",
+          "source": "source",
+          "workflowIds": [
+            "hash-text-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-qr-generator",
+      "moduleId": "qr-generator",
+      "title": "QR 코드 생성",
+      "purpose": "이 장에서는 QR 코드 만들기의 소스 코드 근거와 검증할 작업 단계를 안내합니다. 대상 환경에서 확인하기 전 참고용입니다.",
+      "workflowIds": [
+        "qr-generator-flow"
+      ],
+      "faqs": [
+        {
+          "question": "QR 코드에 어떤 값을 넣을 수 있나요?",
+          "answer": "도구는 텍스트 값을 QR 코드로 만드는 용도로 제공된다. 다운로드 옵션과 구체적인 제한은 실제 UI에서 확인되지 않았다.",
+          "source": "source",
+          "workflowIds": [
+            "qr-generator-flow"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "本手册的源码索引固定到 commit d505845f918e946ec300af7b36efc107e2f66e9e；实测截图取自 IT Tools 公开部署页面，部署版本未与固定源码 commit 对齐。",
+    "仅 JSON→YAML 转换流程已在公开部署页面观察并截图验证；文本哈希和 QR 码流程仍为源码候选，未经界面操作验证。"
+  ]
+}

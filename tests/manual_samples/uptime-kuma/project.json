@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "uptime-kuma",
+    "name": "Uptime Kuma",
+    "version": "e7420f8fa546a8baa7ac4bf9d10a32545d4346e0",
+    "environment": "Uptime Kuma 官方演示实例 demo.kuma.pet（2026-09-29；临时环境）"
+  },
+  "source": {
+    "url": "https://github.com/louislam/uptime-kuma"
+  },
+  "roles": [
+    "user"
+  ],
+  "scope": [
+    "监控项配置",
+    "通知渠道设置",
+    "状态页管理"
+  ],
+  "language": "zh-CN",
+  "formats": [
+    "html",
+    "docx",
+    "markdown"
+  ],
+  "allowedActions": [
+    "read",
+    "create-test-data",
+    "update-test-data",
+    "publish"
+  ],
+  "testDataPolicy": "仅在官方短时演示实例中使用合成测试数据；不使用真实通知凭据、不发送通知测试、不保留生产数据。"
+}

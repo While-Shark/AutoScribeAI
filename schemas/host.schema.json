@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "browser": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "screenshot": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "provider",
+        "screenshot"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "browser"
+  ],
+  "additionalProperties": false
+}

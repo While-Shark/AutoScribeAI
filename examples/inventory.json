@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "demo",
+  "projectVersion": "demo-v1",
+  "scope": [
+    "Browse modules and feature entry points"
+  ],
+  "discoveredAt": "2026-09-29T08:00:00Z",
+  "modules": [
+    {
+      "id": "m-overview",
+      "name": "Project overview",
+      "source": "source",
+      "location": "README.md"
+    },
+    {
+      "id": "m-automation",
+      "name": "Automation foundation",
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py"
+    }
+  ],
+  "features": [
+    {
+      "id": "f-purpose",
+      "moduleId": "m-overview",
+      "name": "Understand project capabilities",
+      "roles": ["viewer"],
+      "source": "source",
+      "location": "README.md"
+    },
+    {
+      "id": "f-commands",
+      "moduleId": "m-automation",
+      "name": "Run core commands",
+      "roles": ["viewer"],
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py"
+    },
+    {
+      "id": "f-recovery",
+      "moduleId": "m-automation",
+      "name": "Resume an interrupted run",
+      "roles": ["viewer"],
+      "source": "source",
+      "location": "scripts/autoscribe/state.py"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "w-readme",
+      "featureId": "f-purpose",
+      "role": "viewer",
+      "goal": "Understand AutoScribeAI capabilities and limitations",
+      "preconditions": ["Repository documentation is readable"],
+      "successCriteria": "Implemented and planned capabilities can be distinguished",
+      "source": "source",
+      "location": "README.md"
+    },
+    {
+      "id": "w-validate",
+      "featureId": "f-commands",
+      "role": "viewer",
+      "goal": "Validate a project configuration",
+      "preconditions": ["Runtime dependencies are installed"],
+      "successCriteria": "The CLI confirms validity or returns an actionable error",
+      "source": "source",
+      "location": "scripts/autoscribe_cli.py#validate"
+    },
+    {
+      "id": "w-resume",
+      "featureId": "f-recovery",
+      "role": "viewer",
+      "goal": "Resume an interrupted run",
+      "preconditions": ["An existing run directory is available"],
+      "successCriteria": "The run resumes at the correct stage and interrupted side effects require review",
+      "source": "source",
+      "location": "scripts/autoscribe/state.py#resume"
+    }
+  ],
+  "scopeItems": [
+    {
+      "scope": "Browse modules and feature entry points",
+      "workflowIds": ["w-readme", "w-validate", "w-resume"]
+    }
+  ]
+}

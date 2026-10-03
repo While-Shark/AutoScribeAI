@@ -1,42 +1,153 @@
 # AutoScribeAI
 
-让 AI 理解并操作软件，自动整理各模块的使用流程，生成有真实截图、可核验、可导出的操作手册。
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
 
-> 当前阶段：技术方案与任务规划。尚未开始功能开发；本文描述的是目标能力，不代表已经实现。用户通知开始开发后，再按任务清单推进。
+## Turn real software usage into evidence-backed visual manuals
 
-## 已确定的方向
+Give an AI a project, an accessible test environment, and the workflows you want documented. AutoScribeAI guides the AI to inspect the project, operate authorized interfaces, capture real screenshots, preserve evidence, and generate a manual that users can actually follow.
 
-- 面向企业级项目及开源项目，围绕软件各模块的实际使用编写操作手册。
-- 以一套 Skills 交付，利用 AI 运行环境中的浏览器、终端及其他工具工作，无需额外部署常驻后端或数据库服务。
-- 使用真实操作截图解释步骤，兼顾功能入口、前置条件、操作过程和预期结果。
-- 以 HTML 作为主要阅读和交付界面，支持导出 Word（DOCX）和 Markdown。
-- 当前只落地方案和待办，功能开发另行启动。
+**One workflow can produce an offline HTML manual, editable Word document, and Markdown package. English is the default output language, with built-in templates for Simplified Chinese, Japanese, and Korean.**
 
-## 预期使用方式
+[View real samples](tests/manual_samples/README.md) · [Get started](#get-started) · [Installation guide](docs/INSTALLATION.md)
 
-向支持该技能包的 AI 提供项目地址或源码，以及可用的演示环境、账号角色和手册范围。AI 检查工具能力后，分析模块、规划操作流程、探索界面、采集证据、生成手册并检查遗漏。
+### A real end-to-end example
 
-源码模式可以整理模块和候选流程，但没有可访问的运行界面时，不能声称已完成操作验证，也不能编造截图。浏览器模式只能覆盖当前账号可见、可操作的范围。源码与运行环境同时可用时，可以交叉检查遗漏。
+The Uptime Kuma sample was created from a real temporary demo instance. It covers creating an HTTP monitor, saving and associating a notification configuration, and publishing a status page.
 
-“无需部署服务”指 AutoScribeAI 自身不需要独立常驻服务；AI 宿主仍需提供相应工具，目标项目也需要可访问。安装依赖、启动目标项目、登录及测试数据准备应按实际环境处理。
+![Uptime Kuma status page with the test monitor running](tests/manual_samples/uptime-kuma/screenshots/status-page-public.jpg)
 
-## 文档入口
+[Open the full sample](tests/manual_samples/uptime-kuma/README.md) · [Download Word](tests/manual_samples/uptime-kuma/output/manual.docx) · [Download Markdown package](tests/manual_samples/uptime-kuma/output/manual-markdown.zip)
 
-| 文档 | 内容 |
+The sample intentionally preserves its limits: the webhook uses a placeholder endpoint, message delivery was not tested, and the temporary demo deployment was not pinned to a source commit.
+
+## What you get
+
+| Deliverable | Best for |
 | --- | --- |
-| [技术方案](docs/TECHNICAL_DESIGN.md) | 技能分工、执行流程、证据结构、HTML 与导出方案、边界和质量检查 |
-| [开发任务](docs/ROADMAP.md) | 优先级、依赖、阶段交付、验收标准和当前状态 |
+| **Offline HTML manual** | Searchable, browsable documentation with screenshots, local assets, and links to other export formats |
+| **Word document** | Editing, customer delivery, training material, and formal handoff |
+| **Markdown ZIP** | Project docs, Git repositories, knowledge bases, static documentation systems |
+| **Coverage & quality report** | Seeing exactly which workflows were verified, blocked, unverified, or still pending |
 
-## 设计原则
+The content model is evidence-first: source-code inference can suggest workflows, but only real observed steps with actual results and screenshot evidence may be marked as verified.
 
-1. 手册内容能够追溯到实际界面与操作证据；未知信息明确标注。
-2. 高内聚、低耦合；按清晰职责拆分，避免庞大的单文件和无意义的层级。
-3. 同一份结构化内容生成不同格式，避免 HTML、Word、Markdown 各自维护。
-4. 探索过程可暂停、可恢复；覆盖范围和阻塞原因可见。
-5. 不将测试账号密码、Cookie、令牌或未经脱敏的业务数据写入仓库或交付物。
+## Why AutoScribeAI is different
 
-## 方案记录
+AutoScribeAI is not a hosted SaaS and does not require a long-running backend service. It is a portable **Skill Pack + deterministic local scripts** workflow.
 
-整理日期：2026-09-29。
+The five skills divide the work:
 
-依据：用户当前指令及可恢复的前次讨论。用户提供的分享链接本次未能直接读取，因此这里不是原对话的逐字归档。五个 Skill 的拆分、结构化中间模型、阶段安排等属于待验证的实现方案；上文“已确定的方向”是需求约束。
+- **autoscribe-orchestrator** — plans, starts, resumes, and coordinates a run.
+- **autoscribe-project-analyzer** — maps modules, features, roles, and candidate workflows.
+- **autoscribe-software-explorer** — performs authorized UI exploration and captures evidence.
+- **autoscribe-manual-writer** — turns evidence into the structured manual model.
+- **autoscribe-manual-verifier** — checks provenance, references, coverage, and delivery quality.
+
+The AI host supplies browser/computer-use capability when real UI interaction is needed. AutoScribeAI supplies the workflow contract, schemas, evidence rules, renderers, and resumable state.
+
+## Output architecture
+
+```text
+Project / UI exploration
+        ↓
+      Evidence
+        ↓
+    manual.json   ← single source of truth
+        ↓
+ ┌──────┼──────────────┐
+ ↓      ↓              ↓
+HTML   DOCX       Markdown ZIP
+```
+
+HTML is the primary reading experience. `manual.json` remains the canonical content model, so DOCX and Markdown are rendered from the same structured source instead of being converted from each other.
+
+## Supported languages
+
+Built-in template labels currently support:
+
+- English — `en-US` **(default)**
+- Simplified Chinese — `zh-CN`
+- Japanese — `ja-JP`
+- Korean — `ko-KR`
+
+If `language` is omitted from the project configuration, AutoScribeAI uses `en-US`. Other BCP-47 language codes may still be used for AI-authored content; fixed template labels fall back to English.
+
+Product UI names such as menu items, buttons, and field labels should remain in their original form when that improves accuracy.
+
+## Get started
+
+### 1. Prepare the repository or portable Skill Pack
+
+Install the Python 3.10+ dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+To create a portable package:
+
+```bash
+python scripts/package_skills.py --output dist/autoscribeai-skills.zip
+```
+
+Keep the full `AutoScribeAI/` directory. The skills depend on shared scripts, schemas, references, and assets.
+
+### 2. Start with the orchestrator skill
+
+Ask your AI host to read:
+
+```text
+skills/autoscribe-orchestrator/SKILL.md
+```
+
+For real screenshots, the host also needs an authorized browser or computer-use capability. Credentials should be supplied through the host's secure login mechanism, never written into AutoScribeAI configuration or manuals.
+
+### 3. Describe the project and scope
+
+Example:
+
+> Use AutoScribeAI to create a complete user manual for this project. Source: [path or repository]. Test environment: [URL]. Role: [role]. Cover monitor creation, notification configuration, and status-page publishing. You may create synthetic test data in the test environment. Capture real screenshots, preserve unverified gaps, and export offline HTML, Word, and Markdown.
+
+English is used when no output language is specified. To request another supported language, explicitly set `language` or state the target language in the task.
+
+See [Installation](docs/INSTALLATION.md) for the CLI workflow and host requirements.
+
+## Real sample projects
+
+| Sample | Manual language | Verified scope | Open |
+| --- | --- | --- | --- |
+| **Uptime Kuma** | Simplified Chinese | Monitor, notification configuration, status page — 3/3 workflows; delivery not tested | [Manual & evidence](tests/manual_samples/uptime-kuma/README.md) |
+| **changedetection.io** | Japanese | Public-page evidence; 0/3 functional workflows verified | [Manual & evidence](tests/manual_samples/changedetection/README.md) |
+| **IT Tools** | Korean | JSON → YAML conversion — 1/3 workflows verified | [Manual & evidence](tests/manual_samples/it-tools/README.md) |
+
+Each sample preserves its project configuration, evidence screenshots, structured manual, exports, coverage report, and limitations.
+
+## Current status
+
+Implemented today:
+
+- portable five-skill bundle
+- resumable file-based run state
+- project inventory and immutable coverage plan
+- evidence-backed workflow model
+- screenshot evidence validation
+- offline searchable HTML manuals
+- DOCX export
+- Markdown ZIP export
+- chapter FAQ support with provenance rules
+- English / Simplified Chinese / Japanese / Korean template localization
+- real sample manuals with preserved limitations
+
+Real browser interaction is intentionally delegated to the AI host instead of a bundled universal browser driver. With source code only, AutoScribeAI can map features and candidate workflows, but it will not pretend those workflows were executed.
+
+## Documentation
+
+| Resource | Purpose |
+| --- | --- |
+| [Installation](docs/INSTALLATION.md) | Install the Skill Pack and run the local tools |
+| [Technical design](docs/TECHNICAL_DESIGN.md) | Architecture, skill boundaries, evidence model, exports |
+| [Roadmap](docs/ROADMAP.md) | Completed work and remaining milestones |
+| [Run protocol](references/RUN_PROTOCOL.md) | Resume safety and task-state rules |
+| [Evidence rules](references/EVIDENCE.md) | Screenshot, provenance, redaction, and verification rules |
+
+Found a missing screenshot or incorrect step? Open an [Issue](https://github.com/While-Shark/AutoScribeAI/issues) with the affected section, environment, and observed result. Remove passwords, tokens, and business-sensitive data before sharing.

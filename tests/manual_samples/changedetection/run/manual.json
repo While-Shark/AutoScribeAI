@@ -1,0 +1,297 @@
+{
+  "schemaVersion": "0.1",
+  "project": {
+    "id": "changedetection",
+    "name": "changedetection.io",
+    "version": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+    "environment": "GitHub の公開ソース（コミット 0e0566721b1c",
+    "language": "ja-JP"
+  },
+  "title": "changedetection.io 操作ガイド",
+  "roles": [
+    "user"
+  ],
+  "modules": [
+    {
+      "id": "watch-management",
+      "name": "Webサイト監視",
+      "source": "source",
+      "location": "changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection",
+      "name": "監視内容の選択",
+      "source": "source",
+      "location": "changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps",
+      "name": "ブラウザ操作の設定",
+      "source": "source",
+      "location": "changedetectionio/blueprint/browser_steps"
+    }
+  ],
+  "features": [
+    {
+      "id": "watch-management-feature",
+      "moduleId": "watch-management",
+      "name": "監視対象の追加",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection-feature",
+      "moduleId": "content-selection",
+      "name": "ページ内の範囲を選択",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps-feature",
+      "moduleId": "browser-steps",
+      "name": "Browser Steps を構成",
+      "roles": [
+        "user"
+      ],
+      "source": "source",
+      "location": "changedetectionio/blueprint/browser_steps"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "watch-management-flow",
+      "featureId": "watch-management-feature",
+      "role": "user",
+      "goal": "Webサイトを監視対象として追加する",
+      "preconditions": [
+        "changedetection.io の監視一覧を表示できる。"
+      ],
+      "successCriteria": "ソースには監視対象の追加画面と watchlist の処理がある。成功条件は対象 URL が監視一覧に登録されること。",
+      "location": "changedetectionio/blueprint/add_watch_ui",
+      "status": "unverified",
+      "reason": "公開サイトで監視 URL の入力欄は確認できましたが、送信は有料サブスクリプションへ進むため停止しました。セルフホスト版の UI はこの実行環境で起動できず、監視の作成・保存結果は未検証です。",
+      "stepIds": [
+        "watch-management-step-1",
+        "watch-management-step-2",
+        "watch-management-step-3"
+      ]
+    },
+    {
+      "id": "content-selection-flow",
+      "featureId": "content-selection-feature",
+      "role": "user",
+      "goal": "ページ全体ではなく必要な内容を選択する",
+      "preconditions": [
+        "対象ページが監視一覧に登録されている。"
+      ],
+      "successCriteria": "ソースとドキュメントには Visual Selector による監視範囲の選択が記載されている。成功条件は選択した内容が監視対象として設定されること。",
+      "location": "changedetectionio/blueprint/ui",
+      "status": "unverified",
+      "reason": "固定バージョンの公開ソースをもとに作成しており、対象アプリでの操作・検証は行っていません。",
+      "stepIds": [
+        "content-selection-step-1",
+        "content-selection-step-2",
+        "content-selection-step-3"
+      ]
+    },
+    {
+      "id": "browser-steps-flow",
+      "featureId": "browser-steps-feature",
+      "role": "user",
+      "goal": "ログインや検索などのブラウザ操作を設定する",
+      "preconditions": [
+        "Playwright 対応の content fetcher が構成されている。"
+      ],
+      "successCriteria": "リポジトリには Browser Steps の設定画面・処理がある。成功条件は設定した操作手順が監視設定に保存されること。",
+      "location": "changedetectionio/blueprint/browser_steps",
+      "status": "unverified",
+      "reason": "固定バージョンの公開ソースをもとに作成しており、対象アプリでの操作・検証は行っていません。",
+      "stepIds": [
+        "browser-steps-step-1",
+        "browser-steps-step-2",
+        "browser-steps-step-3"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "id": "watch-management-step-1",
+      "workflowId": "watch-management-flow",
+      "order": 1,
+      "action": "監視対象の追加画面を開く。",
+      "location": "changedetectionio/blueprint/add_watch_ui",
+      "expectedResult": "ソース上、この入口または選択肢から操作できる想定です。",
+      "source": "observed",
+      "evidenceIds": [
+        "ev-changedetection-public-homepage"
+      ],
+      "actualResult": "公式公開サイトのトップに監視 URL 入力欄と月額サブスクリプションの案内が表示されました。監視登録は実行していません。"
+    },
+    {
+      "id": "watch-management-step-2",
+      "workflowId": "watch-management-flow",
+      "order": 2,
+      "action": "監視する Web サイトの URL を入力する。",
+      "location": "changedetectionio/blueprint/add_watch_ui",
+      "expectedResult": "設定がこの機能の構成として保持される想定です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "watch-management-step-3",
+      "workflowId": "watch-management-flow",
+      "order": 3,
+      "action": "追加を確定し、監視一覧に対象が表示されることを確認する。",
+      "location": "changedetectionio/blueprint/add_watch_ui",
+      "expectedResult": "ソース記述上、保存後の対象は一覧または出力欄に表示される想定です。実機では未確認です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "content-selection-step-1",
+      "workflowId": "content-selection-flow",
+      "order": 1,
+      "action": "対象の編集画面を開く。",
+      "location": "changedetectionio/blueprint/ui",
+      "expectedResult": "ソース上、この入口または選択肢から操作できる想定です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "content-selection-step-2",
+      "workflowId": "content-selection-flow",
+      "order": 2,
+      "action": "Visual Selector を使い、監視したいページ領域を選択する。",
+      "location": "changedetectionio/blueprint/ui",
+      "expectedResult": "設定がこの機能の構成として保持される想定です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "content-selection-step-3",
+      "workflowId": "content-selection-flow",
+      "order": 3,
+      "action": "設定を保存し、選択内容が監視設定に保持されることを確認する。",
+      "location": "changedetectionio/blueprint/ui",
+      "expectedResult": "ソース記述上、保存後の対象は一覧または出力欄に表示される想定です。実機では未確認です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "browser-steps-step-1",
+      "workflowId": "browser-steps-flow",
+      "order": 1,
+      "action": "監視対象の Browser Steps 設定を開く。",
+      "location": "changedetectionio/blueprint/browser_steps",
+      "expectedResult": "ソース上、この入口または選択肢から操作できる想定です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "browser-steps-step-2",
+      "workflowId": "browser-steps-flow",
+      "order": 2,
+      "action": "必要なブラウザ操作（例：ページ内移動やフォーム入力）を手順として定義する。",
+      "location": "changedetectionio/blueprint/browser_steps",
+      "expectedResult": "設定がこの機能の構成として保持される想定です。",
+      "source": "source",
+      "evidenceIds": []
+    },
+    {
+      "id": "browser-steps-step-3",
+      "workflowId": "browser-steps-flow",
+      "order": 3,
+      "action": "設定を保存し、監視対象に関連付いていることを確認する。",
+      "location": "changedetectionio/blueprint/browser_steps",
+      "expectedResult": "ソース記述上、保存後の対象は一覧または出力欄に表示される想定です。実機では未確認です。",
+      "source": "source",
+      "evidenceIds": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev-changedetection-public-homepage",
+      "stepIds": [
+        "watch-management-step-1"
+      ],
+      "path": "evidence/changedetection-public-homepage.jpg",
+      "capturedAt": "2026-09-29T12:26:34Z",
+      "page": "https://changedetection.io/",
+      "viewport": {
+        "width": 1348,
+        "height": 926
+      },
+      "source": "observed",
+      "sha256": "06c0113b3e50e511d388786f01578a136e9dfabb857038e3519284fbc63ea9db",
+      "redacted": true
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-watch-management",
+      "moduleId": "watch-management",
+      "title": "Webサイト監視",
+      "purpose": "この章では「監視対象の追加」に関するソース上の手がかりと確認候補の手順を紹介します。対象環境での検証前に参照してください。",
+      "workflowIds": [
+        "watch-management-flow"
+      ],
+      "faqs": [
+        {
+          "question": "監視対象はどこで確認できますか？",
+          "answer": "README と watchlist 関連コードから、登録した対象は監視一覧で扱われることが分かる。",
+          "source": "source",
+          "workflowIds": [
+            "watch-management-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-content-selection",
+      "moduleId": "content-selection",
+      "title": "監視内容の選択",
+      "purpose": "この章では「ページ内の範囲を選択」に関するソース上の手がかりと確認候補の手順を紹介します。対象環境での検証前に参照してください。",
+      "workflowIds": [
+        "content-selection-flow"
+      ],
+      "faqs": [
+        {
+          "question": "範囲選択には追加設定が必要ですか？",
+          "answer": "Visual Selector などブラウザ描画後の内容取得には Playwright 系の fetcher が必要になる場合がある。",
+          "source": "source",
+          "workflowIds": [
+            "content-selection-flow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-browser-steps",
+      "moduleId": "browser-steps",
+      "title": "ブラウザ操作の設定",
+      "purpose": "この章では「Browser Steps を構成」に関するソース上の手がかりと確認候補の手順を紹介します。対象環境での検証前に参照してください。",
+      "workflowIds": [
+        "browser-steps-flow"
+      ],
+      "faqs": [
+        {
+          "question": "Browser Steps はいつ使いますか？",
+          "answer": "プロジェクト資料では、ログインやフォーム操作が必要なページを取得する用途として説明されている。",
+          "source": "source",
+          "workflowIds": [
+            "browser-steps-flow"
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "固定コミットのソースに基づいて作成した手順です。公式公開サイトで確認できたのは監視 URL 欄と有料サブスクリプション案内のみです。セルフホスト版を起動できず、監視の作成、内容選択、Browser Steps の実行結果は未検証です。"
+  ]
+}

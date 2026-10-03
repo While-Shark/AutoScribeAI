@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+    },
+    "projectVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "inventorySha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "planned": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "verified": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "blocked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unverified": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "pending": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "coverage": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "coverageDisplay": {
+      "type": "string",
+      "minLength": 1
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "planned": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "verified": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blocked": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unverified": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pending": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "coverageDisplay": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "planned",
+          "verified",
+          "blocked",
+          "unverified",
+          "pending",
+          "coverage",
+          "coverageDisplay"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scopeItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "planned": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "verified": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blocked": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unverified": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pending": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "coverage": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "coverageDisplay": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "scope",
+          "planned",
+          "verified",
+          "blocked",
+          "unverified",
+          "pending",
+          "coverage",
+          "coverageDisplay"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "manualSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "projectVersion",
+    "scope",
+    "inventorySha256",
+    "planned",
+    "verified",
+    "blocked",
+    "unverified",
+    "pending",
+    "coverage",
+    "coverageDisplay",
+    "modules",
+    "scopeItems",
+    "manualSha256"
+  ],
+  "additionalProperties": false
+}

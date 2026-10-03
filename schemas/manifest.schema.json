@@ -1,0 +1,576 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "createdAt": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "configHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": "0.1"
+        },
+        "project": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "environment": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "environment"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "format": "uri"
+            }
+          },
+          "required": [],
+          "additionalProperties": false,
+          "anyOf": [
+            {
+              "required": [
+                "path"
+              ]
+            },
+            {
+              "required": [
+                "url"
+              ]
+            }
+          ]
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "default": "en-US"
+        },
+        "formats": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "html",
+              "docx",
+              "markdown"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowedActions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "read",
+              "create-test-data",
+              "update-test-data",
+              "delete-test-data",
+              "publish",
+              "send",
+              "change-permissions",
+              "pay"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "testDataPolicy": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "project",
+        "source",
+        "roles",
+        "scope",
+        "formats",
+        "allowedActions",
+        "testDataPolicy"
+      ],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "terminal",
+        "files",
+        "sourceReadable",
+        "browser",
+        "canExplore",
+        "mode",
+        "docxDependency",
+        "exportersImplemented",
+        "limitations"
+      ],
+      "properties": {
+        "terminal": {
+          "type": "boolean"
+        },
+        "files": {
+          "type": "boolean"
+        },
+        "sourceReadable": {
+          "type": "boolean"
+        },
+        "browser": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "available",
+                "unavailable",
+                "unknown"
+              ]
+            },
+            "provider": {
+              "type": "string",
+              "minLength": 1
+            },
+            "screenshot": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status",
+            "provider",
+            "screenshot"
+          ],
+          "additionalProperties": false
+        },
+        "canExplore": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "interactive",
+            "source-only",
+            "blocked"
+          ]
+        },
+        "docxDependency": {
+          "type": "boolean"
+        },
+        "exportersImplemented": {
+          "type": "boolean"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "stages": {
+      "type": "object",
+      "properties": {
+        "preflight": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        },
+        "analyze": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        },
+        "explore": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        },
+        "write": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        },
+        "export": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        },
+        "verify": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "blocked",
+                "failed",
+                "skipped"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "blocked",
+                      "failed",
+                      "skipped"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "preflight",
+        "analyze",
+        "explore",
+        "write",
+        "export",
+        "verify"
+      ],
+      "additionalProperties": false
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "stage": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from": {
+            "enum": [
+              "pending",
+              "running",
+              "completed",
+              "blocked",
+              "failed",
+              "skipped"
+            ]
+          },
+          "to": {
+            "enum": [
+              "pending",
+              "running",
+              "completed",
+              "blocked",
+              "failed",
+              "skipped"
+            ]
+          },
+          "at": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "stage",
+          "from",
+          "to",
+          "at"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "runId",
+    "revision",
+    "createdAt",
+    "updatedAt",
+    "configHash",
+    "config",
+    "capabilities",
+    "stages",
+    "events"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,505 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "0.1"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Requested output language (BCP-47)."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "environment"
+      ],
+      "additionalProperties": false
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/module"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "workflows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/workflow"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/step"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/chapter"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "project",
+    "title",
+    "roles",
+    "modules",
+    "features",
+    "workflows",
+    "steps",
+    "evidence",
+    "chapters",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "module": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "source",
+            "human"
+          ]
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "source",
+        "location"
+      ],
+      "additionalProperties": false
+    },
+    "feature": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "moduleId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "source",
+            "human"
+          ]
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "moduleId",
+        "name",
+        "roles",
+        "source",
+        "location"
+      ],
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "featureId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "successCriteria": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "verified",
+            "blocked",
+            "unverified"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stepIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "featureId",
+        "role",
+        "goal",
+        "preconditions",
+        "successCriteria",
+        "status",
+        "stepIds"
+      ],
+      "additionalProperties": false
+    },
+    "step": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "workflowId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedResult": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actualResult": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "source",
+            "human"
+          ]
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "workflowId",
+        "order",
+        "action",
+        "location",
+        "expectedResult",
+        "source",
+        "evidenceIds"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "stepIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capturedAt": {
+          "type": "string",
+          "minLength": 1,
+          "format": "date-time"
+        },
+        "page": {
+          "type": "string",
+          "minLength": 1
+        },
+        "viewport": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "const": "observed"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "redacted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "stepIds",
+        "path",
+        "capturedAt",
+        "page",
+        "viewport",
+        "source",
+        "sha256",
+        "redacted"
+      ],
+      "additionalProperties": false
+    },
+    "chapter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "moduleId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "faqs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/faq"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "workflowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "moduleId",
+        "title",
+        "purpose",
+        "workflowIds"
+      ],
+      "additionalProperties": false
+    },
+    "faq": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "source",
+            "human"
+          ]
+        },
+        "workflowIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "question",
+        "answer",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

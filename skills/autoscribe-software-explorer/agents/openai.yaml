@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoScribeAI Software Explorer"
+  short_description: "Observe workflows and capture genuine screenshots"
+  default_prompt: "Use $autoscribe-software-explorer to document this test environment."

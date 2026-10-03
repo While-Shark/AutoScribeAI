@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoScribeAI Project Analyzer"
+  short_description: "Discover modules and candidate software workflows"
+  default_prompt: "Use $autoscribe-project-analyzer to map this project."

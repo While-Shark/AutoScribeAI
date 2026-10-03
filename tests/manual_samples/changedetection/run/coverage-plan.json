@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "projectId": "changedetection",
+  "projectVersion": "0e0566721b1c483dcf7ae548210ee10532d9b181",
+  "scopeHash": "6742a3cf0f15d48e2295944b4eadff32deb64ae611dd34d6b861a8b1c0b6d247",
+  "scope": [
+    "Webサイト監視",
+    "監視内容の選択",
+    "ブラウザ操作の設定"
+  ],
+  "scopeItems": [
+    {
+      "scope": "Webサイト監視",
+      "workflowIds": [
+        "watch-management-flow"
+      ]
+    },
+    {
+      "scope": "監視内容の選択",
+      "workflowIds": [
+        "content-selection-flow"
+      ]
+    },
+    {
+      "scope": "ブラウザ操作の設定",
+      "workflowIds": [
+        "browser-steps-flow"
+      ]
+    }
+  ],
+  "inventorySha256": "8914dedb211f3e0e4aa1f4b2921d51e0a014754d33bd5277687a868733a5c8ea",
+  "modules": [
+    {
+      "id": "watch-management",
+      "name": "Webサイト監視"
+    },
+    {
+      "id": "content-selection",
+      "name": "監視内容の選択"
+    },
+    {
+      "id": "browser-steps",
+      "name": "ブラウザ操作の設定"
+    }
+  ],
+  "features": [
+    {
+      "id": "watch-management-feature",
+      "moduleId": "watch-management"
+    },
+    {
+      "id": "content-selection-feature",
+      "moduleId": "content-selection"
+    },
+    {
+      "id": "browser-steps-feature",
+      "moduleId": "browser-steps"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "watch-management-flow",
+      "featureId": "watch-management-feature",
+      "role": "user",
+      "goal": "Webサイトを監視対象として追加する",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/add_watch_ui"
+    },
+    {
+      "id": "content-selection-flow",
+      "featureId": "content-selection-feature",
+      "role": "user",
+      "goal": "ページ全体ではなく必要な内容を選択する",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/ui"
+    },
+    {
+      "id": "browser-steps-flow",
+      "featureId": "browser-steps-feature",
+      "role": "user",
+      "goal": "ログインや検索などのブラウザ操作を設定する",
+      "source": "source",
+      "location": "https://github.com/dgtlmoon/changedetection.io/blob/0e0566721b1c483dcf7ae548210ee10532d9b181/changedetectionio/blueprint/browser_steps"
+    }
+  ]
+}
