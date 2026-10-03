@@ -111,7 +111,8 @@
         },
         "language": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "default": "en-US"
         },
         "formats": {
           "type": "array",
@@ -153,7 +154,6 @@
         "source",
         "roles",
         "scope",
-        "language",
         "formats",
         "allowedActions",
         "testDataPolicy"
