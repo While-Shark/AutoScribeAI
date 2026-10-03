@@ -14,5 +14,7 @@
         }
       ]
     }
-  ]
+  ],
+  "framework": null,
+  "installCommand": ""
 }
