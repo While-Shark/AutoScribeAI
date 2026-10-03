@@ -89,6 +89,10 @@ class ManualSampleTests(unittest.TestCase):
         self.assertEqual([w['status'] for w in it_manual['workflows']], ['verified', 'unverified', 'unverified'])
         self.assertTrue(all(s['source'] == 'observed' and s.get('actualResult') and s['evidenceIds'] for s in it_manual['steps'][:3]))
         self.assertTrue(all(s['source'] == 'source' and not s['evidenceIds'] and 'actualResult' not in s for s in it_manual['steps'][3:]))
+        localized_text = [w['successCriteria'] for w in it_manual['workflows']]
+        localized_text += [s[field] for s in it_manual['steps'] for field in ('action', 'expectedResult', 'actualResult') if field in s]
+        localized_text += it_manual['limitations']
+        self.assertFalse(any('\u4e00' <= char <= '\u9fff' for value in localized_text for char in value))
 
         changedetection = ROOT / 'tests/manual_samples/changedetection'
         cd_manual = read_json(changedetection / 'run/manual.json')

@@ -2,8 +2,8 @@
   "schemaVersion": "0.1",
   "projectId": "it-tools",
   "projectVersion": "d505845f918e946ec300af7b36efc107e2f66e9e",
-  "manualSha256": "2cdeefafa319e21ca2e8fc234346826066666cf89b40edf9cb528ca81810c908",
-  "coverageSha256": "d52bbaa191f482c57c3c36f27cec57bb2d43ee2a76ce50a2354b7d7b3b54a4bc",
+  "manualSha256": "74efd1e7dabbb7d84dd39f562e9323df2bcca8a4cb2aeef40271bb6d799fb828",
+  "coverageSha256": "9f2fbee6136eb9b5bd7ec14d6a8ddbfbfd4f89a3d9f888382287edcc8b3ec64e",
   "workflowCount": 3,
   "verified": 1,
   "blocked": 0,
@@ -15,7 +15,7 @@
   "issues": [
     "워크플로 1개 검증됨",
     "워크플로 2개 미검증",
-    "本手册的源码索引固定到 commit d505845f918e946ec300af7b36efc107e2f66e9e；实测截图取自 IT Tools 公开部署页面，部署版本未与固定源码 commit 对齐。",
-    "仅 JSON→YAML 转换流程已在公开部署页面观察并截图验证；文本哈希和 QR 码流程仍为源码候选，未经界面操作验证。"
+    "이 설명서의 소스 코드 색인은 commit d505845f918e946ec300af7b36efc107e2f66e9e에 고정되어 있다. 실제 스크린샷은 IT Tools 공개 배포 페이지에서 가져왔으며 배포 버전과 고정한 소스 commit의 일치 여부는 확인하지 못했다.",
+    "JSON→YAML 변환 흐름만 공개 배포 페이지에서 관찰하고 스크린샷으로 검증했다. 텍스트 해시와 QR 코드 흐름은 소스 코드에서 추린 후보이며 UI에서 실제로 실행해 검증하지 않았다."
   ]
 }
