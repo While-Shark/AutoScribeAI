@@ -41,4 +41,4 @@ python scripts/autoscribe_cli.py prepare-image \
 
 `render-html` 同时生成 `manual.docx` 与 `manual-markdown.zip` 并在页面顶部提供下载链接。也可分别调用 `export-docx` 和 `export-markdown`。DOCX 把截图作为文档内图片嵌入，Markdown ZIP 包含 `README.md` 和 `assets/<evidence-id>.<ext>`，图片链接为相对路径。导出基于同一份已校验的 `manual.json`；输出文件已存在时拒绝覆盖。DOCX 需在交付前渲染并检查分页，不能只以文件可打开视为版式合格。
 
-交付后运行 `audit --manual <manual.json> --coverage <coverage.json> --package <HTML目录> --out <任务目录/audit-report.json>` 检查图像解码、HTML 链接及锚点、DOCX/Markdown 包完整性。审计报告必须放在交付目录之外。机械检查通过后仍需视觉与隐私复核。HTML 可按角色筛选；Word/Markdown 单独导出可加 `--role <role-id>`。
+交付后运行 `audit --manual <manual.json> --coverage <coverage.json> --package <HTML目录> --out <任务目录/audit-report.json>` 检查图像解码、截图与导出副本的摘要、HTML 链接及锚点、三种格式中的流程和步骤、DOCX 图片数量、Markdown 图片资源及质量报告的对应关系。审计报告必须放在交付目录之外。机械检查通过后仍需视觉与隐私复核。HTML 可按角色筛选；Word/Markdown 单独导出可加 `--role <role-id>`。
