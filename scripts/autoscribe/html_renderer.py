@@ -26,8 +26,16 @@ function filterManual(){
     el.classList.toggle('hidden',(role.value&&el.dataset.role!==role.value)||(q&&!content.includes(q)));
   });
   document.querySelectorAll('.feature').forEach(el=>el.classList.toggle('hidden',!el.querySelector('.workflow:not(.hidden)')));
+  document.querySelectorAll('.faq').forEach(el=>{
+    const refs=el.dataset.workflows.split(' ').filter(Boolean);
+    const relevant=!role.value||refs.every(id=>document.getElementById('workflow-'+id)?.dataset.role===role.value);
+    const moduleTitle=el.closest('.module').querySelector('h2')?.textContent.toLocaleLowerCase();
+    el.classList.toggle('hidden',!relevant||(q&&!el.textContent.toLocaleLowerCase().includes(q)&&!moduleTitle?.includes(q)));
+  });
+  document.querySelectorAll('.faqs').forEach(el=>el.classList.toggle('hidden',!el.querySelector('.faq:not(.hidden)')));
   document.querySelectorAll('.module').forEach(el=>{
-    el.classList.toggle('hidden',!el.querySelector('.workflow:not(.hidden)'));
+    const roleMatches=!role.value||Array.from(el.querySelectorAll('.workflow')).some(w=>w.dataset.role===role.value);
+    el.classList.toggle('hidden',!roleMatches||(!el.querySelector('.workflow:not(.hidden)')&&!el.querySelector('.faq:not(.hidden)')));
     document.querySelectorAll('.nav-link').forEach(link=>{if(link.getAttribute('href')==='#'+el.id)link.classList.toggle('hidden',el.classList.contains('hidden'));});
   });
 }
@@ -150,7 +158,7 @@ def render_html(manual_path, coverage_path, out_dir):
                 if refs:
                     source_note += f' · {esc(t(language, "related_workflows"))}: {esc(" / ".join(refs))}'
                 source_note += '</p>'
-                faq_items.append(f'<details class="faq" data-search="{esc(searchable)}"><summary>{esc(faq["question"])}</summary><p>{esc(faq["answer"])}</p>{source_note}</details>')
+                faq_items.append(f'<details class="faq" data-workflows="{esc(" ".join(faq.get("workflowIds", [])))}" data-search="{esc(searchable)}"><summary>{esc(faq["question"])}</summary><p>{esc(faq["answer"])}</p>{source_note}</details>')
             faq_html = f'<section class="faqs"><h3>{esc(t(language, "faqs"))}</h3>{"".join(faq_items)}</section>' if faq_items else ''
             module_progress = t(language, 'module_progress', verified=module_verified, total=len(module_workflows))
             contents.append(f'<section class="module" id="{esc(module_anchor)}" data-search="{esc(module["name"])}"><header><div class="eyebrow">{esc(module_progress)}</div><h2>{esc(chapter_title)}</h2>{chapter_purpose}<p class="muted">{esc(t(language, "module_entry"))}: {esc(module["location"])} · {esc(t(language, "source"))}: {esc(source_labels[module["source"]])}</p></header>' + (''.join(feature_html) or f'<p class="empty">{esc(t(language, "no_module_features"))}</p>') + faq_html + '</section>')
