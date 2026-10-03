@@ -50,7 +50,7 @@ python -m pip install -r requirements.txt
 Then start your AI agent in this directory and ask:
 
 ```text
-Read skills/autoscribe-orchestrator/SKILL.md and use AutoScribeAI
+Read skills/autoscribe/SKILL.md and use AutoScribeAI
 to generate a complete illustrated user manual for this project.
 ```
 
@@ -65,7 +65,7 @@ From the AutoScribeAI root:
 codex
 ```
 
-Then ask Codex to read `skills/autoscribe-orchestrator/SKILL.md` and generate the manual.
+Then ask Codex to read `skills/autoscribe/SKILL.md` and generate the manual.
 
 AutoScribeAI uses the open `SKILL.md` pattern, so Codex can work directly from the repository without copying the skill files elsewhere.
 
@@ -83,7 +83,7 @@ claude
 Prompt:
 
 ```text
-Read skills/autoscribe-orchestrator/SKILL.md and follow the AutoScribeAI workflow.
+Read skills/autoscribe/SKILL.md and follow the AutoScribeAI workflow.
 ```
 
 Claude Code supports native filesystem Skills, but AutoScribeAI recommends keeping the full repository together because the Skills reference shared scripts, schemas, and reference files.
@@ -96,7 +96,7 @@ Claude Code supports native filesystem Skills, but AutoScribeAI recommends keepi
 Open Pi in the AutoScribeAI root and tell it to read:
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 Pi supports Agent Skills and `SKILL.md`, but workspace mode is the simplest way to preserve all AutoScribeAI supporting files.
@@ -109,7 +109,7 @@ Pi supports Agent Skills and `SKILL.md`, but workspace mode is the simplest way 
 Start `agy` in the AutoScribeAI root, then ask it to read:
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 Antigravity supports Agent Skills natively. Keeping the complete AutoScribeAI workspace avoids breaking relative references between Skills and shared resources.
@@ -122,7 +122,7 @@ Antigravity supports Agent Skills natively. Keeping the complete AutoScribeAI wo
 Start OpenCode in the AutoScribeAI root and ask it to load:
 
 ```text
-skills/autoscribe-orchestrator/SKILL.md
+skills/autoscribe/SKILL.md
 ```
 
 OpenCode supports `SKILL.md` and Agent Skills locations such as `.opencode/skills`, `.claude/skills`, and `.agents/skills`. For AutoScribeAI, using the repository directly is the simplest option.
@@ -137,7 +137,7 @@ If the agent can read files and run commands, no special integration is required
 Open the AutoScribeAI repository as the workspace and give it this instruction:
 
 ```text
-Read skills/autoscribe-orchestrator/SKILL.md.
+Read skills/autoscribe/SKILL.md.
 Keep the full AutoScribeAI directory available.
 Use its scripts, schemas, references, and skills to generate the manual.
 ```
