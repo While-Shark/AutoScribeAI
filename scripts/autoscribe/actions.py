@@ -119,3 +119,14 @@ def recover_actions(run):
         if changed:
             atomic_json(Path(run) / 'actions.json', ledger)
         return ledger
+
+
+def test_data_report(run):
+    """List confirmed created targets that lack a confirmed cleanup record."""
+    ledger = load_actions(run)
+    created = {item['targetRef']: item for item in ledger['actions']
+               if item['operation'] == 'create-test-data' and item['status'] == 'completed'}
+    deleted = {item['targetRef'] for item in ledger['actions']
+               if item['operation'] == 'delete-test-data' and item['status'] == 'completed'}
+    return {'remaining': sorted(created.keys() - deleted), 'cleaned': sorted(created.keys() & deleted),
+            'note': '只根据已记录的成功操作计算；清理前仍须核对目标系统。'}

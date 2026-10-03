@@ -8,6 +8,7 @@
 - evidence.path 使用任务目录内的相对路径，拒绝绝对路径、跨目录跳转与逃逸符号链接。首期只接受 PNG/JPEG 签名并核对 SHA-256；完整图像解码、尺寸与可读性在后续采集/质检任务处理。
 - capturedAt 使用含时区的 ISO 时间；viewport 记录采集时视口，不等同于最终截图尺寸。page 使用脱敏 URL 或页面名称。
 - redacted 表示图片是否经过脱敏处理；false 也可以是无需脱敏的公开页面，必须人工检查。M0 不做 OCR 或自动打码。
+- 页面结构可帮助提出敏感区域，但截图脱敏使用显式坐标；逐张核对处理后的像素和原图留存策略。
 - 暂不把缺少证据的流程排进已验证教程；保留原范围及阻塞原因。校验器不自动生成覆盖率或质量报告，这属于 M1/M2。
 - 截图摘要用于检测文件被替换，不能证明截图来源真实。不得使用生成图或示意图冒充实际界面证据。
 
@@ -39,3 +40,5 @@ python scripts/autoscribe_cli.py prepare-image \
 ## Word 与 Markdown 导出（M3）
 
 `render-html` 同时生成 `manual.docx` 与 `manual-markdown.zip` 并在页面顶部提供下载链接。也可分别调用 `export-docx` 和 `export-markdown`。DOCX 把截图作为文档内图片嵌入，Markdown ZIP 包含 `README.md` 和 `assets/<evidence-id>.<ext>`，图片链接为相对路径。导出基于同一份已校验的 `manual.json`；输出文件已存在时拒绝覆盖。DOCX 需在交付前渲染并检查分页，不能只以文件可打开视为版式合格。
+
+交付后运行 `audit --manual <manual.json> --coverage <coverage.json> --package <HTML目录> --out <任务目录/audit-report.json>` 检查图像解码、HTML 链接及锚点、DOCX/Markdown 包完整性。审计报告必须放在交付目录之外。机械检查通过后仍需视觉与隐私复核。HTML 可按角色筛选；Word/Markdown 单独导出可加 `--role <role-id>`。

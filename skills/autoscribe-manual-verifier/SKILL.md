@@ -13,4 +13,4 @@ description: 核对 AutoScribeAI 手册的结构、证据引用、截图、敏�
 2. 运行 `python <repo>/scripts/autoscribe_cli.py coverage --plan <run>/coverage-plan.json --inventory <run>/inventory.json --config <config> --manual <run>/manual.json --out <run>/coverage.json`。核对每个模块和每项原始范围的计划数、已验证、未验证和阻塞数。分母来自分析时的清单；零分母显示不适用。报告拒绝被删掉或额外增加的流程。
 3. 检查账号、令牌、个人信息和业务数据。文本启发式检测不能代替人工检查。未脱敏资源不得进入交付包。
 4. 对实际存在的 HTML、DOCX、Markdown 检查章节、步骤、图片和链接一致性；HTML 离线与窄屏检查，DOCX 转成 PDF 或图片后逐页检查分页、中文字体、图片、图注和页码，解压 Markdown ZIP 并确认移动后相对图片仍可用。M2/M3 已实现这三种格式；导出成功不等于视觉验收通过。
-5. 输出 `quality-report.json`，逐项记录 passed/failed/blocked、发现与修复建议；报告格式目前为约定草案。存在缺口时明确交付限制，缺失格式不能算全部验收。
+5. 执行 `audit --manual <run>/manual.json --coverage <run>/coverage.json --package <html-output> --out <run>/audit-report.json`。它检查真实图像解码、HTML 本地链接与锚点、DOCX/Markdown ZIP 完整性及图片引用；根据 findings 修复后重跑。交付包内的 `quality-report.json` 是基本覆盖摘要，`audit-report.json` 是更详细的机械检查。存在缺口时说明限制；人工逐张复核与 DOCX 逐页视觉检查仍必须完成。

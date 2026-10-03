@@ -34,6 +34,7 @@ From the gallery you can:
 - **Word / DOCX** — editable and suitable for delivery or training.
 - **Markdown** — convenient for Git repositories and knowledge bases.
 - **Coverage / quality report** — shows what was verified, blocked, or still unverified.
+- **Review tools** — role focused reading, interrupted workflow recovery, version change review, and package link checks.
 
 AutoScribeAI only marks a workflow as verified when real observed steps and evidence exist. Source-code discovery alone stays unverified.
 

@@ -16,7 +16,23 @@ CSS = r'''
 '''
 SCRIPT = r'''
 const search=document.querySelector('#manual-search');
-search.addEventListener('input',()=>{const q=search.value.trim().toLocaleLowerCase();document.querySelectorAll('[data-search]').forEach(el=>el.classList.toggle('hidden',q&&!el.dataset.search.toLocaleLowerCase().includes(q)));});
+const role=document.querySelector('#manual-role');
+function filterManual(){
+  const q=search.value.trim().toLocaleLowerCase();
+  document.querySelectorAll('.workflow').forEach(el=>{
+    const feature=el.closest('.feature');
+    const module=el.closest('.module');
+    const content=[el.textContent,feature.querySelector('h3')?.textContent,module.querySelector('h2')?.textContent].join(' ').toLocaleLowerCase();
+    el.classList.toggle('hidden',(role.value&&el.dataset.role!==role.value)||(q&&!content.includes(q)));
+  });
+  document.querySelectorAll('.feature').forEach(el=>el.classList.toggle('hidden',!el.querySelector('.workflow:not(.hidden)')));
+  document.querySelectorAll('.module').forEach(el=>{
+    el.classList.toggle('hidden',!el.querySelector('.workflow:not(.hidden)'));
+    document.querySelectorAll('.nav-link').forEach(link=>{if(link.getAttribute('href')==='#'+el.id)link.classList.toggle('hidden',el.classList.contains('hidden'));});
+  });
+}
+search.addEventListener('input',filterManual);
+role.addEventListener('change',filterManual);
 document.querySelectorAll('[data-zoom]').forEach(button=>button.addEventListener('click',()=>{const dialog=document.querySelector('#image-dialog');const image=button.querySelector('img');dialog.querySelector('img').src=image.src;dialog.querySelector('img').alt=image.alt;dialog.querySelector('p').textContent=button.dataset.caption;dialog.showModal();}));
 document.querySelector('#image-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close();});
 '''
@@ -119,7 +135,7 @@ def render_html(manual_path, coverage_path, out_dir):
                     step_markup = '<ol class="steps">' + ''.join(steps) + '</ol>' if steps else f'<div class="empty">{esc(t(language, "no_steps"))}</div>'
                     searchable = ' '.join([workflow['goal'], workflow['role'], workflow['successCriteria'], *workflow['preconditions']])
                     location = f'<div class="muted">{esc(t(language, "workflow_location"))}: {esc(workflow["location"])}</div>' if workflow.get('location') else ''
-                    flows_html.append(f'<article class="workflow" id="workflow-{esc(wid)}" data-search="{esc(searchable)}"><h4>{esc(workflow["goal"])} <span class="badge {esc(workflow["status"])}">{esc(badge)}</span></h4><p class="goal">{esc(t(language, "success_criteria"))}: {esc(workflow["successCriteria"])}</p>{location}{details}{step_markup}</article>')
+                    flows_html.append(f'<article class="workflow" id="workflow-{esc(wid)}" data-role="{esc(workflow["role"])}" data-search="{esc(searchable)}"><h4>{esc(workflow["goal"])} <span class="badge {esc(workflow["status"])}">{esc(badge)}</span></h4><p class="goal">{esc(t(language, "success_criteria"))}: {esc(workflow["successCriteria"])}</p>{location}{details}{step_markup}</article>')
                 feature_html.append(f'<section class="feature" data-search="{esc(feature["name"])}"><h3>{esc(feature["name"])}</h3><p class="muted">{esc(t(language, "feature_entry"))}: {esc(feature["location"])} · {esc(t(language, "source"))}: {esc(source_labels[feature["source"]])}</p>' + (''.join(flows_html) or f'<p class="empty">{esc(t(language, "no_feature_workflows"))}</p>') + '</section>')
             module_workflows = [workflow for feature in features for workflow in workflows_by_feature[feature['id']]]
             module_verified = sum(w['status'] == 'verified' for w in module_workflows)
@@ -145,10 +161,11 @@ def render_html(manual_path, coverage_path, out_dir):
         scope_table = f'<div class="table-wrap"><table><thead><tr><th>{esc(t(language, "scope"))}</th>{count_headers}</tr></thead><tbody>{scope_rows}</tbody></table></div>'
         module_table = f'<div class="table-wrap"><table><thead><tr><th>{esc(t(language, "module"))}</th>{count_headers}</tr></thead><tbody>{module_rows}</tbody></table></div>'
         title = manual['title']
+        role_options = ''.join(f'<option value="{esc(role)}">{esc(role)}</option>' for role in manual['roles'])
         downloads = f'<section class="panel downloads"><h2>{esc(t(language, "download_title"))}</h2><p><a href="manual.docx" download>{esc(t(language, "download_docx"))}</a> · <a href="manual-markdown.zip" download>{esc(t(language, "download_markdown"))}</a></p></section>'
         html_doc = f'''<!doctype html>
 <html lang="{esc(locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="{esc(title)}"><title>{esc(title)}</title><style>{CSS}</style></head>
-<body><div class="shell"><aside><div class="brand">AutoScribeAI · {esc(t(language, "brand"))}</div><h2>{esc(t(language, "toc"))}</h2><label class="muted" for="manual-search">{esc(t(language, "search_label"))}</label><input class="search" id="manual-search" type="search" placeholder="{esc(t(language, "search_placeholder"))}" autocomplete="off"><nav>{''.join(nav)}<a href="#coverage">{esc(t(language, "coverage_title"))}</a></nav><p class="side-note">{esc(t(language, "offline_version", version=manual['project'].get('version', 'N/A')))}<br>{esc(t(language, "resource_hint"))}</p></aside>
+<body><div class="shell"><aside><div class="brand">AutoScribeAI · {esc(t(language, "brand"))}</div><h2>{esc(t(language, "toc"))}</h2><label class="muted" for="manual-role">{esc(t(language, "role"))}</label><select class="search" id="manual-role"><option value="">{esc(t(language, "roles"))}</option>{role_options}</select><label class="muted" for="manual-search">{esc(t(language, "search_label"))}</label><input class="search" id="manual-search" type="search" placeholder="{esc(t(language, "search_placeholder"))}" autocomplete="off"><nav>{''.join(nav)}<a href="#coverage">{esc(t(language, "coverage_title"))}</a></nav><p class="side-note">{esc(t(language, "offline_version", version=manual['project'].get('version', 'N/A')))}<br>{esc(t(language, "resource_hint"))}</p></aside>
 <main><header class="hero"><div class="eyebrow">{esc(manual['project']['name'])} · {esc(manual['project'].get('environment', ''))}</div><h1>{esc(title)}</h1><div class="meta">{esc(t(language, "roles"))}: {esc(', '.join(manual['roles']))} · {esc(t(language, "project_version"))}: {esc(manual['project'].get('version', 'N/A'))}</div><p><span class="badge {'verified' if verified_all else 'unverified'}">{readiness}</span></p></header>{downloads}
 <section class="stats"><div class="stat"><b>{coverage['planned']}</b><span class="muted">{esc(t(language, "planned"))}</span></div><div class="stat"><b>{coverage['verified']}</b><span class="muted">{esc(t(language, "verified"))}</span></div><div class="stat"><b>{coverage['blocked']}</b><span class="muted">{esc(t(language, "blocked"))}</span></div><div class="stat"><b>{esc(coverage['coverageDisplay'])}</b><span class="muted">{esc(t(language, "coverage"))}</span></div></section>
 <section id="coverage" class="panel"><h2>{esc(t(language, "coverage_title"))}</h2><p>{esc(t(language, "coverage_description"))}</p>{notices or '<p>' + esc(t(language, 'no_blockers')) + '</p>'}<h3>{esc(t(language, "raw_scope"))}</h3>{scope_table}<h3>{esc(t(language, "by_module"))}</h3>{module_table}<p><a href="coverage.json">{esc(t(language, "machine_report"))}</a> · <a href="manual.json">{esc(t(language, "content_model"))}</a></p></section>

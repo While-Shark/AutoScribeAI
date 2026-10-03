@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["schemaVersion", "runId", "workflows"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {"const": "0.1"},
+    "runId": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+    "workflows": {"type": "object", "patternProperties": {
+      "^[a-z][a-z0-9_-]{0,63}$": {"type": "object", "required": ["status", "note", "updatedAt"], "additionalProperties": false,
+        "properties": {"status": {"enum": ["running", "blocked", "completed"]}, "note": {"type": "string", "minLength": 1}, "updatedAt": {"type": "string", "format": "date-time"}}}
+    }, "additionalProperties": false}
+  }
+}

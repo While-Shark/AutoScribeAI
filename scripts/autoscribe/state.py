@@ -145,6 +145,8 @@ def resume(run, config_path=None, host=None):
                 raise ValidationError('输入、范围或项目版本发生变化；请创建新任务并复核旧证据')
         from .actions import recover_actions
         action_ledger = recover_actions(run)
+        from .progress import recover_progress
+        progress = recover_progress(run) if (Path(run) / 'coverage-plan.json').exists() else None
         # Never assume browser sessions survive an interrupted host conversation.
         state['capabilities'] = probe(state['config'], '.', run, host)
         for name, item in state['stages'].items():
@@ -157,4 +159,4 @@ def resume(run, config_path=None, host=None):
         save(run, state)
         return {'checkpoint': checkpoint(state), 'capabilities': state['capabilities'],
                 'reviewRequired': ['核对目标版本', '核对登录及角色', '核对截图有效性', '核对已有副作用结果'],
-                'actions': action_ledger}
+                'actions': action_ledger, 'workflowProgress': progress}
