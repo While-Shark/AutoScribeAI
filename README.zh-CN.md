@@ -1,6 +1,8 @@
 # AutoScribeAI
 
-[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)\n\n**在线 Demo：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+[English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [한국어](README.ko-KR.md)
+
+**在线 Demo：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
 
 ## 把一个软件项目交给 AI，直接得到能交付的图文操作手册
 
@@ -18,7 +20,9 @@
 - changedetection.io：日语，受公开付费流程限制，**0/3 已验证**，不会编造未执行步骤
 - IT Tools：韩语，**1/3 已验证**，已验证与源码候选流程明确分开
 
-**立即查看在线效果：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)\n\nDemo 源码：[`demo/`](demo/) · Vercel 配置：[`vercel.json`](vercel.json) · 真实产物：[`tests/manual_samples`](tests/manual_samples/README.md)
+**立即查看在线效果：** [https://auto-scribe-ai-tau.vercel.app](https://auto-scribe-ai-tau.vercel.app)
+
+Demo 源码：[`demo/`](demo/) · Vercel 配置：[`vercel.json`](vercel.json) · 真实产物：[`tests/manual_samples`](tests/manual_samples/README.md)
 
 [![Deploy Demo to Vercel](https://vercel.com/button)](https://vercel.com/new)
 ### 核心特点
