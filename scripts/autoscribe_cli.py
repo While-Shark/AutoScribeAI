@@ -16,6 +16,7 @@ from autoscribe.locale_check import compare_locales
 from autoscribe.html_renderer import render_html
 from autoscribe.standalone_html import export_standalone_html
 from autoscribe.docx_renderer import render_docx
+from autoscribe.pdf_renderer import render_pdf
 from autoscribe.markdown_renderer import render_markdown_zip
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
 
@@ -74,6 +75,11 @@ def main():
     docx.add_argument('--manual', required=True, type=Path)
     docx.add_argument('--out', required=True, type=Path)
     docx.add_argument('--role', help='只导出指定角色的流程')
+    pdf = commands.add_parser('export-pdf')
+    pdf.add_argument('--manual', required=True, type=Path)
+    pdf.add_argument('--out', required=True, type=Path)
+    pdf.add_argument('--soffice', help='LibreOffice soffice 可执行文件路径；默认从 PATH 查找')
+    pdf.add_argument('--role', help='只导出指定角色的流程')
     markdown = commands.add_parser('export-markdown')
     markdown.add_argument('--manual', required=True, type=Path)
     markdown.add_argument('--out-zip', required=True, type=Path)
@@ -126,6 +132,8 @@ def main():
             result = export_standalone_html(args.manual, args.coverage, args.out)
         elif args.command == 'export-docx':
             result = render_docx(args.manual, args.out, args.role)
+        elif args.command == 'export-pdf':
+            result = render_pdf(args.manual, args.out, args.soffice, args.role)
         elif args.command == 'export-markdown':
             result = render_markdown_zip(args.manual, args.out_zip, args.role)
         elif args.command == 'action-begin':

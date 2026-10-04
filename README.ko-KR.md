@@ -29,6 +29,7 @@ Live Demo에는 실제 프로젝트 3개가 포함되어 있습니다.
 - **Offline HTML**: 검색과 이미지 보기를 지원하며 단일 파일로도 공유할 수 있습니다.
 - **Word / DOCX**
 - **Markdown**
+- **PDF(선택)**: LibreOffice가 있으면 고정 레이아웃으로 내보낼 수 있습니다.
 - **Coverage / Quality report**
 - **검토 도구**: 역할별 보기, 중단된 작업 재개, 버전 변경 검토, 결과물 링크 검사.
 

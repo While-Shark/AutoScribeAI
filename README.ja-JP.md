@@ -29,6 +29,7 @@ HTML マニュアル、生成済み Word、実スクリーンショット、検�
 - **Offline HTML**：検索と画像表示に対応し、単一ファイルでも共有できます。
 - **Word / DOCX**
 - **Markdown**
+- **PDF（任意）**：LibreOffice があれば固定レイアウトで出力できます。
 - **Coverage / Quality report**
 - **確認ツール**：役割別の閲覧、中断した作業の再開、版の差分確認、出力リンクの検査。
 

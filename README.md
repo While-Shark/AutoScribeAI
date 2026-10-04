@@ -33,6 +33,7 @@ From the gallery you can:
 - **Offline HTML** — searchable and visual, with an optional single-file export for sharing.
 - **Word / DOCX** — editable and suitable for delivery or training.
 - **Markdown** — convenient for Git repositories and knowledge bases.
+- **PDF (optional)** — a fixed-layout export when LibreOffice is available.
 - **Coverage / quality report** — shows what was verified, blocked, or still unverified.
 - **Review tools** — role focused reading, interrupted workflow recovery, version change review, and package link checks.
 
