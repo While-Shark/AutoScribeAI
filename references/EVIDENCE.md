@@ -43,4 +43,6 @@ python scripts/autoscribe_cli.py prepare-image \
 
 `export-html --manual <manual.json> --coverage <coverage.json> --out <portable.html>` 生成可单独移动的 HTML，截图嵌入文件；它不包含 DOCX、Markdown 或机器报告下载入口。交付完整目录时仍使用 `render-html` 并运行 `audit`。
 
+`export-pdf --manual <manual.json> --out <manual.pdf>` 在检测到 LibreOffice `soffice` 时把相同的 DOCX 版式转换为 PDF；可指定 `--role` 与 `--soffice`。PDF 不在 HTML 目录包的机械审计范围内，需逐页检查字形、截图、图注和分页。
+
 交付后运行 `audit --manual <manual.json> --coverage <coverage.json> --package <HTML目录> --out <任务目录/audit-report.json>` 检查图像解码、截图与导出副本的摘要、HTML 链接及锚点、三种格式中的流程和步骤、DOCX 图片数量、Markdown 图片资源及质量报告的对应关系。审计报告必须放在交付目录之外。机械检查通过后仍需视觉与隐私复核。HTML 可按角色筛选；Word/Markdown 单独导出可加 `--role <role-id>`。

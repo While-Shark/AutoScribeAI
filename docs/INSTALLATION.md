@@ -38,6 +38,7 @@ python -m pip install -r requirements.txt
 ```
 
 HTML、截图和 Markdown ZIP 使用 Pillow 与标准库；Word 导出还需要 `python-docx`，已包含在 requirements.txt。
+可选 PDF 导出需要另行安装 LibreOffice，并确保 `soffice` 在 PATH 中；它使用 Word 手册作为排版来源，不增加 Python 依赖。
 
 ## 让 AI 使用技能
 
@@ -60,11 +61,14 @@ python scripts/autoscribe_cli.py coverage --plan path/to/runs/manual/coverage-pl
 python scripts/autoscribe_cli.py render-html --manual path/to/runs/manual/manual.json --coverage path/to/runs/manual/coverage.json --out-dir path/to/runs/manual/output
 python scripts/autoscribe_cli.py audit --manual path/to/runs/manual/manual.json --coverage path/to/runs/manual/coverage.json --package path/to/runs/manual/output --out path/to/runs/manual/audit-report.json
 python scripts/autoscribe_cli.py export-html --manual path/to/runs/manual/manual.json --coverage path/to/runs/manual/coverage.json --out path/to/runs/manual/portable.html
+python scripts/autoscribe_cli.py export-pdf --manual path/to/runs/manual/manual.json --out path/to/runs/manual/manual.pdf
 ```
 
 `analyze` 生成未验证手册骨架；只有 AI 使用真实界面完成流程、记录结果并关联经过检查的截图后，才能将流程标为 verified。输出目录包含离线 HTML、DOCX、Markdown ZIP 和质量报告。报告 `ready=false` 时应保留并说明所有缺口。
 
 `export-html` 另生成一份可移动的单文件手册：截图以 data URI 嵌入 HTML，页面保留搜索、角色筛选和图片放大。它不包含 DOCX、Markdown 或机器报告下载入口；需要这些文件时交付上面的完整目录包。输出路径已存在时命令拒绝覆盖。
+
+`export-pdf` 通过 LibreOffice 转换同一份手册生成固定版式文件；可加 `--role <role-id>` 只导出某角色，或加 `--soffice <可执行文件路径>` 指定转换器。转换在隔离的临时目录中运行，输出路径已存在时拒绝覆盖。交付前请在具有目标语言字体的环境逐页查看 PDF；转换成功不等于字体和分页已验收。
 
 HTML 左栏可按角色筛选。`export-docx` 与 `export-markdown` 可加 `--role <role-id>` 单独导出；流程中断时用 `workflow-progress` 与 `resume` 复核，项目升级时用 `diff-manuals` 列出需复查的步骤和证据。`audit` 仅做机械检查，截图隐私与 Word 逐页效果需人工核对。
 
