@@ -14,6 +14,7 @@ from autoscribe.diff import compare_manuals
 from autoscribe.audit import audit_package
 from autoscribe.locale_check import compare_locales
 from autoscribe.html_renderer import render_html
+from autoscribe.standalone_html import export_standalone_html
 from autoscribe.docx_renderer import render_docx
 from autoscribe.markdown_renderer import render_markdown_zip
 from autoscribe.validation import ValidationError, read_json, validate, validate_manual
@@ -65,6 +66,10 @@ def main():
     render.add_argument('--manual', required=True, type=Path)
     render.add_argument('--coverage', required=True, type=Path)
     render.add_argument('--out-dir', required=True, type=Path)
+    single = commands.add_parser('export-html')
+    single.add_argument('--manual', required=True, type=Path)
+    single.add_argument('--coverage', required=True, type=Path)
+    single.add_argument('--out', required=True, type=Path)
     docx = commands.add_parser('export-docx')
     docx.add_argument('--manual', required=True, type=Path)
     docx.add_argument('--out', required=True, type=Path)
@@ -117,6 +122,8 @@ def main():
             result = initialize(args.config, args.run_dir, read_json(args.host) if args.host else None)
         elif args.command == 'render-html':
             result = render_html(args.manual, args.coverage, args.out_dir)
+        elif args.command == 'export-html':
+            result = export_standalone_html(args.manual, args.coverage, args.out)
         elif args.command == 'export-docx':
             result = render_docx(args.manual, args.out, args.role)
         elif args.command == 'export-markdown':

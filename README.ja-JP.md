@@ -26,7 +26,7 @@ HTML マニュアル、生成済み Word、実スクリーンショット、検�
 
 ## 出力
 
-- **Offline HTML**
+- **Offline HTML**：検索と画像表示に対応し、単一ファイルでも共有できます。
 - **Word / DOCX**
 - **Markdown**
 - **Coverage / Quality report**

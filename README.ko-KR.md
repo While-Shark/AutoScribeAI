@@ -26,7 +26,7 @@ Live Demo에는 실제 프로젝트 3개가 포함되어 있습니다.
 
 ## 결과물
 
-- **Offline HTML**
+- **Offline HTML**: 검색과 이미지 보기를 지원하며 단일 파일로도 공유할 수 있습니다.
 - **Word / DOCX**
 - **Markdown**
 - **Coverage / Quality report**
