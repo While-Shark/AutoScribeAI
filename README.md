@@ -30,7 +30,7 @@ From the gallery you can:
 
 ## What you get
 
-- **Offline HTML** — searchable, visual, easy to browse.
+- **Offline HTML** — searchable and visual, with an optional single-file export for sharing.
 - **Word / DOCX** — editable and suitable for delivery or training.
 - **Markdown** — convenient for Git repositories and knowledge bases.
 - **Coverage / quality report** — shows what was verified, blocked, or still unverified.

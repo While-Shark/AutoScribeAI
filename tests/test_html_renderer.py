@@ -1,5 +1,7 @@
+import base64
 import hashlib
 import json
+import shutil
 import sys
 import tempfile
 import unittest
@@ -12,6 +14,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 from autoscribe.html_renderer import render_html
+from autoscribe.standalone_html import export_standalone_html
 from autoscribe.inventory import create_coverage_plan, coverage_report, inventory_to_manual
 from autoscribe.state import atomic_json
 from autoscribe.validation import ValidationError, read_json
@@ -64,6 +67,29 @@ class HtmlRendererTests(unittest.TestCase):
         atomic_json(self.manual_path,manual)
         create_coverage_plan(self.inventory_path,self.config_path,self.plan_path)
         coverage_report(self.plan_path,self.inventory_path,self.config_path,self.manual_path,self.coverage_path)
+
+    def test_single_file_html_keeps_evidence_after_moving_without_assets(self):
+        self.prepare(verified=True)
+        image_bytes = (self.root/'evidence/screen.png').read_bytes()
+        portable = self.root/'portable.html'
+        result = export_standalone_html(self.manual_path,self.coverage_path,portable)
+        self.assertEqual(result['evidenceCount'],1)
+        self.assertEqual(result['bytes'],portable.stat().st_size)
+        with self.assertRaises(ValidationError):
+            export_standalone_html(self.manual_path,self.coverage_path,portable)
+        moved = self.root/'moved'/'portable.html'
+        moved.parent.mkdir()
+        portable.rename(moved)
+        shutil.rmtree(self.root/'evidence')
+        page = moved.read_text(encoding='utf-8')
+        parser = Links(); parser.feed(page)
+        embedded = [image['src'] for image in parser.images if image.get('src')]
+        self.assertEqual(len(embedded),1)
+        self.assertEqual(base64.b64decode(embedded[0].split(',',1)[1]),image_bytes)
+        self.assertTrue(all(link['href'].startswith('#') for link in parser.links))
+        self.assertNotIn('manual.docx',page)
+        self.assertNotIn('coverage.json',page)
+        self.assertIn('怎样打开列表？ &lt;script&gt;bad()&lt;/script&gt;',page)
 
     def test_offline_render_and_escaping_for_unverified_manual(self):
         self.prepare()
